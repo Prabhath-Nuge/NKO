@@ -4,9 +4,14 @@ import logo from '../assets/images/2.png';
 
 function NavbarComponent() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const toggleProfile = () => {
+    setIsProfileOpen(!isProfileOpen);
   };
 
   return (
@@ -33,28 +38,52 @@ function NavbarComponent() {
         </button>
 
         <div className={`${isMenuOpen ? 'block' : 'hidden'} w-full md:block md:w-auto`} id="navbar-default">
-          <ul className="bg-gradient-to-br from-gray-100 to-blue-500 shadow-md flex flex-col p-4 mt-4 border border-gray-200 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-transparent">
+          <ul className="hover:scale-110 transition duration-300 ease-in-out bg-gradient-to-br from-gray-100 to-blue-500 shadow-md flex flex-col p-4 mt-4 border border-gray-200 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-transparent">
             <li>
-              <Link to="/" className="block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-black dark:hover:text-black hover:scale-110 transition duration-300 ease-in-out">
+              <Link to="/" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
                 Home
               </Link>
             </li>
             <li>
-              <Link to="/about" className="block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-black dark:hover:text-black hover:scale-110 transition duration-300 ease-in-out">
+              <Link to="/about" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
                 About
               </Link>
             </li>
             <li>
-              <Link to="/services" className="block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-black dark:hover:text-black hover:scale-110 transition duration-300 ease-in-out">
+              <Link to="/services" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
                 Services
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-black dark:hover:text-black hover:scale-110 transition duration-300 ease-in-out">
+              <Link to="/contact" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
                 Contact
               </Link>
             </li>
           </ul>
+        </div>
+
+        <div className="relative flex items-center space-x-3">
+          <div className="relative">
+            <button
+              onClick={toggleProfile}
+              className="hover:scale-110 transition duration-300 ease-in-out flex items-center justify-center w-10 h-10 rounded-full bg-gray-300 hover:bg-gray-400 focus:outline-none"
+            >
+              <div className="text-gray-700 text-lg fa-solid fa-user" />
+            </button>
+
+            {isProfileOpen && (
+              <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg">
+                <Link to="/edit-profile" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+                  Edit Profile
+                </Link>
+                <button className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+
+          <span className="text-black font-medium hidden md:block">user@example.com</span>
         </div>
       </div>
     </nav>

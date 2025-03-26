@@ -22,5 +22,4 @@ function Dashboard() {
         </div>
     )
 }
-<i class=""></i>
 export default Dashboard
