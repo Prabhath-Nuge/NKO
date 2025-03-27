@@ -40,23 +40,23 @@ function NavbarComponent() {
         <div className={`${isMenuOpen ? 'block' : 'hidden'} w-full md:block md:w-auto`} id="navbar-default">
           <ul className="hover:scale-110 transition duration-300 ease-in-out bg-gradient-to-br from-gray-100 to-blue-500 shadow-md flex flex-col p-4 mt-4 border border-gray-200 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-transparent">
             <li>
-              <Link to="/" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
-                Home
+              <Link to="/dashboard" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
+                Dashboard
               </Link>
             </li>
             <li>
-              <Link to="/about" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
-                About
+              <Link to="#" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
+                Products
               </Link>
             </li>
             <li>
-              <Link to="/services" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
-                Services
+              <Link to="" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
+                Stocks
               </Link>
             </li>
             <li>
-              <Link to="/contact" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
-                Contact
+              <Link to="" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
+                Salary
               </Link>
             </li>
           </ul>
