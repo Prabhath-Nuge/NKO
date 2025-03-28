@@ -43,16 +43,16 @@ export const userLogin = async (req, res) => {
     }
 
     try {
-        const userDets = await User.findOne({ email: email });
+        const user = await User.findOne({ email: email });
 
-        if (!userDets) {
+        if (!user) {
             return res.status(401).json({
                 error: true,
                 message: 'User not found'
             });
         }
 
-        const isMatch = await bcrypt.compare(password, userDets.password);
+        const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
             return res.status(401).json({
@@ -61,15 +61,44 @@ export const userLogin = async (req, res) => {
             });
         }
 
-        res.status(200).json({
+        req.session.user = user;
+        console.log(req.session.user);
+
+        return res.status(200).json({
             error: false,
             message: 'User logged in successfully',
-            data: userDets
+            data: user
         });
+        
     } catch (error) {
         res.status(500).json({
             error: true,
             message: 'An error occurred. Please try again'
         });
     }
+};
+
+export const getNewUsers = async (req, res) => {
+    const user = req.session.user;
+    console.log(req.session.user);
+    
+    if (!user) {
+        return res.status(401).json({
+            error: true,
+            message: 'Unauthorized'
+        });
+    };
+
+    if (user.type == 'admin') {
+        const users = await User.find({}).sort({ createdAt: -1 });
+        return res.status(200).json({
+            error: false,
+            data: users
+        });
+    };
+
+    res.status(401).json({
+        error: true,
+        message: 'Unauthorized'
+    });
 };

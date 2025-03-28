@@ -47,7 +47,7 @@ function Register() {
         
 
         setLoading(true);
-        axios.post('http://localhost:5000/register', logDets)
+        axios.post('/register', logDets)
             .then(res => {
                 if(res.data.error){
                     return toast.error(res.data.message);

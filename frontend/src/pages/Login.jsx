@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Login() {
-    const [logDets, setLogDets] = useState({ email: 'admin@gmail.com', password: 'admin123' });
+    const [logDets, setLogDets] = useState({ email: '', password: '' });
     const [toggle, setToggle] = useState(false);
 
     const navigate = useNavigate();
@@ -33,12 +33,12 @@ function Login() {
         }
 
         try {
-            const res = await axios.post('http://localhost:5000/login', logDets);
-            if (res.data.error) {
-                toast.error(res.data.message);
-            } else {
+            const res = await axios.post('/login', logDets);
+            if (res.status === 200) {
                 toast.success(res.data.message);
                 navigate('/dashboard');
+            } else {
+                toast.error(res.data.message || 'Login failed');
             }
         } catch (err) {
             if (err.response) {
@@ -86,7 +86,7 @@ function Login() {
                                             placeholder="••••••••"
                                             onChange={handleChange} />
                                         <button type="button" className="absolute right-3 top-3 text-gray-400 hover:text-gray-600" onClick={() => setToggle(!toggle)}>
-                                            <i className="fas fa-eye"></i>
+                                        <i className={toggle ? "fas fa-eye-slash" : "fas fa-eye"}></i>
                                         </button>
                                     </div>
                                 </div>
