@@ -7,6 +7,7 @@ const UserSchema = mongoose.Schema({
     address: { type: String},
     dob: { type: Date},
     password:{type: String,required: true},
+    status:{type: Boolean,required: true, default:true},
     type:{type: String,required: true, default: 'user'}
 },{
     timestamps:true

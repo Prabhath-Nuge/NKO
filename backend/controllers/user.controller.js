@@ -62,7 +62,6 @@ export const userLogin = async (req, res) => {
         }
 
         req.session.user = user;
-        console.log(req.session.user);
 
         return res.status(200).json({
             error: false,
@@ -80,7 +79,6 @@ export const userLogin = async (req, res) => {
 
 export const getNewUsers = async (req, res) => {
     const user = req.session.user;
-    console.log(req.session.user);
     
     if (!user) {
         return res.status(401).json({
@@ -90,7 +88,32 @@ export const getNewUsers = async (req, res) => {
     };
 
     if (user.type == 'admin') {
-        const users = await User.find({}).sort({ createdAt: -1 });
+        const users = await User.find({type:"user"}).sort({ createdAt: -1 });
+        return res.status(200).json({
+            error: false,
+            data: users
+        });
+    };
+
+    res.status(401).json({
+        error: true,
+        message: 'Unauthorized'
+    });
+};
+
+export const getManagers = async (req, res) => {
+    const user = req.session.user;
+    
+    
+    if (!user) {
+        return res.status(401).json({
+            error: true,
+            message: 'Unauthorized'
+        });
+    };
+
+    if (user.type == 'admin') {        
+        const users = await User.find({type:"manager"}).sort({ createdAt: -1 });
         return res.status(200).json({
             error: false,
             data: users
