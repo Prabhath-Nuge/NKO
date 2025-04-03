@@ -10,6 +10,7 @@ import UsersNewUsersComponent from './components/UsersNewUsersComponent';
 import Products from './pages/Products';
 import ProductCategoryComponent from './components/ProductCategoryComponent';
 import NewProductCategoryComponent from './components/NewProductCategoryComponent';
+import AddProductComponent from './components/AddProductComponent';
 
 const Router = createBrowserRouter([
     {path: '/', element: <Login/>},
@@ -31,6 +32,7 @@ const Router = createBrowserRouter([
         children: [
             {path: 'category', element: <ProductCategoryComponent/>},
             {path: 'newcategory', element: <NewProductCategoryComponent/>},
+            {path: 'addproduct', element: <AddProductComponent/>},
         ]
     }
 ])

@@ -1,3 +1,4 @@
+import Product from "../models/product.model.js";
 import ProductCat from "../models/productcategory.model.js";
 
 export const addProductCategory = async (req, res) => {
@@ -64,4 +65,40 @@ export const getProductCategories = async (req, res) => {
         error: true,
         message: "Unauthorized"
     });
+}
+
+export const addNewProduct = async (req, res) => {
+    const user = req.session.user;
+
+    const { category, price, weight } = req.body;
+
+    if (!category || !price || !weight) {
+        return res.status(400).json({
+            error: true,
+            message: "All fields are required"
+        });
+    }
+
+    if (user.type == 'admin'){
+        const existCategory = await ProductCat.findById(category);
+
+        if (!existCategory) {
+            return res.status(400).json({
+                error: true,
+                message: "Product Category does not exist"
+            });
+        }
+
+        const newProduct = new Product({
+            category: category,
+            price: price,
+            weight: weight
+        });
+        await newProduct.save();
+
+        return res.status(200).json({
+            error: false,
+            message: "Product added successfully"
+        });
+    }
 }

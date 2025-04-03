@@ -45,7 +45,7 @@ function NavbarComponent() {
               </Link>
             </li>
             <li>
-              <Link to="#" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
+              <Link to="/products" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
                 Products
               </Link>
             </li>

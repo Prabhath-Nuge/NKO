@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
-const ProductCategory = mongoose.Schema({
+const ProductCategorySchema = mongoose.Schema({
     name:{type: String,required: true, unique: true},
     description:{type: String}
 },{
     timestamps:true
 });
 
-const ProductCat = mongoose.model('ProdcutCategory', ProductCategory);
+const ProductCat = mongoose.model('ProductCategory', ProductCategorySchema);
 
 export default ProductCat;

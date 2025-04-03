@@ -25,7 +25,7 @@ function Products() {
                                 <span>New Product Category</span>
                             </button>
                         </Link>
-                        <Link to="">
+                        <Link to="addproduct">
                             <button className="w-full flex items-center justify-center gap-2 bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105">
                                 <i className="fa-solid fa-plus scale-150"></i>
                                 <span>Add Product</span>
@@ -34,7 +34,7 @@ function Products() {
 
                     </div>
                 </div>
-                <div className="">
+                <div>
                     <Outlet />
                 </div>
             </div>

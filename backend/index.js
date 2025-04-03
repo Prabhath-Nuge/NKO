@@ -6,7 +6,7 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 
 import userRouter from './routers/user.router.js';
-import productCatRouter from './routers/productcategory.router.js';
+import productCatRouter from './routers/product.router.js';
 
 dotenv.config();
 
