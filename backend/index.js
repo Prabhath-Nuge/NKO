@@ -6,6 +6,7 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 
 import userRouter from './routers/user.router.js';
+import productCatRouter from './routers/productcategory.router.js';
 
 dotenv.config();
 
@@ -43,18 +44,7 @@ app.use(
 
 
 app.use('/',userRouter);
-app.get('/test-session', (req, res) => {
-    if (!req.session.views) {
-        req.session.views = 1;
-    } else {
-        req.session.views++;
-    }
-    res.json({ views: req.session.views });
-});
-app.get('/test-session1', (req, res) => {
-    
-    res.json({ views: req.session.views });
-});
+app.use('/product', productCatRouter);
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
     app.listen(port, () => {

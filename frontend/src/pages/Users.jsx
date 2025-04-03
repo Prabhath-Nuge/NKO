@@ -15,14 +15,14 @@ function Users() {
                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                     <Link to="newusers">
                             <button className="w-full flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105">
-                                <i className="fa-solid fa-user-shield scale-150"></i>  {/* Keep the icon separate */}
-                                <span>New Users</span>  {/* Add a span for text */}
+                                <i className="fa-solid fa-user-shield scale-150"></i>
+                                <span>New Users</span>
                             </button>
                         </Link>
                         <Link to="admins">
                             <button className="w-full flex items-center justify-center gap-2 bg-yellow-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 transform hover:scale-105">
-                                <i className="fa-solid fa-user-shield scale-150"></i>  {/* Keep the icon separate */}
-                                <span>Admins</span>  {/* Add a span for text */}
+                                <i className="fa-solid fa-user-shield scale-150"></i>
+                                <span>Admins</span>
                             </button>
                         </Link>
 

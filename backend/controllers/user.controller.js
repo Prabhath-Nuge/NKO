@@ -125,3 +125,53 @@ export const getManagers = async (req, res) => {
         message: 'Unauthorized'
     });
 };
+
+export const getAdmins = async (req, res) => {
+    const user = req.session.user;
+    
+    
+    if (!user) {
+        return res.status(401).json({
+            error: true,
+            message: 'Unauthorized'
+        });
+    };
+
+    if (user.type == 'admin') {        
+        const users = await User.find({type:"admin"}).sort({ createdAt: -1 });
+        return res.status(200).json({
+            error: false,
+            data: users
+        });
+    };
+
+    res.status(401).json({
+        error: true,
+        message: 'Unauthorized'
+    });
+};
+
+export const getRefs = async (req, res) => {
+    const user = req.session.user;
+    
+    
+    if (!user) {
+        return res.status(401).json({
+            error: true,
+            message: 'Unauthorized'
+        });
+    };
+
+    if (user.type == 'admin') {        
+        const users = await User.find({type:"ref"}).sort({ createdAt: -1 });
+        return res.status(200).json({
+            error: false,
+            data: users
+        });
+    };
+
+    res.status(401).json({
+        error: true,
+        message: 'Unauthorized'
+    });
+};

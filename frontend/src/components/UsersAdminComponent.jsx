@@ -1,6 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios'
+import toast from 'react-hot-toast'
 
 function UsersAdminComponent() {
+
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        let isMounted = true;
+
+        async function fetchUsers() {
+            try {
+                const response = await axios.get('/getadmins', {withCredentials: true});
+
+                if (response.data.error) {
+                    toast.error(response.data.message);
+                    return;
+                }
+
+                if (isMounted) {
+                    setUsers(response.data.data);
+                    console.log(response.data.data);
+                }
+            } catch (error) {
+                toast.error("Failed to fetch users.");
+                console.error("Error fetching users:", error);
+            }
+        }
+
+        fetchUsers();
+
+        return () => { isMounted = false };
+    }, []);
+
     return (
         <div className="container mx-auto p-6">
             <div className="bg-white shadow-lg rounded-xl overflow-hidden">
@@ -13,7 +45,7 @@ function UsersAdminComponent() {
                     <table className="min-w-full divide-y divide-gray-300">
                         <thead className="bg-gray-100 text-gray-700">
                             <tr>
-                                {["Name", "Email", "Phone", "Status", "Actions"].map((header, index) => (
+                                {["Name", "Email", "Phone", "Status","Address","Date of Birth", "Actions"].map((header, index) => (
                                     <th key={index} className="px-6 py-4 text-left text-sm font-semibold uppercase">
                                         {header}
                                     </th>
@@ -21,11 +53,14 @@ function UsersAdminComponent() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200">
-                            <tr className="hover:bg-gray-50 transition">
-                                <td className="px-6 py-4 text-gray-900 font-medium">Awesome T-Shirt</td>
-                                <td className="px-6 py-4 text-gray-600">$29.99</td>
-                                <td className="px-6 py-4 text-gray-600">50</td>
-                                <td className="px-6 py-4 text-gray-600">50</td>
+                            {users.map((user, index)=> (
+                            <tr key={index} className="hover:bg-gray-50 transition">
+                                <td className="px-6 py-4 text-gray-900 font-medium">{user.name}</td>
+                                <td className="px-6 py-4 text-gray-600">{user.email}</td>
+                                <td className="px-6 py-4 text-gray-600">{user.phone}</td>
+                                <td className="px-6 py-4 text-gray-600">{user.status}</td>
+                                <td className="px-6 py-4 text-gray-600">{user.address}</td>
+                                <td className="px-6 py-4 text-gray-600">{user.dob}</td>
                                 <td className="px-6 py-4">
                                     <div className="flex gap-2">
                                         <a href="#" className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow-md transition duration-300">
@@ -40,6 +75,7 @@ function UsersAdminComponent() {
                                     </div>
                                 </td>
                             </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>

@@ -7,6 +7,9 @@ import UsersAdminComponent from './components/UsersAdminComponent';
 import UsersManagerComponent from './components/UsersManagerComponent';
 import UsersRepresentativesComponent from './components/UsersRepresentativesComponent';
 import UsersNewUsersComponent from './components/UsersNewUsersComponent';
+import Products from './pages/Products';
+import ProductCategoryComponent from './components/ProductCategoryComponent';
+import NewProductCategoryComponent from './components/NewProductCategoryComponent';
 
 const Router = createBrowserRouter([
     {path: '/', element: <Login/>},
@@ -20,6 +23,14 @@ const Router = createBrowserRouter([
             {path: 'managers', element: <UsersManagerComponent/>},
             {path: 'refs', element: <UsersRepresentativesComponent/>},
             {path: 'newusers', element: <UsersNewUsersComponent/>},
+        ]
+    },
+    {
+        path: '/products',
+        element: <Products/>,
+        children: [
+            {path: 'category', element: <ProductCategoryComponent/>},
+            {path: 'newcategory', element: <NewProductCategoryComponent/>},
         ]
     }
 ])
