@@ -166,7 +166,7 @@ function Register() {
 
                                 <p className="mt-6 text-center text-gray-100">
                                     Allready have an account?
-                                    <Link to='/' className="ml-1 text-blue-600 hover:text-blue-700 font-semibold focus:outline-none">
+                                    <Link to='/login' className="ml-1 text-blue-600 hover:text-blue-700 font-semibold focus:outline-none">
                                         Click here
                                     </Link>
                                 </p>

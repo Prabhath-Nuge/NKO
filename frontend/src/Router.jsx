@@ -11,9 +11,11 @@ import Products from './pages/Products';
 import ProductCategoryComponent from './components/ProductCategoryComponent';
 import NewProductCategoryComponent from './components/NewProductCategoryComponent';
 import AddProductComponent from './components/AddProductComponent';
+import Home from './pages/Home';
 
 const Router = createBrowserRouter([
-    {path: '/', element: <Login/>},
+    {path: '/', element: <Home/>},
+    {path: '/login', element: <Login/>},
     {path: '/register', element: <Register/>},
     {path: '/dashboard', element: <Dashboard/>},
     {
