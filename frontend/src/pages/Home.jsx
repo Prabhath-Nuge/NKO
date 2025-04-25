@@ -1,50 +1,76 @@
-import React from 'react'
+import React, { useState } from 'react'
+import FooterComponent from '../components/FooterComponent'
+import { Link } from 'react-router-dom';
 
 function Home() {
+    const [menuOpen, setMenuOpen] = useState(false);
+
     return (
         <div>
             <header className="w-full bg-primary shadow-sm sticky top-0 z-50">
                 <div className="container mx-auto px-4 py-4 flex items-center justify-between">
                     <a href="#" className="text-3xl font-['Pacifico'] text-white">NKO</a>
 
+                    {/* Desktop Nav */}
                     <nav className="hidden md:flex items-center space-x-8">
-                        <a href="#" className="text-gray-100 hover:text-blue-500 font-medium transition">Home</a>
-                        <a href="#products" className="text-gray-100 hover:text-blue-500 font-medium transition">Products</a>
-                        <a href="#about" className="text-gray-100 hover:text-blue-500 font-medium transition">About</a>
-                        <a href="#contact" className="text-gray-100 hover:text-blue-500 font-medium transition">Contact</a>
+                        <a href="#" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Home</a>
+                        <a href="#products" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Products</a>
+                        <a href="#about" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">About</a>
+                        <a href="#contact" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Contact</a>
                     </nav>
 
                     <div className="flex items-center space-x-4">
-                        <div className="w-10 h-10 flex items-center justify-center text-gray-100 hover:text-blue-500 cursor-pointer transition-colors">
+                        <div className="w-10 h-10 flex items-center justify-center text-gray-100 hover:text-blue-500 hover:scale-110 ease-in cursor-pointer transition-colors">
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </div>
 
-                        <div className="w-10 h-10 flex items-center justify-center text-gray-100 hover:text-blue-500 cursor-pointer relative transition-colors">
+                        <div className="w-10 h-10 flex items-center justify-center text-gray-100 hover:text-blue-500 hover:scale-110 ease-in cursor-pointer relative transition-colors">
                             <i className="fa-solid fa-cart-shopping"></i>
                             <span className="absolute -top-1 -right-1 bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">3</span>
                         </div>
 
-                        <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
-                            Sign In
-                        </button>
+                        <Link to="/login">
+                            <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
+                                Login / Register
+                            </button>
+                        </Link>
 
-                        <div className="md:hidden w-10 h-10 flex items-center justify-center text-gray-700">
-                            <i className="ri-menu-line ri-xl"></i>
+                        {/* Hamburger Icon */}
+                        <div
+                            className="md:hidden w-10 h-10 flex items-center justify-center text-white  cursor-pointer"
+                            onClick={() => setMenuOpen(!menuOpen)}
+                        >
+                            <i className={`fa-solid ${menuOpen ? "fa-xmark" : "fa-bars"} text-xl`}></i>
+
                         </div>
                     </div>
                 </div>
+
+                {/* Mobile Nav */}
+                {menuOpen && (
+                    <div className="md:hidden bg-primary text-white px-4 pb-4">
+                        <a href="#" className="block py-2 font-medium hover:text-blue-400">Home</a>
+                        <a href="#products" className="block py-2 font-medium hover:text-blue-400">Products</a>
+                        <a href="#about" className="block py-2 font-medium hover:text-blue-400">About</a>
+                        <a href="#contact" className="block py-2 font-medium hover:text-blue-400">Contact</a>
+                        <button className="w-full bg-secondary text-white py-2 mt-3 rounded-md hover:!bg-blue-800 transition-colors">
+                            Sign In
+                        </button>
+                    </div>
+                )}
             </header>
 
 
             <section
-  className="relative"
-  style={{
-    backgroundImage:
-      "url('https://wallpapercat.com/w/full/8/d/0/585963-1920x1281-desktop-hd-spices-background.jpg')",
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  }}
->
+                data-aos="fade-up"
+                className="relative"
+                style={{
+                    backgroundImage:
+                        "url('https://wallpapercat.com/w/full/8/d/0/585963-1920x1281-desktop-hd-spices-background.jpg')",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                }}
+            >
 
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"></div>
                 <div className="container mx-auto px-4 py-32 md:py-40 relative z-10">
@@ -65,15 +91,15 @@ function Home() {
 
             <section id="products" className="py-16 md:py-24">
                 <div className="container mx-auto px-4">
-                    <div className="text-center mb-12">
+                    <div data-aos="fade-down" className="text-center mb-12">
                         <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Our Premium Collection</h2>
                         <p className="text-gray-100 max-w-2xl mx-auto">Handpicked and carefully sourced from the finest growing regions around the world to ensure exceptional quality and flavor.</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div data-aos="fade-up" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform hover:drop-shadow-[0_10px_20px_rgba(103,105,255,0.4)] hover:-translate-y-2">
                             <div className="h-64 overflow-hidden shadow-lg">
-                                <img src="img/p1.jpg" alt="Saffron" className="w-full h-full object-cover object-top" />
+                                <img src="https://www.gosupps.com/media/catalog/product/cache/25/image/1500x/040ec09b1e35df139433887a97daa66f/8/1/81vK7Ch1iAL._SL1500_.jpg" alt="Saffron" className="w-full h-full object-cover object-top" />
                             </div>
                             <div className="p-6">
                                 <div className="flex justify-between items-start mb-2">
@@ -101,7 +127,7 @@ function Home() {
 
                         <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform hover:drop-shadow-[0_10px_20px_rgba(103,105,255,0.4)] hover:-translate-y-2">
                             <div className="h-64 overflow-hidden shadow-lg">
-                                <img src="img/p2.jpg" alt="Cardamom" className="w-full h-full object-cover object-top" />
+                                <img src="https://tiimg.tistatic.com/fp/1/007/591/wholesale-price-export-quality-9mm-green-color-organic-cardamom-for-spices-821.jpg" alt="Cardamom" className="w-full h-full object-cover object-top" />
                             </div>
                             <div className="p-6">
                                 <div className="flex justify-between items-start mb-2">
@@ -129,7 +155,7 @@ function Home() {
 
                         <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform hover:drop-shadow-[0_10px_20px_rgba(103,105,255,0.4)] hover:-translate-y-2">
                             <div className="h-64 overflow-hidden shadow-lg">
-                                <img src="img/p3.jpg" alt="Smoked Paprika" className="w-full h-full object-cover object-top" />
+                                <img src="https://hillstreetgrocer.com/application/files/2916/0184/8768/Sweet_smoked_or_hot_..._its_time_to_learn_about_paprika.jpg" alt="Smoked Paprika" className="w-full h-full object-cover object-top" />
                             </div>
                             <div className="p-6">
                                 <div className="flex justify-between items-start mb-2">
@@ -157,7 +183,7 @@ function Home() {
 
                         <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform hover:drop-shadow-[0_10px_20px_rgba(103,105,255,0.4)] hover:-translate-y-2">
                             <div className="h-64 overflow-hidden shadow-lg">
-                                <img src="img/p4.jpg" alt="Vanilla Beans" className="w-full h-full object-cover object-top" />
+                                <img src="https://m.media-amazon.com/images/I/81-kgpdUAdL._SL1500_.jpg" alt="Vanilla Beans" className="w-full h-full object-cover object-top" />
                             </div>
                             <div className="p-6">
                                 <div className="flex justify-between items-start mb-2">
@@ -185,7 +211,7 @@ function Home() {
 
                         <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform hover:drop-shadow-[0_10px_20px_rgba(103,105,255,0.4)] hover:-translate-y-2">
                             <div className="h-64 overflow-hidden shadow-lg">
-                                <img src="img/p5.jpg" alt="Black Peppercorns" className="w-full h-full object-cover object-top" />
+                                <img src="https://www.myspicer.com/wp-content/uploads/tellicherry.jpg" alt="Black Peppercorns" className="w-full h-full object-cover object-top" />
                             </div>
                             <div className="p-6">
                                 <div className="flex justify-between items-start mb-2">
@@ -213,7 +239,7 @@ function Home() {
 
                         <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform hover:drop-shadow-[0_10px_20px_rgba(103,105,255,0.4)] hover:-translate-y-2 transition-transform duration-300 ease-in-out">
                             <div className="h-64 overflow-hidden shadow-lg">
-                                <img src="img/p6.jpg" alt="Cinnamon" className="w-full h-full object-cover object-top" />
+                                <img src="https://nourished.com/wp-content/uploads/2021/10/cinnamon-ceylon.jpg" alt="Cinnamon" className="w-full h-full object-cover object-top" />
                             </div>
                             <div className="p-6">
                                 <div className="flex justify-between items-start mb-2">
@@ -252,11 +278,11 @@ function Home() {
             <section className="py-16 md:py-24">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col md:flex-row items-center gap-12">
-                        <div className="w-full md:w-1/2">
+                        <div data-aos="fade-right" className="w-full md:w-1/2">
                             <img src="https://img.freepik.com/free-photo/young-woman-working-office-with-laptop-headphones-white-wall-customer-service-call-center_231208-8602.jpg?t=st=1745555609~exp=1745559209~hmac=85a22853622459c1bf95051dce5add805128e5f5329e49a20306a7495dd5c6fb&w=996" alt="Customer Service" className="w-full h-auto rounded-lg shadow-lg" />
                         </div>
 
-                        <div className="w-full md:w-1/2">
+                        <div data-aos="fade-left" className="w-full md:w-1/2">
                             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">Premium Customer Service</h2>
                             <p className="text-gray-100 mb-8">We believe exceptional products deserve exceptional service. Our dedicated team of spice experts is here to assist you every step of the way.</p>
 
@@ -294,7 +320,7 @@ function Home() {
 
                             <div className="mt-8 flex flex-wrap gap-4">
                                 <a href="#" className="flex items-center text-white font-medium">
-                                    <i class="fa-solid fa-phone-volume"></i> +1 (800) 555-SPICE
+                                    <i class="fa-solid fa-phone-volume mr-3"></i>  +94 77 30 424 74
                                 </a>
                                 <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
                                     Live Chat
@@ -308,11 +334,11 @@ function Home() {
             <section id="about" className="py-16 md:py-24">
                 <div className="container mx-auto px-4">
                     <div className="flex flex-col md:flex-row items-center gap-12">
-                        <div className="w-full md:w-2/5">
+                        <div data-aos="fade-left" className="w-full md:w-2/5">
                             <img src="https://scontent.fcmb1-2.fna.fbcdn.net/v/t39.30808-6/453385412_3009511312523147_4578037588129002144_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=aa7094&_nc_eui2=AeE_QKKzR61TzJh-IxkAFejHzLnGFmbEyWHMucYWZsTJYSUDPFRRN53zFIe_ju4155_kYlwBVPfI5uZyFm7sNlRN&_nc_ohc=1Ll9eWxIYkEQ7kNvwGMpT5p&_nc_oc=AdlRN1KdJyg0r4fFBnXxS-lBkhzZr5H0ZXSM3Rb1Exyw5IZRkKIn_jCAurgxmWrDGpo&_nc_zt=23&_nc_ht=scontent.fcmb1-2.fna&_nc_gid=7-tX2x6zppBHclq_dBh20Q&oh=00_AfF2r3dXKe_8oz4FwM2bQCSr2BMTZFtp6sTGP8NxF6AthA&oe=6810D010" alt="CEO Portrait" className="w-full h-auto rounded-lg shadow-lg" />
                         </div>
 
-                        <div className="w-full md:w-3/5">
+                        <div data-aos="fade-right" className="w-full md:w-3/5">
                             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Meet Our Founder</h2>
                             <h3 className="text-xl text-white font-medium mb-6">Dr. Gemba Richardson, Founder & CEO</h3>
 
@@ -327,7 +353,7 @@ function Home() {
                             </div>
 
                             <div className="flex items-center">
-                                <img src="img/sign.jpg" alt="Signature" className="h-12 w-auto mr-4" />
+                                {/* <img src="img/sign.jpg" alt="Signature" className="h-12 w-auto mr-4" /> */}
                                 <div>
                                     <p className="font-medium text-white">Dr. Gemba Richardson</p>
                                     <p className="text-sm text-white">Founder & CEO</p>
@@ -339,14 +365,14 @@ function Home() {
             </section>
             <section id="contact" className="py-16 md:py-24">
                 <div className="container mx-auto px-4">
-                    <div className="text-center mb-12">
+                    <div data-aos="fade-down" className="text-center mb-12">
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-100 mb-4">Get in Touch</h2>
                         <p className="text-gray-200 max-w-2xl mx-auto">Have questions about our products or need culinary advice? Our team is here to help you find the perfect spices for your needs.</p>
                     </div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 ">
                         <div className="lg:col-span-1">
-                            <div className="bg-gray-200 rounded-lg shadow-md p-8 h-full">
+                            <div data-aos="flip-left" className="bg-gray-100 rounded-lg shadow-md p-8 h-full">
                                 <h3 className="text-2xl font-semibold text-gray-900 mb-6">Contact Information</h3>
 
                                 <div className="space-y-6">
@@ -413,7 +439,7 @@ function Home() {
 
                         <div className="lg:col-span-2">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="bg-gray-200 rounded-lg shadow-md p-8 h-full">
+                                <div data-aos="zoom-in" className="bg-gray-100 rounded-lg p-8 h-full">
                                     <h3 className="text-2xl font-semibold text-gray-900 mb-6">Send Us a Message</h3>
 
                                     <form className="space-y-4">
@@ -443,7 +469,7 @@ function Home() {
                                     </form>
                                 </div>
 
-                                <div className="bg-white rounded-lg shadow-md overflow-hidden h-full">
+                                <div data-aos="flip-right" className="bg-white rounded-lg shadow-md overflow-hidden h-full">
                                     <div
                                         className="h-full w-full"
                                         style={{
@@ -461,7 +487,7 @@ function Home() {
             </section>
 
             <section className="py-16 bg-primary/5">
-                <div className="container mx-auto px-4">
+                <div data-aos="fade-down" data-aos-duration='3000' className="container mx-auto px-4">
                     <div className="max-w-3xl mx-auto text-center">
                         <h2 className="text-3xl font-bold text-gray-100 mb-4">Join Our Spice Community</h2>
                         <p className="text-gray-100 mb-8">Subscribe to our newsletter for exclusive recipes, special offers, and spice knowledge delivered to your inbox.</p>
@@ -477,6 +503,8 @@ function Home() {
                     </div>
                 </div>
             </section>
+
+            <FooterComponent />
         </div>
     )
 }

@@ -3,90 +3,62 @@ import { Link } from 'react-router-dom';
 import logo from '../assets/images/2.png';
 
 function NavbarComponent() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const toggleProfile = () => {
-    setIsProfileOpen(!isProfileOpen);
-  };
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-gradient-to-br from-blue-500 to-gray-100 p-4 shadow-md fixed top-0 w-full z-50 transition-all duration-300">
-      <div className="container mx-auto flex flex-wrap items-center justify-between">
-        <Link to="/" className="flex items-center">
-          <img src={logo} alt="My Brand Logo" className="h-[80px] w-auto transition-all duration-300" />
-        </Link>
+    <header className="w-full bg-primary shadow-sm sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <a href="#" className="text-3xl font-['Pacifico'] text-white">NKO</a>
 
-        <button
-          onClick={toggleMenu}
-          className="inline-flex items-center p-2 ml-3 text-sm text-black rounded-lg md:hidden hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
-          aria-controls="navbar-default"
-          aria-expanded={isMenuOpen}
-        >
-          <span className="sr-only">Open main menu</span>
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path
-              fillRule="evenodd"
-              d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-              clipRule="evenodd"
-            ></path>
-          </svg>
-        </button>
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center space-x-8">
+          <Link to='/' className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Home</Link>
+          <Link to="#products" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Products</Link>
+          <Link to="/dashboard" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Dashboard</Link>
+          <Link to="#about" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">About</Link>
+          <Link to="#contact" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Contact</Link>
+        </nav>
 
-        <div className={`${isMenuOpen ? 'block' : 'hidden'} w-full md:block md:w-auto`} id="navbar-default">
-          <ul className="hover:scale-110 transition duration-300 ease-in-out bg-gradient-to-br from-gray-100 to-blue-500 shadow-md flex flex-col p-4 mt-4 border border-gray-200 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-transparent">
-            <li>
-              <Link to="/dashboard" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
-                Dashboard
-              </Link>
-            </li>
-            <li>
-              <Link to="/products" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
-                Products
-              </Link>
-            </li>
-            <li>
-              <Link to="" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
-                Stocks
-              </Link>
-            </li>
-            <li>
-              <Link to="" className="hover:scale-110 transition duration-300 ease-in-out block py-2 pl-3 pr-4 text-black rounded hover:bg-gray-200 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0">
-                Salary
-              </Link>
-            </li>
-          </ul>
-        </div>
-
-        <div className="relative flex items-center space-x-3">
-          <div className="relative">
-            <button
-              onClick={toggleProfile}
-              className="hover:scale-110 transition duration-300 ease-in-out flex items-center justify-center w-10 h-10 rounded-full bg-gray-300 hover:bg-gray-400 focus:outline-none"
-            >
-              <div className="text-gray-700 text-lg fa-solid fa-user" />
-            </button>
-
-            {isProfileOpen && (
-              <div className="absolute right-0 mt-2 w-40 bg-white border rounded-lg shadow-lg">
-                <Link to="/edit-profile" className="block px-4 py-2 text-gray-700 hover:bg-gray-100">
-                  Edit Profile
-                </Link>
-                <button className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
-                  Logout
-                </button>
-              </div>
-            )}
+        <div className="flex items-center space-x-4">
+          <div className="w-10 h-10 flex items-center justify-center text-gray-100 hover:text-blue-500 hover:scale-110 ease-in cursor-pointer transition-colors">
+            <i className="fa-solid fa-magnifying-glass"></i>
           </div>
 
-          <span className="text-black font-medium hidden md:block">user@example.com</span>
+          <div className="w-10 h-10 flex items-center justify-center text-gray-100 hover:text-blue-500 hover:scale-110 ease-in cursor-pointer relative transition-colors">
+            <i className="fa-solid fa-cart-shopping"></i>
+            <span className="absolute -top-1 -right-1 bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">3</span>
+          </div>
+
+          <Link to="/login">
+            <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
+              Login / Register
+            </button>
+          </Link>
+
+          {/* Hamburger Icon */}
+          <div
+            className="md:hidden w-10 h-10 flex items-center justify-center text-white  cursor-pointer"
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            <i className={`fa-solid ${menuOpen ? "fa-xmark" : "fa-bars"} text-xl`}></i>
+
+          </div>
         </div>
       </div>
-    </nav>
+
+      {/* Mobile Nav */}
+      {menuOpen && (
+        <div className="md:hidden bg-primary text-white px-4 pb-4">
+          <a href="#" className="block py-2 font-medium hover:text-blue-400">Home</a>
+          <a href="#products" className="block py-2 font-medium hover:text-blue-400">Products</a>
+          <a href="#about" className="block py-2 font-medium hover:text-blue-400">About</a>
+          <a href="#contact" className="block py-2 font-medium hover:text-blue-400">Contact</a>
+          <button className="w-full bg-secondary text-white py-2 mt-3 rounded-md hover:!bg-blue-800 transition-colors">
+            Sign In
+          </button>
+        </div>
+      )}
+    </header>
   );
 }
 

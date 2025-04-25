@@ -2,60 +2,32 @@ import React from 'react'
 
 function FooterComponent() {
   return (
-    <footer className="w-full bg-white backdrop-blur-md border-t bg-gradient-to-t from-blue-600 to-white">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="py-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold tracking-wider text-gray-900">Company</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">About</a></li>
-              <li><a href="#" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Blog</a></li>
-            </ul>
+    <footer className="bg-primary text-gray-300 py-8 mt-10 shadow-2xl shadow-blue-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <div>
+            <h3 className="text-lg font-semibold mb-2">About</h3>
+            <p className="text-sm">
+            We bring the finest, hand-selected spices from around the world to your kitchen — rich in flavor, aroma, and tradition
+            </p>
           </div>
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold tracking-wider text-gray-900">Products</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Features</a></li>
-              <li><a href="#" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Pricing</a></li>
-            </ul>
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Contact</h3>
+            <p className="text-sm">Email: nkoproducts@gmail.com</p>
+            <p className="text-sm">Phone:  077 30 424 74</p>
           </div>
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold tracking-wider text-gray-900">Support</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Help Center</a></li>
-              <li><a href="#" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">Terms</a></li>
-            </ul>
-          </div>
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold tracking-wider text-gray-900">Contact</h3>
-            <ul className="space-y-2">
-              <li>
-                <a href="mailto:contact@company.com"
-                  className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
-                  contact@company.com
-                </a>
-              </li>
-              <li className="flex space-x-4">
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
-                  <i className="fab fa-github h-5 w-5"></i>
-                </a>
-                <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
-                  <i className="fab fa-twitter h-5 w-5"></i>
-                </a>
-              </li>
-            </ul>
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Location</h3>
+            <p className="text-sm">Club Road</p>
+            <p className="text-sm">Pelmadulla, Rathnapura, Sabaragamuwa.</p>
           </div>
         </div>
-        <div className="mt-8 pt-8 border-t">
-          <p className="text-sm text-gray-600 text-center">
-            © 2024 Your Company. All rights reserved.
-          </p>
+        <div className="border-t border-gray-700 mt-8 pt-4 text-center text-sm">
+          &copy; {new Date().getFullYear()} NKO Products. All rights reserved.
         </div>
       </div>
-    </div>
-  </footer>
-  )
+    </footer>
+  );
 }
 
 export default FooterComponent

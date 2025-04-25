@@ -55,7 +55,7 @@ function Login() {
 
     return (
 
-        <div className="bg-gray-900">
+        <div data-aos='fade-down'className="bg-gray-900">
             <div className="min-h-screen flex">
                 <div className="w-full  flex items-center justify-center p-8 ">
                     <div className="w-full max-w-lg">
@@ -94,9 +94,15 @@ function Login() {
                                     className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 focus:ring-4 focus:ring-blue-600 focus:ring-opacity-50 transition-colors">
                                     Sign In
                                 </button>
-                                <p className="mt-6 text-center text-gray-600">
+                                <p className="mt-6 text-center text-gray-300">
                                     Need an account?
                                     <Link to='/register' className="ml-1 text-blue-600 hover:text-blue-700 font-semibold focus:outline-none">
+                                        Click here
+                                    </Link>
+                                </p>
+                                <p className="mt-6 text-center text-gray-300">
+                                    Go back to home?
+                                    <Link to='/' className="ml-1 text-blue-600 hover:text-blue-700 font-semibold focus:outline-none">
                                         Click here
                                     </Link>
                                 </p>

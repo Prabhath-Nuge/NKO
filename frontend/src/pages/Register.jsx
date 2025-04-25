@@ -25,31 +25,31 @@ function Register() {
             return toast.error('Please fill in all fields');
         }
 
-        if(name.length < 4){
+        if (name.length < 4) {
             return toast.error('Name must be at least 4 characters');
         }
 
         if (!/^\d{10}$/.test(phone)) {
             return toast.error('Phone number must be exactly 10 digits');
-        }        
+        }
 
-        if(phone.length < 10){
+        if (phone.length < 10) {
             return toast.error('Phone number must be at least 10 characters');
         }
 
-        if(password.length < 6){
+        if (password.length < 6) {
             return toast.error('Password must be at least 6 characters');
         }
 
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             return toast.error('Enter a valid email address');
         }
-        
+
 
         setLoading(true);
         axios.post('/register', logDets)
             .then(res => {
-                if(res.data.error){
+                if (res.data.error) {
                     return toast.error(res.data.message);
                 }
                 toast.success(res.data.message);
@@ -66,11 +66,11 @@ function Register() {
 
     return (
 
-        <div className="bg-gray-900">
+        <div data-aos='zoom-in' className="bg-gray-900">
             <div className="min-h-screen flex">
                 <div className="w-full flex items-center justify-center p-8">
                     <div className="w-full max-w-xl">
-                        <div className="bg-gray-800 rounded-2xl shadow-2xl p-8">
+                        <div className="bg-gray-800 rounded-2xl shadow-2xl p-8 shadow-blue-500/25">
                             <div className="text-center mb-8">
                                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-400 rounded-full mb-4">
                                     <i className="fas fa-user-plus text-blue-800 fa-lg"></i>
@@ -157,16 +157,22 @@ function Register() {
                                     className={`w-full py-3 rounded-lg font-semibold transition-colors focus:ring-4 focus:ring-opacity-50 ${loading
                                         ? "bg-gray-400 text-gray-200 cursor-not-allowed focus:ring-gray-400"
                                         : "bg-blue-600 text-white focus:ring-blue-600 hover:bg-blue-700"
-                                     }`}
-                                     
+                                        }`}
+
                                 >
                                     {loading ? "Registering..." : "Sign In"}
                                 </button>
 
 
-                                <p className="mt-6 text-center text-gray-100">
+                                <p className="mt-6 text-center text-gray-300">
                                     Allready have an account?
                                     <Link to='/login' className="ml-1 text-blue-600 hover:text-blue-700 font-semibold focus:outline-none">
+                                        Click here
+                                    </Link>
+                                </p>
+                                <p className="mt-6 text-center text-gray-300">
+                                    Go back to home?
+                                    <Link to='/' className="ml-1 text-blue-600 hover:text-blue-700 font-semibold focus:outline-none">
                                         Click here
                                     </Link>
                                 </p>
@@ -174,7 +180,7 @@ function Register() {
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
 

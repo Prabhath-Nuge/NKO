@@ -7,7 +7,7 @@ function Products() {
     return (
         <div>
             <NavbarComponent />
-            <div className="container mx-auto p-4 mt-[150px]">
+            <div className="container mx-auto p-4 mt-[20px]">
                 <div className="bg-white shadow-lg rounded-lg p-6">
                     <h1 className="text-4xl font-bold text-gray-800 mb-4 text-center">Product Management</h1>
 

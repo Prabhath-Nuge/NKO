@@ -5,9 +5,13 @@ import { Toaster } from 'react-hot-toast'
 import { RouterProvider } from 'react-router-dom'
 import Router from './Router.jsx'
 import axios from "axios";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
+
+AOS.init({ duration: 1000 });
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
