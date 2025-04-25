@@ -7,7 +7,7 @@ function NewProductCategoryComponent() {
 
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({ name: '', description: '' });
+    const [formData, setFormData] = useState({ name: '', description: '', image: '' });
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -15,7 +15,7 @@ function NewProductCategoryComponent() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { name, description } = formData;
+        const { name, description, image } = formData;
         if (!name) {
             return toast.error('Category name is required');
         }
@@ -24,7 +24,8 @@ function NewProductCategoryComponent() {
         }
         const categoryData = {
             name: name,
-            description: description
+            description: description,
+            image: image,
         };
 
         const senddata = await axios.post('/product/category', categoryData)
@@ -46,7 +47,7 @@ function NewProductCategoryComponent() {
                     toast.error('Network error or request failed. Please try again.');
                 }
             }).finally(() => {
-                setFormData({ name: '', description: '' });
+                setFormData({ name: '', description: '', image: '' });
                 navigate('/products/category', {replace:true});
             });
     }
@@ -80,6 +81,17 @@ function NewProductCategoryComponent() {
                                     value={formData.description}
                                     className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
                                     placeholder="Enter category Description"
+                                    onChange={handleChange} />
+                                <i className="fa-solid fa-file-lines absolute right-2 top-4 text-gray-400"></i>
+                            </div>
+                        </div>
+                        <div className="mb-6">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Category Image</label>
+                            <div className="relative">
+                                <input type="text" name="image" required
+                                    value={formData.image}
+                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
+                                    placeholder="Enter category image url"
                                     onChange={handleChange} />
                                 <i className="fa-solid fa-file-lines absolute right-2 top-4 text-gray-400"></i>
                             </div>

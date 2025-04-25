@@ -66,25 +66,25 @@ function Register() {
 
     return (
 
-        <div className="bg-gray-200">
+        <div className="bg-gray-900">
             <div className="min-h-screen flex">
-                <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
-                    <div className="w-full max-w-md">
-                        <div className="bg-white rounded-2xl shadow-2xl p-8">
+                <div className="w-full flex items-center justify-center p-8">
+                    <div className="w-full max-w-xl">
+                        <div className="bg-gray-800 rounded-2xl shadow-2xl p-8">
                             <div className="text-center mb-8">
-                                <div className="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-full mb-4">
-                                    <i className="fas fa-user-plus text-red-600 fa-lg"></i>
+                                <div className="inline-flex items-center justify-center w-16 h-16 bg-gray-400 rounded-full mb-4">
+                                    <i className="fas fa-user-plus text-blue-800 fa-lg"></i>
                                 </div>
-                                <h2 className="text-2xl font-bold text-gray-800">Create Account</h2>
-                                <p className="text-gray-600 mt-2">Get started with your account</p>
+                                <h2 className="text-2xl font-bold text-gray-100">Create Account</h2>
+                                <p className="text-gray-200 mt-2">Get started with your account</p>
                             </div>
                             <form onSubmit={handleSubmit}>
 
                                 <div className="mb-6">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                                    <label className="block text-sm font-medium text-gray-100 mb-2">Name</label>
                                     <div className="relative">
                                         <input type="text" name="name" required
-                                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
+                                            className="w-full px-4 py-3 rounded-lg border text-white border-gray-100 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
                                             placeholder="Name in Full (min 4 characters)"
                                             onChange={handleChange} />
                                         <i className="fa-solid fa-font absolute right-2 top-4 w-6 h-6 text-gray-400"></i>
@@ -92,10 +92,10 @@ function Register() {
                                 </div>
 
                                 <div className="mb-6">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                    <label className="block text-sm font-medium text-gray-100 mb-2">Email Address</label>
                                     <div className="relative">
                                         <input type="email" name="email" required
-                                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
+                                            className="w-full px-4 py-3 rounded-lg border text-white border-gray-100 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
                                             placeholder="you@example.com"
                                             onChange={handleChange} />
                                         <i className="fas fa-envelope absolute right-2 top-4 w-6 h-6 text-gray-400"></i>
@@ -103,10 +103,10 @@ function Register() {
                                 </div>
 
                                 <div className="mb-6">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                                    <label className="block text-sm font-medium text-gray-100 mb-2">Phone Number</label>
                                     <div className="relative">
                                         <input type="tel" name="phone" required
-                                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
+                                            className="w-full px-4 py-3 rounded-lg border text-white border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
                                             placeholder="07x xxxx xxx (10 Digit)"
                                             pattern="[0-9]{10}"
                                             onChange={handleChange} />
@@ -115,10 +115,10 @@ function Register() {
                                 </div>
 
                                 <div className="mb-6">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                                    <label className="block text-sm font-medium text-gray-100 mb-2">Address</label>
                                     <div className="relative">
                                         <textarea name="address" required
-                                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
+                                            className="w-full px-4 py-3 rounded-lg border text-white border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
                                             placeholder="Your Address"
                                             onChange={handleChange} />
                                         <i className="fa-solid fa-location-dot absolute right-2 top-4 w-6 h-6 text-gray-400"></i>
@@ -126,10 +126,10 @@ function Register() {
                                 </div>
 
                                 <div className="mb-6">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
+                                    <label className="block text-sm font-medium text-gray-100 mb-2">Date of Birth</label>
                                     <div className="relative">
                                         <input type="date" name="dob" required
-                                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
+                                            className="w-full px-4 py-3 rounded-lg border text-white border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
                                             placeholder="07x xxxx xxx"
                                             onChange={handleChange} />
                                         {/* <button type="button" className="absolute right-3 top-3 text-gray-400 hover:text-gray-600">
@@ -139,10 +139,10 @@ function Register() {
                                 </div>
 
                                 <div className="mb-6">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                                    <label className="block text-sm font-medium text-gray-100 mb-2">Password</label>
                                     <div className="relative">
                                         <input type={toggle ? "text" : "password"} name="password" required
-                                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
+                                            className="w-full px-4 py-3 rounded-lg border text-white border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
                                             placeholder="•••••••• (min 6 characters)"
                                             onChange={handleChange} />
                                         <button type="button" className="absolute right-3 top-3 text-gray-400 hover:text-gray-600" onClick={() => setToggle(!toggle)}>
@@ -164,7 +164,7 @@ function Register() {
                                 </button>
 
 
-                                <p className="mt-6 text-center text-gray-600">
+                                <p className="mt-6 text-center text-gray-100">
                                     Allready have an account?
                                     <Link to='/' className="ml-1 text-blue-600 hover:text-blue-700 font-semibold focus:outline-none">
                                         Click here
@@ -174,14 +174,7 @@ function Register() {
                         </div>
                     </div>
                 </div>
-                <div className="hidden lg:block lg:w-1/2 bg-cover bg-center" style={{ backgroundImage: `url(${image})` }}>
-                    <div className="h-full bg-black bg-opacity-50 flex items-center justify-center">
-                        <div className="text-center text-white px-12">
-                            <h2 className="text-4xl font-bold mb-6">NKO Products</h2>
-                            <p className="text-xl">Your spice business starts here. Log in to manage your account and discover new opportunities</p>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
 

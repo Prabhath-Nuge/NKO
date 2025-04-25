@@ -20,7 +20,7 @@ function ProductCategoryComponent() {
   }, []);
 
   return (
-    <div className="flex items-center justify-center mt-10  p-8 rounded-lg">  
+    <div className="flex items-center justify-center mt-10  p-8 rounded-lg">
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-800">Product Categories</h1>
@@ -31,6 +31,7 @@ function ProductCategoryComponent() {
           <table className="min-w-full text-left border-collapse">
             <thead>
               <tr>
+                <th className="py-3 px-6 text-sm font-semibold text-gray-700 border-b bg-gray-200">Image</th>
                 <th className="py-3 px-6 text-sm font-semibold text-gray-700 border-b bg-gray-200">Name</th>
                 <th className="py-3 px-6 text-sm font-semibold text-gray-700 border-b bg-gray-200">Description</th>
               </tr>
@@ -38,6 +39,9 @@ function ProductCategoryComponent() {
             <tbody>
               {categories.map((category) => (
                 <tr key={category._id} className="hover:bg-blue-100 transition duration-200  cursor-pointer">
+                  <td className="h-32 w-32 overflow-hidden shadow-lg">
+                  <img src={category.image} alt="Category Image" class="w-full h-full object-cover object-top"/>
+                  </td>
                   <td className="py-4 px-6 text-sm text-gray-800 font-medium rounded-lg">
                     <Link to={`/category/${category._id}`} className="hover:text-blue-600 transition duration-200">
                       {category.name}

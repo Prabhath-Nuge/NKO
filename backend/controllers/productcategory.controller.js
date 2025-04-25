@@ -4,7 +4,7 @@ import ProductCat from "../models/productcategory.model.js";
 export const addProductCategory = async (req, res) => {
     const user = req.session.user;
 
-    const { name, description } = req.body;
+    const { name, description, image } = req.body;
 
     if (!name) {
         return res.status(400).json({
@@ -25,7 +25,8 @@ export const addProductCategory = async (req, res) => {
 
         const newCategory = new ProductCat({
             name: name,
-            description: description
+            description: description,
+            image: image
         });
         await newCategory.save();
 
