@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 function UsersManagerComponent() {
 
     const [users, setUsers] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         let isMounted = true;
@@ -20,11 +22,9 @@ function UsersManagerComponent() {
 
                 if (isMounted) {
                     setUsers(response.data.data);
-                    console.log(response.data.data);
                 }
             } catch (error) {
                 toast.error("Failed to fetch users.");
-                console.error("Error fetching users:", error);
             }
         }
 
@@ -45,7 +45,7 @@ function UsersManagerComponent() {
                     <table className="min-w-full divide-y divide-gray-300">
                         <thead className="bg-gray-100 text-gray-700">
                             <tr>
-                                {["Name", "Email", "Phone", "Status", "Actions"].map((header, index) => (
+                                {["Name", "Email", "Phone"].map((header, index) => (
                                     <th key={index} className="px-6 py-4 text-left text-sm font-semibold uppercase">
                                         {header}
                                     </th>
@@ -54,24 +54,10 @@ function UsersManagerComponent() {
                         </thead>
                         <tbody className="divide-y divide-gray-200">
                         {users.map((user, index) => (
-                            <tr key={user.id || index} className="hover:bg-gray-50 transition">
+                            <tr key={user.id || index} className="hover:bg-gray-100 hover:cursor-pointer transition" onClick={() => navigate(`/users/user/${user._id}`, { state: { user } })}>
                                 <td className="px-6 py-4 text-gray-900 font-medium">{user.name}</td>
                                 <td className="px-6 py-4 text-gray-600">{user.email}</td>
                                 <td className="px-6 py-4 text-gray-600">{user.phone}</td>
-                                <td className="px-6 py-4 text-gray-600">{user.status}</td>
-                                <td className="px-6 py-4">
-                                    <div className="flex gap-2">
-                                        <a href="#" className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow-md transition duration-300">
-                                            <i className="fa-solid fa-pen-to-square"></i> Edit
-                                        </a>
-                                        <a href="#" className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow-md transition duration-300">
-                                            <i className="fa-solid fa-arrows-rotate"></i> Change Status
-                                        </a>
-                                        <a href="#" className="flex items-center gap-2 bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-lg shadow-md transition duration-300">
-                                            <i className="fa-solid fa-key"></i> Reset Password
-                                        </a>
-                                    </div>
-                                </td>
                             </tr>
                         ))}
                         </tbody>

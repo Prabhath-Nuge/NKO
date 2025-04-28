@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 
 function UsersNewUsersComponent() {
+    const navigate = useNavigate();
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -10,7 +12,7 @@ function UsersNewUsersComponent() {
 
         async function fetchUsers() {
             try {
-                const response = await axios.get('/getnewusers', {withCredentials: true});
+                const response = await axios.get('/getnewusers', { withCredentials: true });
 
                 if (response.data.error) {
                     toast.error(response.data.message);
@@ -19,11 +21,9 @@ function UsersNewUsersComponent() {
 
                 if (isMounted) {
                     setUsers(response.data.data);
-                    console.log(response.data.data);
                 }
             } catch (error) {
                 toast.error("Failed to fetch users.");
-                console.error("Error fetching users:", error);
             }
         }
 
@@ -44,7 +44,7 @@ function UsersNewUsersComponent() {
                     <table className="min-w-full divide-y divide-gray-300">
                         <thead className="bg-gray-100 text-gray-700">
                             <tr>
-                                {["Name", "Email", "Phone", "Status", "Actions"].map((header, index) => (
+                                {["Name", "Email", "Phone"].map((header, index) => (
                                     <th key={index} className="px-6 py-4 text-left text-sm font-semibold uppercase">
                                         {header}
                                     </th>
@@ -53,40 +53,17 @@ function UsersNewUsersComponent() {
                         </thead>
                         <tbody className="divide-y divide-gray-200">
                             {users.map((user, index) => (
-                                <tr key={user.id || index} className="hover:bg-gray-50 transition">
+                                <tr
+                                    key={user._id || index}
+                                    onClick={() => navigate(`/users/user/${user._id}`, { state: { user } })}
+                                    className="hover:bg-gray-100 transition cursor-pointer"
+                                >
                                     <td className="px-6 py-4 text-gray-900 font-medium">{user.name}</td>
                                     <td className="px-6 py-4 text-gray-600">{user.email}</td>
                                     <td className="px-6 py-4 text-gray-600">{user.phone}</td>
-                                    <td className="px-6 py-4 text-gray-600">{user.status}</td>
-                                    <td className="px-6 py-4">
-                                        <div className="flex gap-2">
-                                            <button 
-                                                aria-label="Edit User"
-                                                className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow-md transition duration-300"
-                                                onClick={() => console.log("Edit user:", user.id)}
-                                            >
-                                                <i className="fa-solid fa-pen-to-square"></i> Edit
-                                            </button>
-
-                                            <button 
-                                                aria-label="Grant Permissions"
-                                                className="flex items-center gap-2 bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow-md transition duration-300"
-                                                onClick={() => console.log("Grant permissions to:", user.id)}
-                                            >
-                                                <i className="fa-solid fa-person-circle-plus"></i> Grant Permissions
-                                            </button>
-
-                                            <button 
-                                                aria-label="Delete User"
-                                                className="flex items-center gap-2 bg-red-500 hover:bg-red-700 text-white py-2 px-4 rounded-lg shadow-md transition duration-300"
-                                                onClick={() => console.log("Delete user:", user.id)}
-                                            >
-                                                <i className="fa-solid fa-trash"></i> Delete User
-                                            </button>
-                                        </div>
-                                    </td>
                                 </tr>
                             ))}
+
                         </tbody>
                     </table>
                 </div>

@@ -13,10 +13,10 @@ function NavbarComponent() {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-8">
           <Link to='/' className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Home</Link>
-          <Link to="#products" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Products</Link>
+          <Link to="/products/category" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Products</Link>
           <Link to="/dashboard" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Dashboard</Link>
-          <Link to="#about" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">About</Link>
-          <Link to="#contact" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Contact</Link>
+          {/* <Link to="#about" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">About</Link>
+          <Link to="#contact" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Contact</Link> */}
         </nav>
 
         <div className="flex items-center space-x-4">

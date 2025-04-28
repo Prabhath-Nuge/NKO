@@ -29,9 +29,9 @@ function ProductCategoryComponent() {
   }, [categories]);
 
   return (
-      <section id="products" className="py-16 md:py-24">
+      <section id="products" className="">
         <div className="container mx-auto px-4">
-          <div data-aos="fade-down" className="text-center mb-12">
+          <div data-aos="fade-up" className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Product Categories Section</h2>
             <p className="text-gray-100 max-w-2xl mx-auto">Manage Categories and get product variants</p>
           </div>
