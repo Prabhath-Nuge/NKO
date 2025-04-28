@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import image from '../assets/images/login.jpg'
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
