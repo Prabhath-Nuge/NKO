@@ -52,7 +52,7 @@ function NewProductCategoryComponent() {
             });
     }
     return (
-        <div className=" flex items-center justify-center p-8">
+        <div data-aos='fade-up' className=" flex items-center justify-center p-8">
             <div className="w-full max-w-md">
                 <div className="bg-white rounded-2xl shadow-2xl p-8">
                     <div className="text-center mb-8">

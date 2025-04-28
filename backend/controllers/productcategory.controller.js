@@ -71,9 +71,9 @@ export const getProductCategories = async (req, res) => {
 export const addNewProduct = async (req, res) => {
     const user = req.session.user;
 
-    const { category, price, weight } = req.body;
+    const { category, salesPrice, shopPrice, weight } = req.body;
 
-    if (!category || !price || !weight) {
+    if (!category || !salesPrice || !weight || !shopPrice) {
         return res.status(400).json({
             error: true,
             message: "All fields are required"
@@ -92,7 +92,8 @@ export const addNewProduct = async (req, res) => {
 
         const newProduct = new Product({
             category: category,
-            price: price,
+            salesPrice: salesPrice,
+            shopPrice: shopPrice,
             weight: weight
         });
         await newProduct.save();

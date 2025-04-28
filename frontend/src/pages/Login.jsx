@@ -55,7 +55,7 @@ function Login() {
 
     return (
 
-        <div data-aos='fade-down'className="bg-gray-900">
+        <div data-aos='fade-down' className="bg-gray-900">
             <div className="min-h-screen flex">
                 <div className="w-full  flex items-center justify-center p-8 ">
                     <div className="w-full max-w-lg">

@@ -6,7 +6,8 @@ import { toast } from 'react-hot-toast';
 function AddProductComponent() {
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('');
-    const [price, setPrice] = useState('');
+    const [salesPrice, setSalesPrice] = useState('');
+    const [shopPrice, setShopPrice] = useState('');
     const [weight, setWeight] = useState('');
 
     useEffect(() => {
@@ -27,17 +28,19 @@ function AddProductComponent() {
         event.preventDefault();
         const formData = {
             category: selectedCategory,
-            price: price,
+            salesPrice: salesPrice,
+            shopPrice: shopPrice,
             weight: weight
         };
         axios.post('/product/addnewproduct', formData)
             .then((response) => {
                 if (response.data.error) {
-                    console.log(response.data.message);
+                    toast.error(response.data.message);
                 } else {
                     toast.success('Product added successfully!');
                     setSelectedCategory('');
-                    setPrice('');
+                    setSalesPrice('');
+                    setShopPrice('');
                     setWeight('');
                 }
             })
@@ -48,7 +51,7 @@ function AddProductComponent() {
     };
 
     return (
-        <div className="flex items-center justify-center p-8">
+        <div data-aos='fade-up' className="flex items-center justify-center p-8">
             <div className="w-full max-w-md">
                 <div className="bg-white rounded-2xl shadow-2xl p-8">
                     <div className="text-center mb-8">
@@ -75,19 +78,6 @@ function AddProductComponent() {
                                 ))}
                             </select>
                         </div>
-                        
-                        <div className="mb-6">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Price (Rs)</label>
-                            <input 
-                                type="text" 
-                                name="price" 
-                                required
-                                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
-                                placeholder="Enter product price "
-                                value={price}
-                                onChange={(e) => setPrice(e.target.value)}
-                            />
-                        </div>
 
                         <div className="mb-6">
                             <label className="block text-sm font-medium text-gray-700 mb-2">Weight (grams)</label>
@@ -99,6 +89,32 @@ function AddProductComponent() {
                                 placeholder="Enter product weight"
                                 value={weight}
                                 onChange={(e) => setWeight(e.target.value)}
+                            />
+                        </div>
+                        
+                        <div className="mb-6">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Sales Price (Rs)</label>
+                            <input 
+                                type="text" 
+                                name="salesprice" 
+                                required
+                                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
+                                placeholder="Enter Sales price "
+                                value={salesPrice}
+                                onChange={(e) => setSalesPrice(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="mb-6">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Shop Price (Rs)</label>
+                            <input 
+                                type="text" 
+                                name="shopprice" 
+                                required
+                                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
+                                placeholder="Enter Shop price "
+                                value={shopPrice}
+                                onChange={(e) => setShopPrice(e.target.value)}
                             />
                         </div>
 
