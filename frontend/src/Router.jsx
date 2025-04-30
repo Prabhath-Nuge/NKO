@@ -12,7 +12,8 @@ import ProductCategoryComponent from './components/ProductCategoryComponent';
 import NewProductCategoryComponent from './components/NewProductCategoryComponent';
 import AddProductComponent from './components/AddProductComponent';
 import Home from './pages/Home';
-import NewUserDetailPage from './pages/NewUserDetailPage';
+import UserEditPage from './components/UserEditPage';
+import ProductCategoryEdit from './components/ProductCategoryEdit';
 
 const Router = createBrowserRouter([
     {path: '/', element: <Home/>},
@@ -27,7 +28,7 @@ const Router = createBrowserRouter([
             {path: 'managers', element: <UsersManagerComponent/>},
             {path: 'refs', element: <UsersRepresentativesComponent/>},
             {path: 'newusers', element: <UsersNewUsersComponent/>},
-            { path: 'user/:id', element: <NewUserDetailPage/> },
+            { path: 'user/:id', element: <UserEditPage/> },
         ]
     },
     {
@@ -37,6 +38,7 @@ const Router = createBrowserRouter([
             {path: 'category', element: <ProductCategoryComponent/>},
             {path: 'newcategory', element: <NewProductCategoryComponent/>},
             {path: 'addproduct', element: <AddProductComponent/>},
+            {path: 'category/:id', element: <ProductCategoryEdit/>},
         ]
     }
 ])

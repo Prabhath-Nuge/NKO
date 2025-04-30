@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-const NewUserDetailPage = () => {
+const UserEditPage = () => {
     const { id } = useParams();
     const location = useLocation();
     const user = location.state?.user;
@@ -168,4 +168,4 @@ const NewUserDetailPage = () => {
     );
 }
 
-export default NewUserDetailPage
+export default UserEditPage
