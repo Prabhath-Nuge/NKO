@@ -35,13 +35,11 @@ function UsersManagerComponent() {
     return (
         <div className="container mx-auto p-6">
             <div className="bg-gray-900 shadow-lg rounded-xl overflow-hidden">
-                {/* Header */}
                 <div className="p-4 border-b border-gray-800 bg-gradient-to-r from-blue-700 to-indigo-700 text-white">
                     <h2 className="text-lg font-semibold">Managers List</h2>
                     <p className="text-sm text-gray-300">Manage all Managers.</p>
                 </div>
 
-                {/* Table */}
                 <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-800">
                         <thead className="bg-gray-800 text-gray-300">

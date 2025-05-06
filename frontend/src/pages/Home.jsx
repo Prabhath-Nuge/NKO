@@ -143,7 +143,7 @@ function Home() {
                 <p className="text-gray-400 mb-4 text-sm">{category.description}</p>
 
                 <div className="flex justify-end">
-                    <button className="hidden md:inline-block bg-secondary hover:bg-blue-800 text-white px-5 py-2 text-sm font-medium rounded-md transition-colors">
+                    <button className="hidden md:inline-block bg-secondary hover:!bg-blue-800 text-white px-5 py-2 text-sm font-medium rounded-md transition-colors">
                         Product Details
                     </button>
                 </div>

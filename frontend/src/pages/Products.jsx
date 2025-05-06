@@ -49,7 +49,7 @@ function Products() {
                         }
                     >
                         <button id="newUsersFilter">
-                            Add New-Product
+                            Add New-Product Variant
                         </button>
                     </NavLink>
                 </div>

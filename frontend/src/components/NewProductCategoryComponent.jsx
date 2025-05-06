@@ -111,7 +111,7 @@ function NewProductCategoryComponent() {
             <p className="mt-6 text-center text-gray-400">
               Go back to
               <Link
-                to="/products"
+                to="/products/category"
                 className="ml-1 text-blue-400 hover:text-blue-500 font-semibold focus:outline-none"
               >
                 Products

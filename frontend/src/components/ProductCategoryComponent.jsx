@@ -59,13 +59,14 @@ function ProductCategoryComponent() {
                 <div className="flex justify-between items-center">
                   <button
                     onClick={() => navigate(`/products/category/${category._id}`, { state: { category } })}
-                    className="hidden md:inline-block bg-secondary hover:bg-blue-800 text-white px-4 py-2 text-sm font-medium rounded-md transition"
+                    className="hidden md:inline-block bg-secondary hover:!bg-blue-800 text-white px-4 py-2 text-sm font-medium rounded-md transition"
                   >
                     Edit Category
                   </button>
 
                   <button
-                    className="hidden md:inline-block bg-secondary hover:bg-blue-800 text-white px-4 py-2 text-sm font-medium rounded-md transition"
+                    onClick={() => navigate(`/products/category/variants/${category._id}`, { state: { category } })}
+                    className="hidden md:inline-block bg-secondary hover:!bg-blue-800 text-white px-4 py-2 text-sm font-medium rounded-md transition"
                   >
                     View Variants
                   </button>

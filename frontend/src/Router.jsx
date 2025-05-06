@@ -14,6 +14,7 @@ import AddProductComponent from './components/AddProductComponent';
 import Home from './pages/Home';
 import UserEditPage from './components/UserEditPage';
 import ProductCategoryEdit from './components/ProductCategoryEdit';
+import ProductVariant from './components/ProductVariant';
 
 const Router = createBrowserRouter([
     {path: '/', element: <Home/>},
@@ -38,6 +39,7 @@ const Router = createBrowserRouter([
             {path: 'category', element: <ProductCategoryComponent/>},
             {path: 'newcategory', element: <NewProductCategoryComponent/>},
             {path: 'addproduct', element: <AddProductComponent/>},
+            {path: 'category/variants/:id', element: <ProductVariant/>},
             {path: 'category/:id', element: <ProductCategoryEdit/>},
         ]
     }

@@ -114,3 +114,25 @@ export const addNewProduct = async (req, res) => {
         });
     }
 }
+
+export const getProductVariants = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const variants = await Product.find({ category: id });
+        if (variants.length === 0) {
+            return res.status(404).json({
+                error: true,
+                message: "No variants found for this category"
+            });
+        }
+        return res.status(200).json({
+            error: false,
+            data: variants
+        });
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            message: "Internal server error"
+        });
+    }
+}

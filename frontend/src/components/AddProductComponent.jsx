@@ -57,12 +57,11 @@ function AddProductComponent() {
             <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-700 bg-opacity-20 rounded-full mb-4">
               <i className="fas fa-tags text-blue-400 fa-lg"></i>
             </div>
-            <h2 className="text-2xl font-bold text-white">Add Product</h2>
+            <h2 className="text-2xl font-bold text-white">Add Product Variant</h2>
             <p className="text-gray-400 mt-2">Create a new product entry</p>
           </div>
 
           <form onSubmit={handleSubmit}>
-            {/* Category Select */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-300 mb-2">Select Category</label>
               <select
@@ -79,7 +78,6 @@ function AddProductComponent() {
               </select>
             </div>
 
-            {/* Weight Input */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-300 mb-2">Weight (grams)</label>
               <input
@@ -93,7 +91,6 @@ function AddProductComponent() {
               />
             </div>
 
-            {/* Sales Price Input */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-300 mb-2">Sales Price (Rs)</label>
               <input
@@ -107,7 +104,6 @@ function AddProductComponent() {
               />
             </div>
 
-            {/* Shop Price Input */}
             <div className="mb-6">
               <label className="block text-sm font-medium text-gray-300 mb-2">Shop Price (Rs)</label>
               <input
@@ -121,7 +117,6 @@ function AddProductComponent() {
               />
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
               className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 focus:ring-4 focus:ring-blue-600 focus:ring-opacity-50 transition-colors"
@@ -129,10 +124,9 @@ function AddProductComponent() {
               Add Product
             </button>
 
-            {/* Back Link */}
             <p className="mt-6 text-center text-gray-400">
               Go back to
-              <Link to="/products" className="ml-1 text-blue-400 hover:text-blue-500 font-semibold focus:outline-none">
+              <Link to="/products/category" className="ml-1 text-blue-400 hover:text-blue-500 font-semibold focus:outline-none">
                 Products
               </Link>
             </p>
