@@ -43,17 +43,14 @@ export const addProductCategory = async (req, res) => {
 }
 
 export const getProductCategories = async (req, res) => {
-    try {
-        const user = req.session.user;
-
-        if (user.type == 'admin') {
+    try {        
             const categories = await ProductCat.find({});
 
             return res.status(200).json({
                 error: false,
                 data: categories
             });
-        }
+        
     } catch (error) {
         return res.status(500).json({
             error: true,
@@ -61,11 +58,24 @@ export const getProductCategories = async (req, res) => {
         });
 
     }
+}
 
-    return res.status(403).json({
-        error: true,
-        message: "Unauthorized"
-    });
+export const getHomeProductCategories = async (req, res) => {
+    try {        
+            const categories = await ProductCat.find().limit(9);
+
+            return res.status(200).json({
+                error: false,
+                data: categories
+            });
+        
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            message: "Internal server error"
+        });
+
+    }
 }
 
 export const addNewProduct = async (req, res) => {

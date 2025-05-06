@@ -1,9 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FooterComponent from '../components/FooterComponent'
 import { Link } from 'react-router-dom';
+import ceo from '../assets/images/ceo.jpg'
+import axios from 'axios';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 function Home() {
     const [menuOpen, setMenuOpen] = useState(false);
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        axios.get('/product/homecategory')
+            .then((response) => {
+                if (response.data.error) {
+                    console.log(response.data.message);
+                } else {
+                    setCategories(response.data.data);
+                }
+            })
+            .catch((error) => {
+                console.log(error.message);
+            });
+    }, []);
+
+    useEffect(() => {
+        // Refresh AOS after the data has been loaded
+        if (categories.length > 0) {
+            AOS.refresh();
+        }
+    }, [categories]);
 
     return (
         <div>
@@ -81,7 +107,7 @@ function Home() {
                             <button className="hidden md:block bg-secondary text-white px-8 py-6 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
                                 Shop Now
                             </button>
-                            <button className="hidden md:block bg-white text-blue-900 px-8 py-6 font-medium rounded-md whitespace-nowrap hover:!bg-gray-300 transition-colors">
+                            <button className="hidden md:block bg-gray-700 text-white px-8 py-6 font-medium rounded-md whitespace-nowrap hover:!bg-gray-800 transition-colors">
                                 Learn More
                             </button>
                         </div>
@@ -97,173 +123,26 @@ function Home() {
                     </div>
 
                     <div data-aos="fade-up" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform hover:drop-shadow-[0_10px_20px_rgba(103,105,255,0.4)] hover:-translate-y-2">
-                            <div className="h-64 overflow-hidden shadow-lg">
-                                <img src="https://www.gosupps.com/media/catalog/product/cache/25/image/1500x/040ec09b1e35df139433887a97daa66f/8/1/81vK7Ch1iAL._SL1500_.jpg" alt="Saffron" className="w-full h-full object-cover object-top" />
-                            </div>
-                            <div className="p-6">
-                                <div className="flex justify-between items-start mb-2">
-                                    <h3 className="text-xl font-semibold text-gray-900">Premium Saffron</h3>
-                                    <span className="text-primary font-bold">$24.99</span>
+                        {categories.map((category, index) => (
+                            <div key={index} className="bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform hover:drop-shadow-[0_10px_20px_rgba(26,60,150,0.2)] hover:-translate-y-2">
+                                <div className="h-64 overflow-hidden shadow-lg p-2 rounded-lg">
+                                    <img src={category.image} alt="Saffron" className="w-full h-full object-cover object-top rounded-lg" />
                                 </div>
-                                <p className="text-gray-600 mb-4">Hand-harvested premium saffron threads from the valleys of Kashmir, known for their exceptional aroma and color.</p>
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center">
-                                        <div className="flex">
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                        </div>
-                                        <span className="text-sm text-gray-500 ml-1">(128)</span>
+                                <div className="p-6">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h3 className="text-xl font-semibold text-gray-100">{category.name}</h3>
                                     </div>
-                                    <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
-                                        Add to Cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                                    <p className="text-gray-300 mb-4">{category.description}</p>
+                                    <div className="flex items-center justify-between">
 
-                        <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform hover:drop-shadow-[0_10px_20px_rgba(103,105,255,0.4)] hover:-translate-y-2">
-                            <div className="h-64 overflow-hidden shadow-lg">
-                                <img src="https://tiimg.tistatic.com/fp/1/007/591/wholesale-price-export-quality-9mm-green-color-organic-cardamom-for-spices-821.jpg" alt="Cardamom" className="w-full h-full object-cover object-top" />
-                            </div>
-                            <div className="p-6">
-                                <div className="flex justify-between items-start mb-2">
-                                    <h3 className="text-xl font-semibold text-gray-900">Organic Cardamom</h3>
-                                    <span className="text-primary font-bold">$18.50</span>
-                                </div>
-                                <p className="text-gray-600 mb-4">Aromatic green cardamom pods from the highlands of Guatemala, perfect for both sweet and savory dishes.</p>
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center">
-                                        <div className="flex">
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                        </div>
-                                        <span className="text-sm text-gray-500 ml-1">(95)</span>
+                                        <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
+                                            Product Details
+                                        </button>
                                     </div>
-                                    <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
-                                        Add to Cart
-                                    </button>
                                 </div>
-                            </div>
-                        </div>
+                            </div>))}
 
-                        <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform hover:drop-shadow-[0_10px_20px_rgba(103,105,255,0.4)] hover:-translate-y-2">
-                            <div className="h-64 overflow-hidden shadow-lg">
-                                <img src="https://hillstreetgrocer.com/application/files/2916/0184/8768/Sweet_smoked_or_hot_..._its_time_to_learn_about_paprika.jpg" alt="Smoked Paprika" className="w-full h-full object-cover object-top" />
-                            </div>
-                            <div className="p-6">
-                                <div className="flex justify-between items-start mb-2">
-                                    <h3 className="text-xl font-semibold text-gray-900">Smoked Paprika</h3>
-                                    <span className="text-primary font-bold">$12.99</span>
-                                </div>
-                                <p className="text-gray-600 mb-4">Authentic Spanish smoked paprika with a rich, complex flavor profile and vibrant color for your dishes.</p>
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center">
-                                        <div className="flex">
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                        </div>
-                                        <span className="text-sm text-gray-500 ml-1">(76)</span>
-                                    </div>
-                                    <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
-                                        Add to Cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
 
-                        <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform hover:drop-shadow-[0_10px_20px_rgba(103,105,255,0.4)] hover:-translate-y-2">
-                            <div className="h-64 overflow-hidden shadow-lg">
-                                <img src="https://m.media-amazon.com/images/I/81-kgpdUAdL._SL1500_.jpg" alt="Vanilla Beans" className="w-full h-full object-cover object-top" />
-                            </div>
-                            <div className="p-6">
-                                <div className="flex justify-between items-start mb-2">
-                                    <h3 className="text-xl font-semibold text-gray-900">Madagascar Vanilla Beans</h3>
-                                    <span className="text-primary font-bold">$29.99</span>
-                                </div>
-                                <p className="text-gray-600 mb-4">Premium grade A Madagascar vanilla beans with an exceptional aroma and flavor for your baking needs.</p>
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center">
-                                        <div className="flex">
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                        </div>
-                                        <span className="text-sm text-gray-500 ml-1">(142)</span>
-                                    </div>
-                                    <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
-                                        Add to Cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform hover:drop-shadow-[0_10px_20px_rgba(103,105,255,0.4)] hover:-translate-y-2">
-                            <div className="h-64 overflow-hidden shadow-lg">
-                                <img src="https://www.myspicer.com/wp-content/uploads/tellicherry.jpg" alt="Black Peppercorns" className="w-full h-full object-cover object-top" />
-                            </div>
-                            <div className="p-6">
-                                <div className="flex justify-between items-start mb-2">
-                                    <h3 className="text-xl font-semibold text-gray-900">Tellicherry Peppercorns</h3>
-                                    <span className="text-primary font-bold">$14.50</span>
-                                </div>
-                                <p className="text-gray-600 mb-4">Premium Tellicherry black peppercorns from India's Malabar coast, known for their complex, citrusy flavor.</p>
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center">
-                                        <div className="flex">
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                        </div>
-                                        <span className="text-sm text-gray-500 ml-1">(89)</span>
-                                    </div>
-                                    <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
-                                        Add to Cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-gray-200 rounded-lg shadow-md overflow-hidden transition-transform hover:drop-shadow-[0_10px_20px_rgba(103,105,255,0.4)] hover:-translate-y-2 transition-transform duration-300 ease-in-out">
-                            <div className="h-64 overflow-hidden shadow-lg">
-                                <img src="https://nourished.com/wp-content/uploads/2021/10/cinnamon-ceylon.jpg" alt="Cinnamon" className="w-full h-full object-cover object-top" />
-                            </div>
-                            <div className="p-6">
-                                <div className="flex justify-between items-start mb-2">
-                                    <h3 className="text-xl font-semibold text-gray-900">Ceylon Cinnamon</h3>
-                                    <span className="text-primary font-bold">$16.99</span>
-                                </div>
-                                <p className="text-gray-600 mb-4">True Ceylon cinnamon from Sri Lanka with a delicate, sweet flavor profile that's distinctly different from cassia.</p>
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center">
-                                        <div className="flex">
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                            <i class="fa-solid fa-star text-yellow-400"></i>
-                                        </div>
-                                        <span className="text-sm text-gray-500 ml-1">(112)</span>
-                                    </div>
-                                    <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
-                                        Add to Cart
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
 
                     <div className="text-center mt-12">
@@ -289,7 +168,7 @@ function Home() {
                             <div className="space-y-6">
                                 <div className="flex items-start">
                                     <div className="w-12 h-12 flex items-center justify-center bg-gray-700 text-gray-100 rounded-full mr-4 flex-shrink-0">
-                                        <i class="fa-solid fa-headset"></i>
+                                        <i className="fa-solid fa-headset"></i>
                                     </div>
                                     <div>
                                         <h3 className="text-xl font-semibold text-gray-100 mb-2">24/7 Expert Support</h3>
@@ -299,7 +178,7 @@ function Home() {
 
                                 <div className="flex items-start">
                                     <div className="w-12 h-12 flex items-center justify-center bg-gray-700 text-gray-100 rounded-full mr-4 flex-shrink-0">
-                                        <i class="fa-solid fa-truck"></i>
+                                        <i className="fa-solid fa-truck"></i>
                                     </div>
                                     <div>
                                         <h3 className="text-xl font-semibold text-gray-100 mb-2">Fast & Free Shipping</h3>
@@ -309,7 +188,7 @@ function Home() {
 
                                 <div className="flex items-start">
                                     <div className="w-12 h-12 flex items-center justify-center bg-gray-700 text-gray-100 rounded-full mr-4 flex-shrink-0">
-                                        <i class="fa-solid fa-arrows-spin"></i>
+                                        <i className="fa-solid fa-arrows-spin"></i>
                                     </div>
                                     <div>
                                         <h3 className="text-xl font-semibold text-gray-100 mb-2">Satisfaction Guarantee</h3>
@@ -320,7 +199,7 @@ function Home() {
 
                             <div className="mt-8 flex flex-wrap gap-4">
                                 <a href="#" className="flex items-center text-white font-medium">
-                                    <i class="fa-solid fa-phone-volume mr-3"></i>  +94 77 30 424 74
+                                    <i className="fa-solid fa-phone-volume mr-3"></i>  +94 77 30 424 74
                                 </a>
                                 <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
                                     Live Chat
@@ -333,9 +212,9 @@ function Home() {
 
             <section id="about" className="py-16 md:py-24">
                 <div className="container mx-auto px-4">
-                    <div className="flex flex-col md:flex-row items-center gap-12">
-                        <div data-aos="fade-left" className="w-full md:w-2/5">
-                            <img src="https://scontent.fcmb1-2.fna.fbcdn.net/v/t39.30808-6/453385412_3009511312523147_4578037588129002144_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=aa7094&_nc_eui2=AeE_QKKzR61TzJh-IxkAFejHzLnGFmbEyWHMucYWZsTJYSUDPFRRN53zFIe_ju4155_kYlwBVPfI5uZyFm7sNlRN&_nc_ohc=1Ll9eWxIYkEQ7kNvwGMpT5p&_nc_oc=AdlRN1KdJyg0r4fFBnXxS-lBkhzZr5H0ZXSM3Rb1Exyw5IZRkKIn_jCAurgxmWrDGpo&_nc_zt=23&_nc_ht=scontent.fcmb1-2.fna&_nc_gid=7-tX2x6zppBHclq_dBh20Q&oh=00_AfF2r3dXKe_8oz4FwM2bQCSr2BMTZFtp6sTGP8NxF6AthA&oe=6810D010" alt="CEO Portrait" className="w-full h-auto rounded-lg shadow-lg" />
+                    <div className="flex flex-col md:flex-row items-center gap-24">
+                        <div data-aos="fade-left" className="w-full md:w-8/30">
+                            <img src={ceo} alt="CEO Portrait" className="w-full h-auto rounded-lg shadow-lg" />
                         </div>
 
                         <div data-aos="fade-right" className="w-full md:w-3/5">
@@ -353,7 +232,6 @@ function Home() {
                             </div>
 
                             <div className="flex items-center">
-                                {/* <img src="img/sign.jpg" alt="Signature" className="h-12 w-auto mr-4" /> */}
                                 <div>
                                     <p className="font-medium text-white">Dr. Gemba Richardson</p>
                                     <p className="text-sm text-white">Founder & CEO</p>
@@ -367,124 +245,149 @@ function Home() {
                 <div className="container mx-auto px-4">
                     <div data-aos="fade-down" className="text-center mb-12">
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-100 mb-4">Get in Touch</h2>
-                        <p className="text-gray-200 max-w-2xl mx-auto">Have questions about our products or need culinary advice? Our team is here to help you find the perfect spices for your needs.</p>
+                        <p className="text-gray-200 max-w-2xl mx-auto">
+                            Have questions about our products or need culinary advice? Our team is here to help you find the perfect spices for your needs.
+                        </p>
                     </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 ">
-                        <div className="lg:col-span-1">
-                            <div data-aos="flip-left" className="bg-gray-100 rounded-lg shadow-md p-8 h-full">
-                                <h3 className="text-2xl font-semibold text-gray-900 mb-6">Contact Information</h3>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+                        <div data-aos="flip-left" className="bg-gray-800 rounded-lg shadow-md p-8 flex flex-col h-full">
+                            <h3 className="text-2xl font-semibold text-white mb-6">Contact Information</h3>
 
-                                <div className="space-y-6">
-                                    <div className="flex items-start">
-                                        <div className="w-10 h-10 flex items-center justify-center bg-gray-300 text-primary rounded-full mr-4 flex-shrink-0">
-                                            <i class="fa-solid fa-location-dot"></i>
-                                        </div>
-                                        <div>
-                                            <h4 className="font-medium text-gray-900 mb-1">Address</h4>
-                                            <p className="text-gray-600"> Spice Avenue<br />Rathnapura, OR 97205<br />Sri lanka</p>
-                                        </div>
+                            <div className="space-y-6 flex-grow">
+                                <div className="flex items-start">
+                                    <div className="w-10 h-10 flex items-center justify-center bg-gray-700 text-white rounded-full mr-4 flex-shrink-0">
+                                        <i className="fa-solid fa-location-dot"></i>
                                     </div>
-
-                                    <div className="flex items-start">
-                                        <div className="w-10 h-10 flex items-center justify-center bg-gray-300 text-primary rounded-full mr-4 flex-shrink-0">
-                                            <i class="fa-solid fa-envelope"></i>
-                                        </div>
-                                        <div>
-                                            <h4 className="font-medium text-gray-900 mb-1">Email</h4>
-                                            <p className="text-gray-600">Gemba@spicehaven.com<br />support@spicehaven.com</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-start">
-                                        <div className="w-10 h-10 flex items-center justify-center bg-gray-300 text-primary rounded-full mr-4 flex-shrink-0">
-                                            <i class="fa-solid fa-phone"></i>
-                                        </div>
-                                        <div>
-                                            <h4 className="font-medium text-gray-900 mb-1">Phone</h4>
-                                            <p className="text-gray-600">+1 (800) 555-SPICE<br />+1 (503) 555-1234</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex items-start">
-                                        <div className="w-10 h-10 flex items-center justify-center bg-gray-300 text-primary rounded-full mr-4 flex-shrink-0">
-                                            <i class="fa-solid fa-clock"></i>
-                                        </div>
-                                        <div>
-                                            <h4 className="font-medium text-gray-900 mb-1">Hours</h4>
-                                            <p className="text-gray-600">Monday - Friday: 9AM - 6PM<br />Saturday: 10AM - 4PM<br />Sunday: Closed</p>
-                                        </div>
+                                    <div>
+                                        <h4 className="font-medium text-white mb-1">Address</h4>
+                                        <p className="text-gray-300">Spice Avenue<br />Rathnapura, OR 97205<br />Sri Lanka</p>
                                     </div>
                                 </div>
 
-                                <div className="mt-8">
-                                    <h4 className="font-medium text-gray-900 mb-3">Follow Us</h4>
-                                    <div className="flex space-x-4">
-                                        <a href="#" className="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-blue-900 hover:text-white text-gray-600 rounded-full transition-colors">
-                                            <i class="fa-brands fa-facebook"></i>
-                                        </a>
-                                        <a href="#" className="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-blue-900 hover:text-white text-gray-600 rounded-full transition-colors">
-                                            <i class="fa-brands fa-instagram"></i>
-                                        </a>
-                                        <a href="#" className="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-blue-900 hover:text-white text-gray-600 rounded-full transition-colors">
-                                            <i class="fa-brands fa-youtube"></i>
-                                        </a>
-                                        <a href="#" className="w-10 h-10 flex items-center justify-center bg-gray-100 hover:bg-blue-900 hover:text-white text-gray-600 rounded-full transition-colors">
-                                            <i class="fa-brands fa-pinterest"></i>
-                                        </a>
+                                <div className="flex items-start">
+                                    <div className="w-10 h-10 flex items-center justify-center bg-gray-700 text-white rounded-full mr-4 flex-shrink-0">
+                                        <i className="fa-solid fa-envelope"></i>
                                     </div>
+                                    <div>
+                                        <h4 className="font-medium text-white mb-1">Email</h4>
+                                        <p className="text-gray-300">Gemba@spicehaven.com<br />support@spicehaven.com</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start">
+                                    <div className="w-10 h-10 flex items-center justify-center bg-gray-700 text-white rounded-full mr-4 flex-shrink-0">
+                                        <i className="fa-solid fa-phone"></i>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-medium text-white mb-1">Phone</h4>
+                                        <p className="text-gray-300">+1 (800) 555-SPICE<br />+1 (503) 555-1234</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start">
+                                    <div className="w-10 h-10 flex items-center justify-center bg-gray-700 text-white rounded-full mr-4 flex-shrink-0">
+                                        <i className="fa-solid fa-clock"></i>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-medium text-white mb-1">Hours</h4>
+                                        <p className="text-gray-300">
+                                            Monday - Friday: 9AM - 6PM<br />
+                                            Saturday: 10AM - 4PM<br />
+                                            Sunday: Closed
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="mt-8">
+                                <h4 className="font-medium text-white mb-3">Follow Us</h4>
+                                <div className="flex space-x-4">
+                                    <a href="#" className="w-10 h-10 flex items-center justify-center bg-gray-700 hover:bg-blue-600 text-white rounded-full transition-colors">
+                                        <i className="fa-brands fa-facebook"></i>
+                                    </a>
+                                    <a href="#" className="w-10 h-10 flex items-center justify-center bg-gray-700 hover:bg-pink-500 text-white rounded-full transition-colors">
+                                        <i className="fa-brands fa-instagram"></i>
+                                    </a>
+                                    <a href="#" className="w-10 h-10 flex items-center justify-center bg-gray-700 hover:bg-red-600 text-white rounded-full transition-colors">
+                                        <i className="fa-brands fa-youtube"></i>
+                                    </a>
+                                    <a href="#" className="w-10 h-10 flex items-center justify-center bg-gray-700 hover:bg-red-400 text-white rounded-full transition-colors">
+                                        <i className="fa-brands fa-pinterest"></i>
+                                    </a>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="lg:col-span-2">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div data-aos="zoom-in" className="bg-gray-100 rounded-lg p-8 h-full">
-                                    <h3 className="text-2xl font-semibold text-gray-900 mb-6">Send Us a Message</h3>
 
-                                    <form className="space-y-4">
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                                            <input type="text" id="name" className="w-full px-4 py-2 border border-gray-300 rounded focus:border-primary" placeholder="Your name" />
-                                        </div>
+                        <div className="col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+                            <div data-aos="zoom-in" className="bg-gray-800 rounded-lg p-8 flex flex-col h-full">
+                                <h3 className="text-2xl font-semibold text-white mb-6">Send Us a Message</h3>
 
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                                            <input type="email" id="email" className="w-full px-4 py-2 border border-gray-300 rounded focus:border-primary" placeholder="Your email" />
-                                        </div>
+                                <form className="space-y-4 flex-grow">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-200 mb-1">Full Name</label>
+                                        <input
+                                            type="text"
+                                            id="name"
+                                            className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded focus:border-primary"
+                                            placeholder="Your name"
+                                        />
+                                    </div>
 
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
-                                            <input type="text" id="subject" className="w-full px-4 py-2 border border-gray-300 rounded focus:border-primary" placeholder="Subject" />
-                                        </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-200 mb-1">Email Address</label>
+                                        <input
+                                            type="email"
+                                            id="email"
+                                            className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded focus:border-primary"
+                                            placeholder="Your email"
+                                        />
+                                    </div>
 
-                                        <div>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                                            <textarea id="message" rows="5" className="w-full px-4 py-2 border border-gray-300 rounded focus:border-primary" placeholder="Your message"></textarea>
-                                        </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-200 mb-1">Subject</label>
+                                        <input
+                                            type="text"
+                                            id="subject"
+                                            className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded focus:border-primary"
+                                            placeholder="Subject"
+                                        />
+                                    </div>
 
-                                        <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
-                                            Send Message
-                                        </button>
-                                    </form>
-                                </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-200 mb-1">Message</label>
+                                        <textarea
+                                            id="message"
+                                            rows="5"
+                                            className="w-full px-4 py-2 bg-gray-800 text-white border border-gray-700 rounded focus:border-primary"
+                                            placeholder="Your message"
+                                        ></textarea>
+                                    </div>
 
-                                <div data-aos="flip-right" className="bg-white rounded-lg shadow-md overflow-hidden h-full">
-                                    <div
-                                        className="h-full w-full"
-                                        style={{
-                                            backgroundImage: "url('https://storage.vivago.ai/image/p_7d71df8c-2191-11f0-83f6-4ec527a7d236.jpg?width=512')",
-                                            backgroundPosition: "center",
-                                            backgroundSize: "cover",
-                                        }}
-                                    ></div>
+                                    <button className="bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors mt-4">
+                                        Send Message
+                                    </button>
+                                </form>
+                            </div>
 
-                                </div>
+                            <div data-aos="flip-right" className="bg-gray-800 rounded-lg shadow-md overflow-hidden h-full">
+                                <div
+                                    className="h-full w-full"
+                                    style={{
+                                        backgroundImage: "url('https://storage.vivago.ai/image/p_7d71df8c-2191-11f0-83f6-4ec527a7d236.jpg?width=512')",
+                                        backgroundPosition: "center",
+                                        backgroundSize: "cover",
+                                        backgroundRepeat: "no-repeat",
+                                    }}
+                                ></div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </section>
+
 
             <section className="py-16 bg-primary/5">
                 <div data-aos="fade-down" data-aos-duration='3000' className="container mx-auto px-4">
