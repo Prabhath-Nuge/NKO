@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function ProductCategoryComponent() {
   const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get('/product/category')
@@ -48,7 +49,7 @@ function ProductCategoryComponent() {
                   <p className="text-gray-600 mb-4">{category.description}</p>
                   <div className="items-center flex justify-between mb-4">
 
-                    <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
+                    <button onClick={() => navigate(`/products/category/${category._id}`, { state: { category } })} className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
                       Edit Category
                     </button>
                     <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
