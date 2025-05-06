@@ -9,8 +9,8 @@ function Dashboard() {
             <NavbarComponent />
 
             <div className="container mx-auto p-4 mt-[px]">
-                <div data-aos='fade-down' className="bg-gray-800 rounded-lg border-b text-white py-6 px-4 shadow-md my-4 text-center">
-                    <h2 className="text-2xl font-semibold mb-1">Welcome to Your Spice Dashboard 🌶️</h2>
+                <div data-aos='fade-down' className=" text-white py-6 px-4 my-4 text-center">
+                    <h2 className="text-2xl font-semibold mb-1">Welcome to Your Spice Dashboard <i className="fa-solid fa-pepper-hot text-red-800"></i></h2>
                     <p className="text-sm md:text-base">
                         Stay on top of your spice empire — manage products, track orders, and analyze performance all in one place.
                     </p>

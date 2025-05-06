@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import toast from 'react-hot-toast'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 function UsersRepresentativesComponent() {
-
     const [users, setUsers] = useState([]);
     const navigate = useNavigate();
 
@@ -13,7 +12,7 @@ function UsersRepresentativesComponent() {
 
         async function fetchUsers() {
             try {
-                const response = await axios.get('/getrefs', {withCredentials: true});
+                const response = await axios.get('/getrefs', { withCredentials: true });
 
                 if (response.data.error) {
                     toast.error(response.data.message);
@@ -33,40 +32,48 @@ function UsersRepresentativesComponent() {
         return () => { isMounted = false };
     }, []);
 
-  return (
-    <div className="container mx-auto p-6">
-            <div className="bg-white shadow-lg rounded-xl overflow-hidden">
-                <div className="p-4 border-b bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
+    return (
+        <div className="container mx-auto p-6">
+            <div className="bg-gray-900 shadow-lg rounded-xl overflow-hidden">
+                {/* Header */}
+                <div className="p-4 border-b border-gray-800 bg-gradient-to-r from-blue-700 to-indigo-700 text-white">
                     <h2 className="text-lg font-semibold">Representatives List</h2>
-                    <p className="text-sm opacity-80">Manage all Representatives.</p>
+                    <p className="text-sm text-gray-300">Manage all Representatives.</p>
                 </div>
 
+                {/* Table */}
                 <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-300">
-                        <thead className="bg-gray-100 text-gray-700">
+                    <table className="min-w-full divide-y divide-gray-800">
+                        <thead className="bg-gray-800 text-gray-300">
                             <tr>
                                 {["Name", "Email", "Phone"].map((header, index) => (
-                                    <th key={index} className="px-6 py-4 text-left text-sm font-semibold uppercase">
+                                    <th
+                                        key={index}
+                                        className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider"
+                                    >
                                         {header}
                                     </th>
                                 ))}
                             </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-200">
-                            {users.map((user,index)=>(
-                            <tr key={index} className="hover:bg-gray-100 hover:cursor-pointer transition" onClick={() => navigate(`/users/user/${user._id}`, { state: { user } })}>
-                                <td className="px-6 py-4 text-gray-900 font-medium">{user.name}</td>
-                                <td className="px-6 py-4 text-gray-600">{user.email}</td>
-                                <td className="px-6 py-4 text-gray-600">{user.phone}</td>
-                                
-                            </tr>
+                        <tbody className="divide-y divide-gray-700">
+                            {users.map((user, index) => (
+                                <tr
+                                    key={user._id || index}
+                                    onClick={() => navigate(`/users/user/${user._id}`, { state: { user } })}
+                                    className="hover:bg-gray-800 transition cursor-pointer"
+                                >
+                                    <td className="px-6 py-4 text-white font-medium">{user.name}</td>
+                                    <td className="px-6 py-4 text-gray-300">{user.email}</td>
+                                    <td className="px-6 py-4 text-gray-300">{user.phone}</td>
+                                </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
-  )
+    );
 }
 
-export default UsersRepresentativesComponent
+export default UsersRepresentativesComponent;

@@ -123,27 +123,35 @@ function Home() {
                     </div>
 
                     <div data-aos="fade-up" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {categories.map((category, index) => (
-                            <div key={index} className="bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform hover:drop-shadow-[0_10px_20px_rgba(26,60,150,0.2)] hover:-translate-y-2">
-                                <div className="h-64 overflow-hidden shadow-lg p-2 rounded-lg">
-                                    <img src={category.image} alt="Saffron" className="w-full h-full object-cover object-top rounded-lg" />
-                                </div>
-                                <div className="p-6">
-                                    <div className="flex justify-between items-start mb-2">
-                                        <h3 className="text-xl font-semibold text-gray-100">{category.name}</h3>
-                                    </div>
-                                    <p className="text-gray-300 mb-4">{category.description}</p>
-                                    <div className="flex items-center justify-between">
+    {categories.map((category, index) => (
+        <div
+            key={index}
+            className="bg-gray-800 rounded-xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-2 hover:drop-shadow-[0_10px_20px_rgba(26,60,150,0.2)]"
+        >
+            <div className="p-2  h-64 overflow-hidden">
+                <img
+                    src={category.image}
+                    alt={category.name}
+                    className="w-full h-full rounded-lg object-cover object-center rounded-t-xl"
+                />
+            </div>
 
-                                        <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
-                                            Product Details
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>))}
+            <div className="p-6">
+                <div className="flex justify-between items-start mb-2">
+                    <h3 className="text-xl font-semibold text-white">{category.name}</h3>
+                </div>
+                <p className="text-gray-400 mb-4 text-sm">{category.description}</p>
 
+                <div className="flex justify-end">
+                    <button className="hidden md:inline-block bg-secondary hover:bg-blue-800 text-white px-5 py-2 text-sm font-medium rounded-md transition-colors">
+                        Product Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    ))}
+</div>
 
-                    </div>
 
                     <div className="text-center mt-12">
                         <a href="#" className="inline-flex items-center text-white font-medium hover:underline">

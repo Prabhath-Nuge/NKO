@@ -1,23 +1,28 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 function DashboardBoxComponent({ title, icon, description, link }) {
     return (
-        <Link to={link} >
-            <div  className="bg-gray-200 hover:drop-shadow-[0_10px_20px_rgba(103,105,255,0.4)] rounded-lg shadow-md p-6 m-3  transition-transform transform hover:scale-105 duration-300 ease-in-out " data-aos='fade-up' data-aos-once="true">
-
-                <h3 className="text-lg font-medium text-gray-900 mb-2">{title}</h3>
-                <div className="w-16 h-16 rounded-full bg-blue-200 flex items-center justify-center">
+        <Link to={link}>
+            <div
+                className="border-2 border-gray-700 bg-gray-800 rounded-2xl shadow-md hover:shadow-2xl hover:drop-shadow-[0_10px_20px_rgba(26,60,150,0.3)] p-4 m-2 transition-transform transform hover:scale-105 duration-300 ease-in-out group"
+                data-aos="fade-up"
+                data-aos-once="true"
+            >
+                <div className="w-16 h-16 mb-4 rounded-full bg-blue-200 flex items-center justify-center shadow-inner">
                     <i className={`${icon} text-2xl text-blue-800`}></i>
                 </div>
 
+                <h3 className="text-2xl font-semibold text-white mb-2 group-hover:text-blue-300 transition-colors">{title}</h3>
 
-                <p className="mt-2 text-gray-600 text-lg">{description}</p>
-                <div
-                    className="mt-2 inline-block bg-secondary hover:!bg-blue-800 text-white font-bold py-2 px-4 rounded">Manage {title}</div>
+                <p className="text-gray-400 mb-4 text-sm leading-relaxed">{description}</p>
+
+                <div className="inline-block mt-auto bg-secondary text-white hover:bg-blue-800 font-semibold py-2 px-5 rounded-lg transition-colors">
+                    Manage {title}
+                </div>
             </div>
         </Link>
-    )
+    );
 }
 
-export default DashboardBoxComponent
+export default DashboardBoxComponent;
