@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import FooterComponent from '../components/FooterComponent'
 import { Link } from 'react-router-dom';
 import ceo from '../assets/images/ceo.jpg'

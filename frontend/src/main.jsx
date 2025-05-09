@@ -7,6 +7,7 @@ import Router from './Router.jsx'
 import axios from "axios";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { AuthProvider } from './hooks/AuthContext.jsx'
 
 axios.defaults.baseURL = "http://localhost:5000";
 axios.defaults.withCredentials = true;
@@ -15,8 +16,11 @@ AOS.init({ duration: 1000 });
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={Router} />
-    <Toaster toastOptions={{ duration: 4000 }} />
+    <AuthProvider>
+      <RouterProvider router={Router} />
+      <Toaster toastOptions={{ duration: 4000 }} />
+    </AuthProvider>
+
   </StrictMode>
 
 )

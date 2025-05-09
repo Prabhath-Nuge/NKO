@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAuth } from '../hooks/AuthContext';
 
 function Login() {
     const [logDets, setLogDets] = useState({ email: '', password: '' });
     const [toggle, setToggle] = useState(false);
+    const {setUser} = useAuth();
 
     const navigate = useNavigate();
 
@@ -35,7 +37,15 @@ function Login() {
             const res = await axios.post('/login', logDets);
             if (res.status === 200) {
                 toast.success(res.data.message);
-                navigate('/dashboard');
+                if(res.data.data.type === 'admin' || res.data.data.type === 'manager') {
+                    setUser(res.data.data);
+                    return navigate('/dashboard');
+                    
+                    
+                }
+                else{
+                    navigate('/');
+                }
             } else {
                 toast.error(res.data.message || 'Login failed');
             }

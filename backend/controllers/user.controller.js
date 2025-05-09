@@ -259,3 +259,30 @@ export const deleteUser = async (req, res) => {
         });
     }
 }
+
+export const logout = async (req, res) => {
+    const user = req.session.user;
+    console.log("hi");
+    
+
+    if (!user) {
+        return res.status(401).json({
+            error: true,
+            message: 'Unauthorized'
+        });
+    };
+
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({
+                error: true,
+                message: 'An error occurred. Please try again'
+            });
+        }
+        res.clearCookie('connect.sid');
+        res.status(200).json({
+            error: false,
+            message: 'User logged out successfully'
+        });
+    });
+}

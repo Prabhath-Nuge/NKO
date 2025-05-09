@@ -15,34 +15,60 @@ import Home from './pages/Home';
 import UserEditPage from './components/UserEditPage';
 import ProductCategoryEdit from './components/ProductCategoryEdit';
 import ProductVariant from './components/ProductVariant';
+import ProtectedRoute from './components/ProtectedRoute'; // <== ADD THIS
+import Unauthorized from './pages/Unauthorized';
+import Layout from './layouts/Layout';
 
 const Router = createBrowserRouter([
-    {path: '/', element: <Home/>},
-    {path: '/login', element: <Login/>},
-    {path: '/register', element: <Register/>},
-    {path: '/dashboard', element: <Dashboard/>},
-    {
-        path: '/users',
-        element: <Users/>,
-        children: [
-            {path: 'admins', element: <UsersAdminComponent/>},
-            {path: 'managers', element: <UsersManagerComponent/>},
-            {path: 'refs', element: <UsersRepresentativesComponent/>},
-            {path: 'newusers', element: <UsersNewUsersComponent/>},
-            { path: 'user/:id', element: <UserEditPage/> },
-        ]
-    },
-    {
-        path: '/products',
-        element: <Products/>,
-        children: [
-            {path: 'category', element: <ProductCategoryComponent/>},
-            {path: 'newcategory', element: <NewProductCategoryComponent/>},
-            {path: 'addproduct', element: <AddProductComponent/>},
-            {path: 'category/variants/:id', element: <ProductVariant/>},
-            {path: 'category/:id', element: <ProductCategoryEdit/>},
-        ]
-    }
-])
+  { path: '/unauthorized', element: <Unauthorized /> },
+  {
+    path: '/',
+    element: <Layout />, // All routes below will include SessionRedirector
+    children: [
+      { path: '', element: <Home /> },
+      { path: 'login', element: <Login /> },
+      { path: 'register', element: <Register /> },
+      
+      {
+        path: 'dashboard',
+        element: (
+          <ProtectedRoute allowedRoles={['admin', 'manager']}>
+            <Dashboard />
+          </ProtectedRoute>
+        )
+      },
+    ]
+  },
+  {
+    path: '/users',
+    element: (
+      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+        <Users />
+      </ProtectedRoute>
+    ),
+    children: [
+      { path: 'admins', element: <UsersAdminComponent /> },
+      { path: 'managers', element: <UsersManagerComponent /> },
+      { path: 'refs', element: <UsersRepresentativesComponent /> },
+      { path: 'newusers', element: <UsersNewUsersComponent /> },
+      { path: 'user/:id', element: <UserEditPage /> }
+    ]
+  },
+  {
+    path: '/products',
+    element: (
+      <ProtectedRoute allowedRoles={['admin']}>
+        <Products />
+      </ProtectedRoute>
+    ),
+    children: [
+      { path: 'category', element: <ProductCategoryComponent /> },
+      { path: 'newcategory', element: <NewProductCategoryComponent /> },
+      { path: 'addproduct', element: <AddProductComponent /> },
+      { path: 'category/variants/:id', element: <ProductVariant /> },
+      { path: 'category/:id', element: <ProductCategoryEdit /> }
+    ]
+  }
+]);
 
 export default Router;
