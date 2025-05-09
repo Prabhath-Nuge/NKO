@@ -1,13 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 const ProductVariant = () => {
   const { id } = useParams();
   const location = useLocation();
   const category = location.state?.category;
-  const navigate = useNavigate();
 
   const [CategoryVariants, setCategoryVariants] = useState([]);
 
@@ -26,25 +25,45 @@ const ProductVariant = () => {
   }, [id]);
 
   return (
-    <div className="space-y-6 px-6 py-8">
-      {/* Category Name */}
-      <h2 className="text-4xl font-bold text-white mb-4">{category?.name}</h2>
-
-      {/* Variants */}
-      {CategoryVariants.map((variant) => (
-        <div
-          key={variant._id}
-          className="bg-gray-800 rounded-xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-2 hover:drop-shadow-[0_10px_20px_rgba(26,60,150,0.2)]"
-        >
-          <div className="p-6">
-            <p className="text-white text-xl leading-relaxed font-medium">
-              <span className="font-bold">Weight:</span> {variant.weight}g &nbsp; | &nbsp;
-              <span className="font-bold">Sales Price:</span> Rs {variant.salesPrice} &nbsp; | &nbsp;
-              <span className="font-bold">Shop Price:</span> Rs {variant.shopPrice}
-            </p>
+    <div className="px-6 py-10">
+      <div className="flex flex-col lg:flex-row gap-8 items-start justify-center">
+        {/* Left: Image + Info */}
+        <div className="w-67 lg:67 space-y-4 bg-gray-800 rounded-lg p-2 text-center">
+          <div className="rounded-xl overflow-hidden shadow-md">
+            <img
+              src={category?.image}
+              alt={category?.name}
+              className="w-64 h-64 object-cover rounded-xl"
+            />
           </div>
+          <h2 className="text-4xl font-bold text-white">{category?.name}</h2>
+          <p className="text-gray-300">{category?.description}</p>
         </div>
-      ))}
+
+        {/* Right: Variants Table */}
+        <div className="w-full lg:w-1/2 space-y-4">
+          <div className="grid grid-cols-3 gap-4 p-4 bg-gray-700 text-white font-bold rounded-lg">
+            <div>Weight (g)</div>
+            <div>Sales Price</div>
+            <div>Shop Price</div>
+          </div>
+
+          {CategoryVariants.length > 0 ? (
+            CategoryVariants.map((variant) => (
+              <div
+                key={variant._id}
+                className="grid grid-cols-3 gap-4 p-4 bg-gray-800 text-white rounded-md transition hover:bg-gray-700 hover:cursor-pointer hover:-translate-y-1 hover:shadow-lg"
+              >
+                <div className="font-medium">{variant.weight}</div>
+                <div className="text-blue-300 font-semibold">Rs {variant.salesPrice}</div>
+                <div className="text-gray-300">Rs {variant.shopPrice}</div>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-400 italic mt-2">No variants found for this category.</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
