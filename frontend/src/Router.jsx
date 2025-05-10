@@ -22,6 +22,7 @@ import ProductVariantEdit from './components/ProductVariantEdit';
 import Stocks from './pages/Stocks';
 import StockAllStockComponent from './components/StockAllStockComponent';
 import StockEdit from './components/stockedit';
+import StockHistory from './components/StockHistory';
 
 const Router = createBrowserRouter([
   { path: '/unauthorized', element: <Unauthorized /> },
@@ -84,6 +85,7 @@ const Router = createBrowserRouter([
     children: [
       { path: 'allstocks', element:<StockAllStockComponent /> },
       { path: 'allstocks/:id', element:<StockEdit /> },
+      { path: 'history', element:<StockHistory /> },
     ]
   }
 ]);

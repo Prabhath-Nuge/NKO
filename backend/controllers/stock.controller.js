@@ -59,3 +59,27 @@ export const changeStock = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 }
+
+export const getStockHistory = async (req,res)=>{
+  try {
+    if(req.session.user.type !== 'admin' && req.session.user.type !== 'manager') {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+    const stockHistory = await Stock.find().limit(15).populate({
+      path: 'variantId',
+      populate: {
+        path: 'category',
+        select: 'name',
+      }
+    }).sort({ changeDate: -1 });
+    res.status(200).json({
+      error: false,
+      data: stockHistory,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: true,
+      message: 'Internal server error',
+    });
+  }
+}
