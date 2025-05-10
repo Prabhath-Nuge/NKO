@@ -8,6 +8,7 @@ import MongoStore from 'connect-mongo';
 import userRouter from './routers/user.router.js';
 import productCatRouter from './routers/product.router.js';
 import apiRouter from './routers/api.router.js';
+import stockRouter from './routers/stock.router.js'
 
 dotenv.config();
 
@@ -42,6 +43,7 @@ app.use(
 app.use('/',userRouter);
 app.use('/product', productCatRouter);
 app.use('/api', apiRouter);
+app.use('/stock', stockRouter);
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
     app.listen(port, () => {

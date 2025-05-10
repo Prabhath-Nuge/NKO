@@ -140,7 +140,6 @@ export const getProductVariants = async (req, res) => {
 export const editvariant = async (req, res) => {
     const { id } = req.params;
     const { packetsPerBundle, weight, salesPrice, shopPrice } = req.body;
-    console.log(weight, salesPrice, shopPrice, id);
 
 
     try {
@@ -177,7 +176,6 @@ export const editProductCategory = async (req, res) => {
 
     try {
         const { id, name, description, image } = req.body;
-        console.log(id, name, description, image);
         
 
         if (!name) {
@@ -220,7 +218,6 @@ export const getProductsWithStocks = async (req, res) => {
   try {
     const user = req.session.user;
 
-    // Check if user is authenticated and has the correct permissions
     if (!user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -228,43 +225,37 @@ export const getProductsWithStocks = async (req, res) => {
       return res.status(403).json({ message: "Forbidden" });
     }
 
-    // Find all products and populate the category details
     const products = await Product.find()
-      .populate('category')  // Populating all category details (category name, image, etc.)
+      .populate('category')
 
-    // Group products by category
     const groupedProducts = {};
 
     products.forEach(product => {
       const categoryName = product.category.name;
 
-      // If the category doesn't exist in the groupedProducts object, create it
       if (!groupedProducts[categoryName]) {
         groupedProducts[categoryName] = {
           categoryName: categoryName,
           categoryImage: product.category.image,
-          variants: [] // Initialize variants array
+          variants: []
         };
       }
 
-      // Add product variants (weight and stock) to the correct category
       groupedProducts[categoryName].variants.push({
+        _id: product._id,
         weight: product.weight,
         currentStock: product.currentStock,
       });
     });
 
-    // Convert the groupedProducts object into an array for response
     const result = Object.values(groupedProducts);
 
-    // Return the formatted result
     return res.status(200).json({
       error: false,
       data: result,
     });
 
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Error fetching products with stock" });
   }
 };

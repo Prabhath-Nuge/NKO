@@ -1,5 +1,5 @@
 import React, { use, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import logo from '../assets/images/2.png';
 import { useAuth } from '../hooks/AuthContext';
 import toast from 'react-hot-toast';
@@ -7,7 +7,7 @@ import axios from 'axios';
 
 function NavbarComponent() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const {user , setUser} = useAuth();
+  const { user, setUser } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -21,17 +21,14 @@ function NavbarComponent() {
           setUser(null);
           navigate('/login');
         }
-        else{
+        else {
           toast.error(isDone.data.message);
         }
-
-
-        
       } catch (error) {
-        console.error('Logout failed:', error);
+        toast.error('Logout failed:', error);
       }
     } else {
-      console.log("User cancelled the logout.");
+      toast.error("User cancelled the logout.");
     }
   }
 
@@ -42,11 +39,24 @@ function NavbarComponent() {
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-8">
-          <Link to='/' className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Home</Link>
-          <Link to="/products/category" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Products</Link>
-          <Link to="/users/newusers" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Users</Link>
-          <Link to="/dashboard" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Dashboard</Link>
-          {/* <Link to="#contact" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Contact</Link> */}
+          <NavLink to="/dashboard"
+            className={({ isActive }) =>
+              isActive
+                ? "text-blue-300 hover:scale-110 ease-in font-medium transition"
+                : "text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition"}>Dashboard</NavLink>
+          <NavLink to="/products/category" className={({ isActive }) =>
+              isActive
+                ? "text-blue-300 hover:scale-110 ease-in font-medium transition"
+                : "text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition"}>Products</NavLink>
+          <NavLink to="/users/newusers" className={({ isActive }) =>
+              isActive
+                ? "text-blue-300 hover:scale-110 ease-in font-medium transition"
+                : "text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition"}>Users</NavLink>
+          <NavLink to='/stocks/allstocks' className={({ isActive }) =>
+              isActive
+                ? "text-blue-300 hover:scale-110 ease-in font-medium transition"
+                : "text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition"}>Stocks</NavLink>
+          {/* <NavLink to="#contact" className="text-gray-100 hover:text-blue-500 hover:scale-110 ease-in font-medium transition">Contact</NavLink> */}
         </nav>
 
         <div className="flex items-center space-x-4">

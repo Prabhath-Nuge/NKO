@@ -67,9 +67,9 @@ const StockAllStockComponent = () => {
                       product.variants.map((variant,index) => (
                         <div
                           key={index}
-                          // onClick={() =>
-                          //   navigate(`/products/category/variants/edit`, { state: { variant } })
-                          // }
+                          onClick={() =>
+                            navigate(`${variant._id}`, { state: { variant } })
+                          }
                           className="grid grid-cols-2 gap-4 p-4 mb-2 bg-gray-800 text-white rounded-md transition hover:bg-blue-900 hover:cursor-pointer hover:-translate-y-1 hover:shadow-lg"
                         >
                           <div className="font-medium text-center">{variant.weight}</div>
