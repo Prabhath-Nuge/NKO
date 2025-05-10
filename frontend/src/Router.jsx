@@ -18,6 +18,7 @@ import ProductVariant from './components/ProductVariant';
 import ProtectedRoute from './components/ProtectedRoute'; // <== ADD THIS
 import Unauthorized from './pages/Unauthorized';
 import Layout from './layouts/Layout';
+import ProductVariantEdit from './components/ProductVariantEdit';
 
 const Router = createBrowserRouter([
   { path: '/unauthorized', element: <Unauthorized /> },
@@ -65,6 +66,7 @@ const Router = createBrowserRouter([
       { path: 'category', element: <ProductCategoryComponent /> },
       { path: 'newcategory', element: <NewProductCategoryComponent /> },
       { path: 'addproduct', element: <AddProductComponent /> },
+      { path: 'category/variants/edit', element: <ProductVariantEdit /> },
       { path: 'category/variants/:id', element: <ProductVariant /> },
       { path: 'category/:id', element: <ProductCategoryEdit /> }
     ]

@@ -43,14 +43,14 @@ export const addProductCategory = async (req, res) => {
 }
 
 export const getProductCategories = async (req, res) => {
-    try {        
-            const categories = await ProductCat.find({});
+    try {
+        const categories = await ProductCat.find({});
 
-            return res.status(200).json({
-                error: false,
-                data: categories
-            });
-        
+        return res.status(200).json({
+            error: false,
+            data: categories
+        });
+
     } catch (error) {
         return res.status(500).json({
             error: true,
@@ -61,14 +61,14 @@ export const getProductCategories = async (req, res) => {
 }
 
 export const getHomeProductCategories = async (req, res) => {
-    try {        
-            const categories = await ProductCat.find().limit(9);
+    try {
+        const categories = await ProductCat.find().limit(9);
 
-            return res.status(200).json({
-                error: false,
-                data: categories
-            });
-        
+        return res.status(200).json({
+            error: false,
+            data: categories
+        });
+
     } catch (error) {
         return res.status(500).json({
             error: true,
@@ -90,7 +90,7 @@ export const addNewProduct = async (req, res) => {
         });
     }
 
-    if (user.type == 'admin'){
+    if (user.type == 'admin') {
         const existCategory = await ProductCat.findById(category);
 
         if (!existCategory) {
@@ -129,6 +129,41 @@ export const getProductVariants = async (req, res) => {
             error: false,
             data: variants
         });
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            message: "Internal server error"
+        });
+    }
+}
+
+export const editvariant = async (req, res) => {
+    const { id } = req.params;
+    const { weight, salesPrice, shopPrice } = req.body;
+    console.log(weight, salesPrice, shopPrice, id);
+    
+
+    try {
+        const variant = await Product.findById(id);
+        if (!variant) {
+            return res.status(404).json({
+                error: true,
+                message: "Variant not found"
+            });
+        }
+
+        variant.weight = weight;
+        variant.salesPrice = salesPrice;
+        variant.shopPrice = shopPrice;
+
+        if (req.session.user.type == 'admin') {
+            await variant.save();
+
+            return res.status(200).json({
+                error: false,
+                message: "Variant updated successfully"
+            });
+        }
     } catch (error) {
         return res.status(500).json({
             error: true,

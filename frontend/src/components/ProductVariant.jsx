@@ -1,12 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 const ProductVariant = () => {
   const { id } = useParams();
   const location = useLocation();
   const category = location.state?.category;
+  const navigate = useNavigate();
 
   const [CategoryVariants, setCategoryVariants] = useState([]);
 
@@ -27,7 +28,6 @@ const ProductVariant = () => {
   return (
     <div className="px-6 py-10">
       <div className="flex flex-col lg:flex-row gap-8 items-start justify-center">
-        {/* Left: Image + Info */}
         <div className="w-67 lg:67 space-y-4 bg-gray-800 rounded-lg p-2 text-center">
           <div className="rounded-xl overflow-hidden shadow-md">
             <img
@@ -40,7 +40,6 @@ const ProductVariant = () => {
           <p className="text-gray-300">{category?.description}</p>
         </div>
 
-        {/* Right: Variants Table */}
         <div className="w-full lg:w-1/2 space-y-4">
           <div className="grid grid-cols-3 gap-4 p-4 bg-gray-700 text-white font-bold rounded-lg">
             <div>Weight (g)</div>
@@ -51,8 +50,9 @@ const ProductVariant = () => {
           {CategoryVariants.length > 0 ? (
             CategoryVariants.map((variant) => (
               <div
+                onClick={() => navigate(`/products/category/variants/edit`, { state: { variant } })}
                 key={variant._id}
-                className="grid grid-cols-3 gap-4 p-4 bg-gray-800 text-white rounded-md transition hover:bg-gray-700 hover:cursor-pointer hover:-translate-y-1 hover:shadow-lg"
+                className="grid grid-cols-3 gap-4 p-4 bg-gray-800 text-white rounded-md transition hover:bg-blue-900 hover:cursor-pointer hover:-translate-y-1 hover:shadow-lg"
               >
                 <div className="font-medium">{variant.weight}</div>
                 <div className="text-blue-300 font-semibold">Rs {variant.salesPrice}</div>

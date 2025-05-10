@@ -261,9 +261,7 @@ export const deleteUser = async (req, res) => {
 }
 
 export const logout = async (req, res) => {
-    const user = req.session.user;
-    console.log("hi");
-    
+    const user = req.session.user;    
 
     if (!user) {
         return res.status(401).json({
