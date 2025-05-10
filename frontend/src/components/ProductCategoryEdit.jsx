@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const ProductCategoryEdit = () => {
-    const { id } = useParams();
     const location = useLocation();
     const category = location.state?.category;
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ const ProductCategoryEdit = () => {
         id: category._id,
         name: category.name,
         description: category.description,
-        imageUrl: category.image,
+        image: category.image,
     });
 
     const handleChange = (e) => {
@@ -24,6 +25,19 @@ const ProductCategoryEdit = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        axios.post('/product/categoryedit', formData)
+        .then((response) => {
+            if (response.data.error) {
+                toast.error(response.data.message);
+            } else {
+                toast.success(response.data.message);
+                navigate(-1, { replace: true });
+            }
+        }
+        ).catch((error) => {
+            toast.error('Error updating category:', error);
+        });
+
     };
 
     const handleDelete = () => {
@@ -37,19 +51,13 @@ const ProductCategoryEdit = () => {
             >
                 <h1 className="text-3xl font-bold">Edit Product Category</h1>
 
-                <input
-                    type="text"
-                    name="id"
-                    value={formData.id}
-                    onChange={handleChange}
-                    hidden
-                />
+                
 
                 <div className="space-y-4">
                     <div>
                         <label className="block text-sm text-gray-300 mb-1">Current Image</label>
                         <img
-                            src={formData.imageUrl}
+                            src={formData.image}
                             alt="Product"
                             className="w-64 h-64 object-cover border border-gray-700 rounded-md"
                         />
@@ -60,7 +68,7 @@ const ProductCategoryEdit = () => {
                         <input
                             type="text"
                             name="imageUrl"
-                            value={formData.imageUrl}
+                            value={formData.image}
                             onChange={handleChange}
                             className="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                             placeholder="Enter image URL"

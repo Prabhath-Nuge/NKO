@@ -18,7 +18,7 @@ function Dashboard() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <DashboardBoxComponent title="Users" icon="fa-solid fa-users" description={"Details of representatives and managers"} link="/users/newusers" />
                     <DashboardBoxComponent title="Products" icon="fa-solid fa-box-open" description={"Detailed information about available products."} link="/products/category" />
-                    <DashboardBoxComponent title="Stocks" icon="fa-solid fa-scroll" description={"Monitor stock availability"} />
+                    <DashboardBoxComponent title="Stocks" icon="fa-solid fa-scroll" description={"Monitor stock availability"} link='/stocks/allstocks'/>
                     <DashboardBoxComponent title="Salary" icon="fa-solid fa-money-bill-1-wave" description={"Manage employee salaries"} />
                     <DashboardBoxComponent title="Orders" icon="fa-solid fa-clipboard-list" description={"Track all order details"} />
                     <DashboardBoxComponent title="Shops" icon="fa-solid fa-store" description={"Shop Details and Due amounts"} />

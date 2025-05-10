@@ -19,6 +19,8 @@ import ProtectedRoute from './components/ProtectedRoute'; // <== ADD THIS
 import Unauthorized from './pages/Unauthorized';
 import Layout from './layouts/Layout';
 import ProductVariantEdit from './components/ProductVariantEdit';
+import Stocks from './pages/Stocks';
+import StockAllStockComponent from './components/StockAllStockComponent';
 
 const Router = createBrowserRouter([
   { path: '/unauthorized', element: <Unauthorized /> },
@@ -69,6 +71,17 @@ const Router = createBrowserRouter([
       { path: 'category/variants/edit', element: <ProductVariantEdit /> },
       { path: 'category/variants/:id', element: <ProductVariant /> },
       { path: 'category/:id', element: <ProductCategoryEdit /> }
+    ]
+  },
+  {
+    path: '/stocks',
+    element: (
+      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+        <Stocks />
+      </ProtectedRoute>
+    ),
+    children: [
+      { path: 'allstocks', element:<StockAllStockComponent /> },
     ]
   }
 ]);

@@ -5,6 +5,8 @@ const ProductSchema = mongoose.Schema({
     salesPrice:{type: Number},
     shopPrice:{type: Number},
     weight:{type: Number},
+    currentStock:{type: Number, default: 0},
+    packetsPerBundle:{type: Number, default: 0},
 },{
     timestamps:true
 });

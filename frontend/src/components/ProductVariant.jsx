@@ -41,10 +41,12 @@ const ProductVariant = () => {
         </div>
 
         <div className="w-full lg:w-1/2 space-y-4">
-          <div className="grid grid-cols-3 gap-4 p-4 bg-gray-700 text-white font-bold rounded-lg">
+          <div className="grid grid-cols-5 gap-4 p-4 bg-gray-700 text-white font-bold rounded-lg">
             <div>Weight (g)</div>
             <div>Sales Price</div>
             <div>Shop Price</div>
+            <div>Packets Per Bundle</div>
+            <div>Current inStock</div>
           </div>
 
           {CategoryVariants.length > 0 ? (
@@ -52,11 +54,13 @@ const ProductVariant = () => {
               <div
                 onClick={() => navigate(`/products/category/variants/edit`, { state: { variant } })}
                 key={variant._id}
-                className="grid grid-cols-3 gap-4 p-4 bg-gray-800 text-white rounded-md transition hover:bg-blue-900 hover:cursor-pointer hover:-translate-y-1 hover:shadow-lg"
+                className="grid grid-cols-5 gap-4 p-4 bg-gray-800 text-white rounded-md transition hover:bg-blue-900 hover:cursor-pointer hover:-translate-y-1 hover:shadow-lg"
               >
                 <div className="font-medium">{variant.weight}</div>
-                <div className="text-blue-300 font-semibold">Rs {variant.salesPrice}</div>
-                <div className="text-gray-300">Rs {variant.shopPrice}</div>
+                <div className="text-blue-300 font-semibold">Rs {variant.salesPrice} /=</div>
+                <div className="text-gray-300">{variant.shopPrice} /=</div>
+                <div className="text-gray-300">{variant.packetsPerBundle}</div>
+                <div className="text-gray-300">{variant.currentStock}</div>
               </div>
             ))
           ) : (

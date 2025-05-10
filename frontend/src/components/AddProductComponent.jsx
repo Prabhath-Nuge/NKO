@@ -9,6 +9,7 @@ function AddProductComponent() {
   const [salesPrice, setSalesPrice] = useState('');
   const [shopPrice, setShopPrice] = useState('');
   const [weight, setWeight] = useState('');
+  const [packetsPerBundle, setPacketsPerBundle] = useState('');
 
   useEffect(() => {
     axios.get('/product/category')
@@ -31,6 +32,7 @@ function AddProductComponent() {
       salesPrice,
       shopPrice,
       weight,
+      packetsPerBundle
     };
     axios.post('/product/addnewproduct', formData)
       .then((response) => {
@@ -114,6 +116,19 @@ function AddProductComponent() {
                 placeholder="Enter shop price"
                 value={shopPrice}
                 onChange={(e) => setShopPrice(e.target.value)}
+              />
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-300 mb-2">Packets Per Bundle</label>
+              <input
+                type="text"
+                name="packetsPerBundle"
+                required
+                className="w-full px-4 py-3 bg-gray-800 text-white border border-gray-700 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-colors"
+                placeholder="Enter shop price"
+                value={shopPrice}
+                onChange={(e) => setPacketsPerBundle(e.target.value)}
               />
             </div>
 

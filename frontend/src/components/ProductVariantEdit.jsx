@@ -13,6 +13,7 @@ const ProductVariantEdit = () => {
     weight: variant.weight,
     salesPrice: variant.salesPrice,
     shopPrice: variant.shopPrice,
+    packetsPerBundle: variant.packetsPerBundle,
   });
 
   const handleChange = (e) => {
@@ -27,26 +28,32 @@ const ProductVariantEdit = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`/product/editvariant/${variant._id}`, formData);      
+      const response = await axios.post(`/product/editvariant/${variant._id}`, formData);
       if (response.data.error) {
         toast.error(response.data.message);
-      }else{
+        console.log(response);
+        
+      }
+      else if (response.error) {
+        toast.error("Error updating variant:", response.error);
+      }
+      else {
         toast.success("Variant updated successfully");
         navigate(-1, { replace: true });
       }
     } catch (error) {
-      console.error("Error updating variant:", error);
+      toast.error("Error updating variant:", error);
     }
   };
 
   const handleDelete = async () => {
     const confirmDelete = window.confirm("Are you sure you want to delete this variant?");
-    
+
     if (confirmDelete) {
       try {
-        
+
       } catch (error) {
-        
+
       }
     } else {
       console.log("Variant deletion cancelled.");
@@ -83,7 +90,7 @@ const ProductVariantEdit = () => {
               value={formData.salesPrice}
               onChange={handleChange}
               className="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter sales price"
+              placeholder="Sales price"
             />
           </div>
 
@@ -95,7 +102,19 @@ const ProductVariantEdit = () => {
               value={formData.shopPrice}
               onChange={handleChange}
               className="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter image URL"
+              placeholder="Shop price"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm text-gray-300 mb-1">Packets Per Bundle:</label>
+            <input
+              type="text"
+              name="packetsPerBundle"
+              value={formData.packetsPerBundle}
+              onChange={handleChange}
+              className="w-full p-2 bg-gray-800 text-white border border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Packets Per Bundle"
             />
           </div>
         </div>

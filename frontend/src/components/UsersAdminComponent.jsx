@@ -59,7 +59,7 @@ function UsersAdminComponent() {
                                 <tr
                                     key={user._id || index}
                                     onClick={() => navigate(`/users/user/${user._id}`, { state: { user } })}
-                                    className="hover:bg-gray-800 transition cursor-pointer"
+                                    className="hover:bg-blue-900 transition cursor-pointer"
                                 >
                                     <td className="px-6 py-4 text-white font-medium">{user.name}</td>
                                     <td className="px-6 py-4 text-gray-300">{user.email}</td>
