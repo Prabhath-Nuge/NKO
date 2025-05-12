@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:nko/pages/my_login_page.dart';
+import 'package:nko/services/api_client.dart';
 
 void main() {
+  ApiClient.init();
   runApp(const MyApp());
 }
 

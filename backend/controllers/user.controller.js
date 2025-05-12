@@ -52,6 +52,8 @@ export const userLogin = async (req, res) => {
                 message: 'User not found'
             });
         }
+        console.log(user);
+        
 
         const isMatch = await bcrypt.compare(password, user.password);
 
@@ -63,6 +65,7 @@ export const userLogin = async (req, res) => {
         }
 
         req.session.user = user;
+        
 
         return res.status(200).json({
             error: false,
@@ -213,7 +216,6 @@ export const updateUser = async (req, res) => {
             });
         };
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             error: true,
             message: 'An error occurred. Please try again'
@@ -253,7 +255,6 @@ export const deleteUser = async (req, res) => {
             message: 'Unauthorized'
         });
     } catch (error) {
-        console.error(error);
         return res.status(500).json({
             error: true,
             message: 'An error occurred. Please try again'

@@ -9,6 +9,7 @@ import userRouter from './routers/user.router.js';
 import productCatRouter from './routers/product.router.js';
 import apiRouter from './routers/api.router.js';
 import stockRouter from './routers/stock.router.js'
+import shopRouter from './routers/shop.router.js';
 
 dotenv.config();
 
@@ -17,8 +18,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-    origin: "http://localhost:5173", // frontend URL
-    credentials: true, // Allow cookies to be sent
+    origin: "http://localhost:5173",
+    credentials: true,
 }));
 
 app.use(
@@ -29,7 +30,7 @@ app.use(
         store: MongoStore.create({
             mongoUrl: process.env.MONGO_URI,
             ttl: 14 * 24 * 60 * 60,  // Session expires in 14 days
-            autoRemove: 'native',
+            autoRemove: 'native', 
         }),
         cookie: {
             secure: false,  // Must be `false` for local testing (HTTPS required for `true`)
@@ -44,6 +45,7 @@ app.use('/',userRouter);
 app.use('/product', productCatRouter);
 app.use('/api', apiRouter);
 app.use('/stock', stockRouter);
+app.use('/shop', shopRouter);
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
     app.listen(port, () => {
