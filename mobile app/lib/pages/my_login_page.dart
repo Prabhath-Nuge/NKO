@@ -45,13 +45,13 @@ class _MyLoginPageState extends State<MyLoginPage> {
       final data = response.data;
       final userType = data['data']['type'];
 
-      if (userType == 'manager') {
+      if (userType == 'ref') {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const Dashboard()),
         );
       } else {
-        _showSnackbar('You are not a manager', isError: true);
+        _showSnackbar('You are not a Representative', isError: true);
       }
     } on DioException catch (e) {
       final code = e.response?.statusCode;

@@ -12,7 +12,7 @@ export const addShop = async (req, res) => {
     if (!user) {
       return res.status(401).json({ error: true , message: "Unauthorized" });
     }
-    if(user.type !== "manager"){
+    if(user.type !== "ref"){
       return res.status(403).json({ error: true , message: "Forbidden" });
     }
 
@@ -40,7 +40,7 @@ export const getShops = async (req, res) => {
     if (!user) {
       return res.status(401).json({ error: true , message: "Unauthorized" });
     }
-    if(user.type !== "manager"){
+    if(user.type !== "ref" && user.type !== "manager" && user.type !== "admin"){ 
       return res.status(403).json({ error: true , message: "Forbidden" });
     }
 
@@ -69,7 +69,7 @@ export const getShop = async (req, res) => {
     if (!user) {
       return res.status(401).json({ error: true , message: "Unauthorized" });
     }
-    if(user.type !== "manager"){
+    if(user.type !== "manager" && user.type !== "admin" && user.type !== "ref"){
       return res.status(403).json({ error: true , message: "Forbidden" });
     }
 
@@ -105,7 +105,7 @@ export const updateShop = async (req, res) => {
     if (!user) {
       return res.status(401).json({ error: true , message: "Unauthorized" });
     }
-    if(user.type !== "manager"){
+    if(user.type !== "manager" && user.type !== "admin" && user.type !== "ref"){
       return res.status(403).json({ error: true , message: "Forbidden" });
     }
 
@@ -126,4 +126,8 @@ export const updateShop = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: true , message: error.message });
   }
+}
+
+export const getSHopsByRef = async (req, res) => {
+  
 }

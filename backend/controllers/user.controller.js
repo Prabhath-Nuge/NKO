@@ -52,7 +52,6 @@ export const userLogin = async (req, res) => {
                 message: 'User not found'
             });
         }
-        console.log(user);
         
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -166,7 +165,7 @@ export const getRefs = async (req, res) => {
         });
     };
 
-    if (user.type == 'admin') {
+    if (user.type == 'admin' || user.type == 'manager') {
         const users = await User.find({ type: "ref" }).sort({ createdAt: -1 });
         return res.status(200).json({
             error: false,
