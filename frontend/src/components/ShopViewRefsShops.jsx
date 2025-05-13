@@ -5,13 +5,14 @@ import { useLocation } from 'react-router-dom';
 
 const ShopViewRefsShops = () => {
   const location = useLocation();
-  const manager = location.state?.manager;
+  const ref = location.state?.ref;
+  
 
   const [shops, setShops] = useState([]);
 
   useEffect(() => {
-    if (!manager?._id) return;
-    axios.get(`/manager/${manager._id}/shops`)
+    if (!ref?._id) return;
+    axios.get(`/shop/viewrefsshops/${ref._id}`)
       .then((response) => {
         if (response.data.error) {
           toast.error(response.data.message);
@@ -23,15 +24,15 @@ const ShopViewRefsShops = () => {
         toast.error('Failed to load shops.');
         console.error(error.message);
       });
-  }, [manager]);
+  }, [ref]);
 
   return (
     <div className="px-6 py-10">
       <div className="flex flex-col lg:flex-row gap-8 items-start justify-center">
         <div className="w-67 lg:67 space-y-4 bg-gray-800 rounded-lg p-4 text-center">
-          <h2 className="text-3xl font-bold text-white">Manager Details</h2>
-          <p className="text-xl text-blue-300">{manager?.name}</p>
-          <p className="text-gray-300">{manager?.email}</p>
+          <h2 className="text-3xl font-bold text-white">Representative</h2>
+          <p className="text-xl text-blue-300">{ref?.name}</p>
+          <p className="text-gray-300">{ref?.email}</p>
         </div>
 
         <div className="w-full lg:w-2/3 space-y-4">
@@ -53,11 +54,11 @@ const ShopViewRefsShops = () => {
                 <div className="text-gray-300">{shop.owner}</div>
                 <div className="text-gray-300">{shop.contact}</div>
                 <div className="text-gray-300">{shop.address}</div>
-                <div className="text-red-400 font-semibold">Rs {shop.totalDebt}</div>
+                <div className={`${shop.totalDebt === 0 ? "text-green-400" : "text-red-400"} font-semibold`}>Rs {shop.totalDebt}</div>
               </div>
             ))
           ) : (
-            <p className="text-gray-400 italic mt-2">No shops found for this manager.</p>
+            <p className="text-gray-400 italic mt-2">No shops found for this Representative.</p>
           )}
         </div>
       </div>

@@ -28,7 +28,7 @@ const Shop = () => {
                     </NavLink>
 
                     <NavLink
-                        to="/"
+                        to="allshops"
                         className={({ isActive }) =>
                             isActive
                                 ? "bg-blue-500 text-white px-6 py-3 rounded whitespace-nowrap hover:bg-blue-500 transition-all font-medium cursor-pointer"

@@ -22,8 +22,8 @@ const ShopViewRefs = () => {
       });
   }, []);
 
-  const handleRowClick = (manager) => {
-    navigate(`viewrefsshops`, { state: { manager } });
+  const handleRowClick = (ref) => {
+    navigate(`viewrefsshops`, { state: { ref } });
   };
 
   return (

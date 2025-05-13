@@ -26,6 +26,7 @@ import StockHistory from './components/StockHistory';
 import Shop from './pages/Shop';
 import ShopViewRefs from './components/ShopViewRefs';
 import ShopViewRefsShops from './components/ShopViewRefsShops';
+import ShopViewAllShops from './components/ShopViewAllShops';
 
 const Router = createBrowserRouter([
   { path: '/unauthorized', element: <Unauthorized /> },
@@ -100,7 +101,8 @@ const Router = createBrowserRouter([
     ),
     children: [
       { path: 'viewrefs', element:<ShopViewRefs/> },
-      { path: 'viewrefsshops', element:<ShopViewRefsShops/> },
+      { path: 'viewrefs/viewrefsshops', element:<ShopViewRefsShops/> },
+      { path: 'allshops', element:<ShopViewAllShops/> },
     ]
   }
 ]);

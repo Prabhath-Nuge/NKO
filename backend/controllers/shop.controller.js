@@ -128,6 +128,55 @@ export const updateShop = async (req, res) => {
   }
 }
 
-export const getSHopsByRef = async (req, res) => {
-  
+export const getShopsByRef = async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+
+    if (!id) {
+      return res.status(400).json({ error: true , message: "ID required" });
+    }
+
+    const user = req.session.user;
+
+    if (!user) {
+      return res.status(401).json({ error: true , message: "Unauthorized" });
+    }
+    if(user.type !== "admin" && user.type !== "manager"){
+      return res.status(403).json({ error: true , message: "Forbidden" });
+    }
+
+    const shops = await Shop.find({ managerId: id });
+
+    if (!shops) {
+      return res.status(404).json({ error: true , message: "Shops not found" });
+    }
+
+    return res.status(200).json({ error: false , data: shops });
+  } catch (error) {
+    res.status(500).json({ error: true , message: error.message });
+  }
+}
+
+export const getAllShops = async (req, res) => {
+  try {
+    const user = req.session.user;
+
+    if (!user) {
+      return res.status(401).json({ error: true , message: "Unauthorized" });
+    }
+    if(user.type !== "admin" && user.type !== "manager"){
+      return res.status(403).json({ error: true , message: "Forbidden" });
+    }
+
+    const shops = await Shop.find();
+
+    if (!shops) {
+      return res.status(404).json({ error: true , message: "Shops not found" });
+    }
+
+    return res.status(200).json({ error: false , data: shops });
+  } catch (error) {
+    res.status(500).json({ error: true , message: error.message });
+  }
 }
