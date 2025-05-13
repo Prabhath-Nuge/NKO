@@ -23,6 +23,9 @@ import Stocks from './pages/Stocks';
 import StockAllStockComponent from './components/StockAllStockComponent';
 import StockEdit from './components/stockedit';
 import StockHistory from './components/StockHistory';
+import Shop from './pages/Shop';
+import ShopViewRefs from './components/ShopViewRefs';
+import ShopViewRefsShops from './components/ShopViewRefsShops';
 
 const Router = createBrowserRouter([
   { path: '/unauthorized', element: <Unauthorized /> },
@@ -86,6 +89,18 @@ const Router = createBrowserRouter([
       { path: 'allstocks', element:<StockAllStockComponent /> },
       { path: 'allstocks/:id', element:<StockEdit /> },
       { path: 'history', element:<StockHistory /> },
+    ]
+  },
+  {
+    path: '/shops',
+    element: (
+      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+        <Shop />
+      </ProtectedRoute>
+    ),
+    children: [
+      { path: 'viewrefs', element:<ShopViewRefs/> },
+      { path: 'viewrefsshops', element:<ShopViewRefsShops/> },
     ]
   }
 ]);

@@ -21,7 +21,7 @@ function Dashboard() {
                     <DashboardBoxComponent title="Stocks" icon="fa-solid fa-scroll" description={"Monitor stock availability"} link='/stocks/allstocks'/>
                     <DashboardBoxComponent title="Salary" icon="fa-solid fa-money-bill-1-wave" description={"Manage employee salaries"} />
                     <DashboardBoxComponent title="Orders" icon="fa-solid fa-clipboard-list" description={"Track all order details"} />
-                    <DashboardBoxComponent title="Shops" icon="fa-solid fa-store" description={"Shop Details and Due amounts"} />
+                    <DashboardBoxComponent title="Shops" icon="fa-solid fa-store" description={"Shop Details and Due amounts"} link='/shops/viewrefs'/>
                     <DashboardBoxComponent title="Analysis" icon="fa-solid fa-chart-line" description={"Analyze company revenue, expenses, and overall financial health."} />
                 </div>
             </div>
