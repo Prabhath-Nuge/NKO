@@ -17,7 +17,7 @@ export const addShop = async (req, res) => {
     }
 
     const newShop = {
-      managerId: req.session.user._id,
+      refId: req.session.user._id,
       name,
       owner,
       contact,
@@ -44,7 +44,7 @@ export const getShops = async (req, res) => {
       return res.status(403).json({ error: true , message: "Forbidden" });
     }
 
-    const shops = await Shop.find({ managerId: user._id });
+    const shops = await Shop.find({ refId: user._id });
 
     if (!shops) {
       return res.status(404).json({ error: true , message: "Shops not found" });
@@ -146,7 +146,7 @@ export const getShopsByRef = async (req, res) => {
       return res.status(403).json({ error: true , message: "Forbidden" });
     }
 
-    const shops = await Shop.find({ managerId: id });
+    const shops = await Shop.find({ refId: id });
 
     if (!shops) {
       return res.status(404).json({ error: true , message: "Shops not found" });
@@ -169,7 +169,7 @@ export const getAllShops = async (req, res) => {
       return res.status(403).json({ error: true , message: "Forbidden" });
     }
 
-    const shops = await Shop.find();
+    const shops = await Shop.find().populate("refId");
 
     if (!shops) {
       return res.status(404).json({ error: true , message: "Shops not found" });

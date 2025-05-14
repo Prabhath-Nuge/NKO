@@ -245,6 +245,7 @@ export const getProductsWithStocks = async (req, res) => {
         _id: product._id,
         weight: product.weight,
         currentStock: product.currentStock,
+        packetsPerBundle: product.packetsPerBundle,
       });
     });
 

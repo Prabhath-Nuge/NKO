@@ -25,11 +25,12 @@ const ShopViewAllShops = () => {
       <h2 className="text-3xl font-bold text-white text-center mb-6">All Shops</h2>
 
       <div className="w-full max-w-7xl mx-auto space-y-4">
-        <div className="grid grid-cols-5 gap-4 p-4 bg-gray-700 text-white font-bold rounded-lg text-center">
+        <div className="grid grid-cols-6 gap-4 p-4 bg-gray-700 text-white font-bold rounded-lg text-center">
           <div>Shop Name</div>
           <div>Owner</div>
           <div>Contact</div>
           <div>Address</div>
+          <div>Representative</div>
           <div>Total Debt</div>
         </div>
 
@@ -37,12 +38,13 @@ const ShopViewAllShops = () => {
           shops.map((shop) => (
             <div
               key={shop._id}
-              className="grid grid-cols-5 gap-4 p-4 bg-gray-800 text-white rounded-md text-center transition hover:bg-blue-900 hover:cursor-pointer hover:-translate-y-1 hover:shadow-lg"
+              className="grid grid-cols-6 gap-4 p-4 bg-gray-800 text-white rounded-md text-center transition hover:bg-blue-900 hover:cursor-pointer hover:-translate-y-1 hover:shadow-lg"
             >
               <div className="font-medium">{shop.name}</div>
               <div className="text-gray-300">{shop.owner}</div>
               <div className="text-gray-300">{shop.contact}</div>
               <div className="text-gray-300">{shop.address}</div>
+              <div className="text-gray-300">{shop.refId.name}</div>
               <div className={`${shop.totalDebt === 0 ? 'text-green-400' : 'text-red-400'} font-semibold`}>
                 Rs {shop.totalDebt}
               </div>

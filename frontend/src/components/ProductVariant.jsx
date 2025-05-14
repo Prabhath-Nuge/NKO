@@ -40,13 +40,13 @@ const ProductVariant = () => {
           <p className="text-gray-300">{category?.description}</p>
         </div>
 
-        <div className="w-full lg:w-1/2 space-y-4">
+        <div className="w-full lg:w space-y-4">
           <div className="grid grid-cols-5 gap-4 p-4 bg-gray-700 text-white font-bold rounded-lg">
             <div>Weight (g)</div>
             <div>Sales Price</div>
             <div>Shop Price</div>
             <div>Packets Per Bundle</div>
-            <div>Current inStock</div>
+            <div>Current inStock <span className='text-sm'>(Bundle=B, Packets=P)</span></div>
           </div>
 
           {CategoryVariants.length > 0 ? (
@@ -60,7 +60,22 @@ const ProductVariant = () => {
                 <div className="text-blue-300 font-semibold">Rs {variant.salesPrice} /=</div>
                 <div className="text-gray-300">{variant.shopPrice} /=</div>
                 <div className="text-gray-300">{variant.packetsPerBundle}</div>
-                <div className="text-gray-300">{variant.currentStock}</div>
+                <div className="text-gray-300 text-center">
+                            <span className="text-xl font-bold">
+                              {Math.floor(variant.currentStock / Number(variant.packetsPerBundle))}
+                            </span>
+                            <span className="text-sm ml-1 mr-2">B</span>
+
+                            {Number(variant.currentStock % Number(variant.packetsPerBundle)) !== 0 && (
+                              <>
+                                <span className="text-xl font-bold">
+                                  {variant.currentStock % Number(variant.packetsPerBundle)}
+                                </span>
+                                <span className="text-sm ml-1">P</span>
+                              </>
+                            )}
+                          </div>
+
               </div>
             ))
           ) : (

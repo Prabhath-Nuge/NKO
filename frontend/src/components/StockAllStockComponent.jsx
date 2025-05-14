@@ -59,12 +59,12 @@ const StockAllStockComponent = () => {
                     {/* Variants Header */}
                     <div className="grid grid-cols-2 gap-4 p-4 bg-gray-700 text-white font-bold rounded-lg">
                       <div className="col-span-1 text-center">Weight (g)</div>
-                      <div className="col-span-1 text-center">Current inStock</div>
+                      <div>Current inStock <span className='text-sm'>(Bundle=B, Packets=P)</span></div>
                     </div>
 
                     {/* Display Variants */}
                     {product.variants.length > 0 ? (
-                      product.variants.map((variant,index) => (
+                      product.variants.map((variant, index) => (
                         <div
                           key={index}
                           onClick={() =>
@@ -73,7 +73,22 @@ const StockAllStockComponent = () => {
                           className="grid grid-cols-2 gap-4 p-4 mb-2 bg-gray-800 text-white rounded-md transition hover:bg-blue-900 hover:cursor-pointer hover:-translate-y-1 hover:shadow-lg"
                         >
                           <div className="font-medium text-center">{variant.weight}</div>
-                          <div className="text-gray-300 text-center">{variant.currentStock}</div>
+                          <div className="text-gray-300 text-center">
+                            <span className="text-xl font-bold">
+                              {Math.floor(variant.currentStock / Number(variant.packetsPerBundle))}
+                            </span>
+                            <span className="text-sm ml-1 mr-2">B</span>
+
+                            {Number(variant.currentStock % Number(variant.packetsPerBundle)) !== 0 && (
+                              <>
+                                <span className="text-xl font-bold">
+                                  {variant.currentStock % Number(variant.packetsPerBundle)}
+                                </span>
+                                <span className="text-sm ml-1">P</span>
+                              </>
+                            )}
+                          </div>
+
                         </div>
                       ))
                     ) : (

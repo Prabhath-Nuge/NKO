@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const ShopSchema = mongoose.Schema({
-    managerId:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    refId:{type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     name:{type: String,required: true, unique: true},
     owner:{type: String},
     contact:{type: Number},

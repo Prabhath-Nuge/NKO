@@ -52,7 +52,7 @@ const StockHistory = () => {
                 className="grid grid-cols-6 gap-4 bg-gray-800 p-4 rounded-md text-white text-sm hover:bg-gray-700 transition"
               >
                 <div>{entry.variantId?.category?.name || 'N/A'}</div>
-                <div>{entry.variantId?.weight || 'N/A'}</div>
+                <div>{entry.variantId?.weight || 'N/A'} g</div>
                 <div>{entry.changedBy}</div>
                 <div>{entry.changeAmount > 0 ? `+${entry.changeAmount}` : entry.changeAmount}</div>
                 <div>{entry.changeReason}</div>
