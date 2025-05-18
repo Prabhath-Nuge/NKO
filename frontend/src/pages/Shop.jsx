@@ -23,7 +23,7 @@ const Shop = () => {
                         }
                     >
                         <button id="newUsersFilter " className='hover:cursor-pointer'>
-                            Managers Shops
+                            Representatives Shops
                         </button>
                     </NavLink>
 

@@ -14,6 +14,18 @@ const Stocks = () => {
                 </div>
                 <div className="flex flex-wrap gap-4 mb-8 justify-center items-center">
                     <NavLink
+                        to="viewrefs"
+                        className={({ isActive }) =>
+                            isActive
+                                ? "bg-blue-500 text-white px-6 py-3 rounded whitespace-nowrap hover:bg-blue-500 transition-all font-medium cursor-pointer"
+                                : "bg-blue-800 text-white px-6 py-3 rounded whitespace-nowrap hover:bg-blue-500 transition-all font-medium cursor-pointer"
+                        }
+                    >
+                        <button id="newUsersFilter">
+                            Representatives Stocks
+                        </button>
+                    </NavLink>
+                    <NavLink
                         to="allstocks"
                         className={({ isActive }) =>
                             isActive
@@ -39,18 +51,6 @@ const Stocks = () => {
                         </button>
                     </NavLink>
 
-                    {/* <NavLink
-                        to=""
-                        className={({ isActive }) =>
-                            isActive
-                                ? "bg-blue-500 text-white px-6 py-3 rounded whitespace-nowrap hover:bg-blue-500 transition-all font-medium cursor-pointer"
-                                : "bg-blue-800 text-white px-6 py-3 rounded whitespace-nowrap hover:bg-blue-500 transition-all font-medium cursor-pointer"
-                        }
-                    >
-                        <button id="newUsersFilter">
-                            Add New-Product Variant
-                        </button>
-                    </NavLink> */}
                 </div>
                 </div>
                 <div>

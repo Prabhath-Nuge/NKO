@@ -1,0 +1,20 @@
+import mongoose from "mongoose";
+
+const refStcokHistoryVariantSchema = new mongoose.Schema({
+  variantId: {type: mongoose.Schema.Types.ObjectId, ref: 'Product',required: true},
+  quantity: Number,
+  date: {type: Date, default: Date.now()},
+});
+
+const refStcokHistorySchema = new mongoose.Schema({
+  id: Number,
+  repId: {type: mongoose.Schema.Types.ObjectId, ref: 'User',required: true},
+  type: String,
+  date: {type: Date, default: Date.now()},
+  batchId: String,
+  variant: [refStcokHistoryVariantSchema]
+});
+
+const refStcokHistory = mongoose.model('RefStockHistory', refStcokHistorySchema);
+
+export default refStcokHistory;
