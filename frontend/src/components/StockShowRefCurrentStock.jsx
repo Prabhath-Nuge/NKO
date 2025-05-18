@@ -3,12 +3,49 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 const StockShowRefCurrentStock = () => {
-  const { id } = useParams();
   const location = useLocation();
   const ref = location.state?.ref;
+  console.log(ref);
+  
+
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [newStock, setNewStock] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [updating, setUpdating] = useState(false);
+
 
   const [refStockData, setRefStockData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const handleStockUpdate = () => {
+    if (newStock === '' || isNaN(newStock) || Number(newStock) < 0) {
+      alert('Please enter a valid non-negative number');
+      return;
+    }
+
+    setUpdating(true);
+    axios.post(`/stock/getRefCurrentStock/${selectedProduct.productId}`, {
+      newStock: Number(newStock),
+      refId: ref._id,
+    })
+      .then(() => {
+        setShowModal(false);
+        return axios.get(`/stock/getRefCurrentStock/${ref._id}`);
+      })
+      .then((res) => {
+        if (res.data?.data) {
+          setRefStockData(res.data.data);
+        }
+      })
+      .catch((err) => {
+        console.error('Error updating stock:', err.message);
+      })
+      .finally(() => {
+        setUpdating(false);
+      });
+  };
+
+
 
   useEffect(() => {
     if (!ref) return;
@@ -54,6 +91,11 @@ const StockShowRefCurrentStock = () => {
                   <div
                     key={i}
                     className="grid grid-cols-3 gap-4 p-4 bg-gray-800 text-white rounded-md hover:bg-blue-900 transition hover:cursor-pointer hover:-translate-y-1 hover:shadow-lg"
+                    onClick={() => {
+                      setSelectedProduct({ ...product, category: category.name });
+                      setNewStock(product.repStock);
+                      setShowModal(true);
+                    }}
                   >
                     <div>{category.name}</div>
                     <div>{product.weight}g</div>
@@ -67,7 +109,41 @@ const StockShowRefCurrentStock = () => {
           )}
         </div>
       </div>
+      {showModal && (
+        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 p-6 rounded-lg w-80 space-y-4 transform transition-all scale-100 duration-200">
+            <h3 className="text-xl font-bold text-gray-100">
+              Update Stock for
+            </h3>
+            <h2 className='text-white font-bold'>{selectedProduct?.category} - {selectedProduct?.weight}g</h2>
+            <input
+              type="number"
+              value={newStock}
+              onChange={(e) => setNewStock(e.target.value)}
+              className="w-full p-2 border rounded bg-gray-400 text-black border-gray-400"
+            />
+            <div className="flex justify-end gap-2">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+                onClick={handleStockUpdate}
+                disabled={updating}
+              >
+                {updating ? 'Saving...' : 'Save'}
+              </button>
+
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
+
   );
 };
 

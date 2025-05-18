@@ -11,14 +11,17 @@ const StocksViewRefsStocks = () => {
 
 
   return (
-  <div className="px-6 py-10 bg-gray-900 min-h-screen">
-    <div className="max-w-3xl mx-auto space-y-8">
+  <div className="px-6 py-10  min-h-screen">
+    <div className="max-w-3xl mx-auto space-y-2">
       
-      <div className="bg-gray-800 rounded-2xl p-6 text-center shadow-lg">
-        <h2 className="text-3xl font-bold text-white mb-2">Representative</h2>
+      <div className=" rounded-2xl p-2 text-center">
+        <h2 className="text-2xl font-bold text-white ">Representative</h2>
         <p className="text-xl text-blue-400">{ref?.name}</p>
         <p className="text-gray-400">{ref?.email}</p>
       </div>
+
+      <hr className=" border-gray-300 mb-4" />
+
 
       <Link to={`current/${ref._id}`} state={{ref}} className="hover:bg-blue-900 transition ">
       <div className="bg-gray-700 rounded-2xl p-6 shadow-md hover:shadow-lg hover:bg-blue-900 transition text-center mb-4">

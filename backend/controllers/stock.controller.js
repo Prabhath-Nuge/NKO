@@ -83,3 +83,42 @@ export const getStockHistory = async (req,res)=>{
     });
   }
 }
+
+export const updateStock = async (req, res) => {
+  const { variantId } = req.params;
+  const { refId, newStock } = req.body;
+
+  try {
+    if(req.session.user.type !== 'admin' && req.session.user.type !== 'manager') {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+    if (!variantId || newStock === undefined || !refId) {
+      return res.status(400).json({
+        error: true,
+        message: 'Variant ID and new stock amount are required',
+      });
+    }
+
+    const product = await Product.findById(variantId);
+    if (!product) {
+      return res.status(404).json({
+        error: true,
+        message: 'Product not found',
+      });
+    }
+
+    product.currentStock = newStock;
+    await product.save();
+
+    res.status(200).json({
+      error: false,
+      message: 'Stock updated successfully',
+      data: product,
+    });
+  } catch (error) {
+    res.status(500).json({
+      error: true,
+      message: 'Internal server error',
+    });
+  }
+}

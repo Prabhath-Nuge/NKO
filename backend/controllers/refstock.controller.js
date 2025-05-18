@@ -1,26 +1,25 @@
 import Product from "../models/product.model.js";
 import ProductCat from "../models/productcategory.model.js";
 import RefStock from "../models/refstock.model.js";
+import refStcokHistory from "../models/refstockhistory.model.js";
 
 export const getRefCurrentStock = async (req, res) => {
     try {
-        const { repId } = req.params;
-
-        // 1. Get all categories
+        const { id } = req.params;
         const categories = await ProductCat.find();
 
         const result = [];
 
         for (const category of categories) {
-            // 2. Get all products in this category
             const products = await Product.find({ category: category._id });
 
             const productSummaries = await Promise.all(products.map(async (product) => {
-                // 3. Check ref stock for this product/rep
                 const refStock = await RefStock.findOne({
-                    repId,
+                    repId: id,
                     variantId: product._id,
                 });
+
+
 
                 return {
                     productId: product._id,
@@ -28,7 +27,7 @@ export const getRefCurrentStock = async (req, res) => {
                     salesPrice: product.salesPrice,
                     shopPrice: product.shopPrice,
                     packetsPerBundle: product.packetsPerBundle,
-                    repStock: refStock ? refStock.quantity : 0 // this is what the rep has
+                    repStock: refStock ? refStock.quantity : 0
                 };
             }));
 
@@ -41,10 +40,105 @@ export const getRefCurrentStock = async (req, res) => {
             });
         }
 
-        res.json({ data: result });
+        return res.json({ data: result });
+
 
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server Error' });
     }
 };
+
+export const updateStock = async (req, res) => {
+    const { id } = req.params;
+    const { refId, newStock } = req.body;
+
+
+    try {
+        if (req.session.user.type !== 'admin' && req.session.user.type !== 'manager') {
+            return res.status(403).json({ message: 'Forbidden' });
+        }
+        if (!id || newStock === undefined || !refId) {
+            return res.status(400).json({
+                error: true,
+                message: 'Variant ID and new stock amount are required',
+            });
+        }
+
+        const product = await Product.findById(id);
+        if (!product) {
+            return res.status(404).json({
+                error: true,
+                message: 'Product not found',
+            });
+        }
+
+        const isInStock = await RefStock.findOne({
+            variantId: id,
+            repId: refId,
+        });
+
+        if (isInStock) {
+            isInStock.quantity = newStock;
+            await isInStock.save();
+        }
+        else {
+            const newStockEntry = new RefStock({
+                variantId: id,
+                repId: refId,
+                quantity: newStock,
+            });
+            await newStockEntry.save();
+        }
+
+        const checkAvailableHistory = await refStcokHistory.findOne({
+            repId: refId,
+            type: 'ongoing',
+        });
+
+        if (checkAvailableHistory) {
+            const existingVariant = checkAvailableHistory.variant.find(
+                (v) => v.variantId.toString() === id
+            );
+
+            if (existingVariant) {
+                // Update quantity if the variant already exists
+                existingVariant.quantity = newStock;
+            } else {
+                // Push a new variant entry
+                checkAvailableHistory.variant.push({
+                    variantId: id,
+                    quantity: newStock,
+                });
+            }
+
+            await checkAvailableHistory.save();
+        }
+        else {
+            const newHistoryEntry = new refStcokHistory({
+                repId: refId,
+                type: 'ongoing',
+                variant: [
+                    {
+                        variantId: id,
+                        quantity: newStock,
+                    },
+                ],
+            });
+            await newHistoryEntry.save();
+        }
+
+
+        res.status(200).json({
+            error: false,
+            message: 'Stock updated successfully',
+            data: product,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            error: true,
+            message: 'Internal server error',
+        });
+    }
+}
