@@ -29,6 +29,7 @@ import ShopViewRefsShops from './components/ShopViewRefsShops';
 import ShopViewAllShops from './components/ShopViewAllShops';
 import StocksViewRefs from './components/StocksViewRefs';
 import StocksViewRefsStocks from './components/StocksViewRefsStocks';
+import StockShowRefCurrentStock from './components/StockShowRefCurrentStock';
 
 const Router = createBrowserRouter([
   { path: '/unauthorized', element: <Unauthorized /> },
@@ -94,6 +95,7 @@ const Router = createBrowserRouter([
       { path: 'history', element:<StockHistory /> },
       { path: 'viewrefs', element:<StocksViewRefs /> },
       { path: 'viewrefs/viewstocks', element:<StocksViewRefsStocks /> },
+      { path: 'viewrefs/viewstocks/current/:id', element:<StockShowRefCurrentStock /> },
     ]
   },
   {

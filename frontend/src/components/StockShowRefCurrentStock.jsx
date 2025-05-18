@@ -3,24 +3,28 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 const StockShowRefCurrentStock = () => {
-  const { id } = useParams(); // If you want to use id from the route
+  const { id } = useParams();
   const location = useLocation();
   const ref = location.state?.ref;
 
   const [refStockData, setRefStockData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!ref) return;
 
-    axios.get(`/api/refstock/${ref._id}`) // You can adjust the API path
+    setLoading(true);
+
+    axios.get(`/stock/getRefCurrentStock/${ref._id}`)
       .then((res) => {
         if (res.data?.data) {
-          setRefStockData(res.data.data.variant); // Assuming variants are in .data.variant
+          setRefStockData(res.data.data);
         }
       })
       .catch((err) => {
         console.error('Error fetching ref stock data:', err.message);
-      });
+      })
+      .finally(() => setLoading(false));
   }, [ref]);
 
   return (
@@ -33,32 +37,40 @@ const StockShowRefCurrentStock = () => {
           <p className="text-gray-300">{ref?.email}</p>
         </div>
 
-        {/* Right: Ref Stock Variant Info */}
-        <div className="w-full lg:w-3/4 space-y-4">
+        {/* Right: Ref Stock Info */}
+        <div className="w-full lg:w-3/4 space-y-6">
           <div className="grid grid-cols-3 gap-4 p-4 bg-gray-700 text-white font-bold rounded-lg">
             <div>Category</div>
-            <div>Variant</div>
+            <div>Variant (Weight)</div>
             <div>Quantity</div>
           </div>
 
-          {refStockData.length > 0 ? (
-            refStockData.map((item, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-3 gap-4 p-4 bg-gray-800 text-white rounded-md hover:bg-blue-900 transition"
-              >
-                <div>{item?.variantId?.category?.name || '—'}</div>
-                <div>{item?.variantId?.weight || '—'}</div>
-                <div>{item?.quantity}</div>
-              </div>
+          {loading ? (
+            <div className="flex justify-center py-10">
+              <div className="w-10 h-10 border-4 border-white border-t-blue-500 rounded-full animate-spin" />
+            </div>
+          ) : refStockData.length > 0 ? (
+            refStockData.map((category, index) => (
+              <React.Fragment key={index}>
+                {category.products.map((product, i) => (
+                  <div
+                    key={i}
+                    className="grid grid-cols-3 gap-4 p-4 bg-gray-800 text-white rounded-md hover:bg-blue-900 transition"
+                  >
+                    <div>{category.name}</div>
+                    <div>{product.weight}g</div>
+                    <div>{product.repStock}</div>
+                  </div>
+                ))}
+              </React.Fragment>
             ))
           ) : (
-            <p className="text-gray-400 italic mt-2">No variant history found.</p>
+            <p className="text-gray-400 italic mt-2">No stock data available.</p>
           )}
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default StockShowRefCurrentStock
+export default StockShowRefCurrentStock;

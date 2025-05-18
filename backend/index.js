@@ -10,6 +10,7 @@ import productCatRouter from './routers/product.router.js';
 import apiRouter from './routers/api.router.js';
 import stockRouter from './routers/stock.router.js'
 import shopRouter from './routers/shop.router.js';
+import refstockRouter from './routers/refstock.router.js'
 
 dotenv.config();
 
@@ -46,6 +47,7 @@ app.use('/product', productCatRouter);
 app.use('/api', apiRouter);
 app.use('/stock', stockRouter);
 app.use('/shop', shopRouter);
+app.use('/stock', refstockRouter);
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
     app.listen(port, () => {
