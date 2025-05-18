@@ -21,10 +21,11 @@ const Stocks = () => {
                                 : "bg-blue-800 text-white px-6 py-3 rounded whitespace-nowrap hover:bg-blue-500 transition-all font-medium cursor-pointer"
                         }
                     >
-                        <button id="newUsersFilter">
+                        <button id="newUsersFilter" className='cursor-pointer'>
                             Representatives Stocks
                         </button>
                     </NavLink>
+                    
                     <NavLink
                         to="allstocks"
                         className={({ isActive }) =>
@@ -34,7 +35,7 @@ const Stocks = () => {
                         }
                     >
                         <button id="newUsersFilter " className='cursor-pointer'>
-                            Current Stocks
+                            Current Company Stocks
                         </button>
                     </NavLink>
 
@@ -47,7 +48,7 @@ const Stocks = () => {
                         }
                     >
                         <button id="newUsersFilter" className='cursor-pointer'>
-                            Stock History
+                            Company Stock History
                         </button>
                     </NavLink>
 
