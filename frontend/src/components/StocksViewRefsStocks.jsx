@@ -32,7 +32,7 @@ const StocksViewRefsStocks = () => {
       </div>
       </Link>
 
-      <Link to="" className="hover:bg-blue-900 transition ">
+      <Link to="viewpastbatchs" state={{ref}} className="hover:bg-blue-900 transition ">
       <div className="bg-gray-700 rounded-2xl p-6 shadow-md hover:shadow-lg hover:bg-blue-900 transition text-center mb-4">
         <h2 className="text-2xl font-semibold text-white mb-1">
             <i className="fa-solid fa-chart-line mr-4"></i>
