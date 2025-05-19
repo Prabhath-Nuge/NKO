@@ -51,14 +51,15 @@ export const getRefCurrentStock = async (req, res) => {
 
 export const updateStock = async (req, res) => {
     const { id } = req.params;
-    const { refId, newStock } = req.body;
+    const { refId, delta } = req.body;
+    console.log(id,refId,delta);
 
 
     try {
         if (req.session.user.type !== 'admin' && req.session.user.type !== 'manager') {
             return res.status(403).json({ message: 'Forbidden' });
         }
-        if (!id || newStock === undefined || !refId) {
+        if (!id || delta === undefined || !refId) {
             return res.status(400).json({
                 error: true,
                 message: 'Variant ID and new stock amount are required',
@@ -79,14 +80,14 @@ export const updateStock = async (req, res) => {
         });
 
         if (isInStock) {
-            isInStock.quantity = newStock;
+            isInStock.quantity = isInStock.quantity + delta;
             await isInStock.save();
         }
         else {
             const newStockEntry = new RefStock({
                 variantId: id,
                 repId: refId,
-                quantity: newStock,
+                quantity: delta,
             });
             await newStockEntry.save();
         }
@@ -103,12 +104,12 @@ export const updateStock = async (req, res) => {
 
             if (existingVariant) {
                 // Update quantity if the variant already exists
-                existingVariant.quantity = newStock;
+                existingVariant.quantity = existingVariant.quantity + delta;
             } else {
                 // Push a new variant entry
                 checkAvailableHistory.variant.push({
                     variantId: id,
-                    quantity: newStock,
+                    quantity: delta,
                 });
             }
 
@@ -121,7 +122,7 @@ export const updateStock = async (req, res) => {
                 variant: [
                     {
                         variantId: id,
-                        quantity: newStock,
+                        quantity: delta,
                     },
                 ],
             });

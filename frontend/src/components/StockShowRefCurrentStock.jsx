@@ -1,12 +1,13 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const StockShowRefCurrentStock = () => {
   const location = useLocation();
   const ref = location.state?.ref;
   console.log(ref);
-  
+
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [newStock, setNewStock] = useState('');
@@ -18,32 +19,37 @@ const StockShowRefCurrentStock = () => {
   const [loading, setLoading] = useState(true);
 
   const handleStockUpdate = () => {
-    if (newStock === '' || isNaN(newStock) || Number(newStock) < 0) {
-      alert('Please enter a valid non-negative number');
-      return;
-    }
+  const stockDelta = Number(newStock);
 
-    setUpdating(true);
-    axios.post(`/stock/getRefCurrentStock/${selectedProduct.productId}`, {
-      newStock: Number(newStock),
-      refId: ref._id,
+  if (newStock === '' || isNaN(stockDelta)) {
+    alert('Please enter a valid number');
+    return;
+  }
+
+  setUpdating(true);
+
+  axios.post(`/stock/getRefCurrentStock/${selectedProduct.productId}`, {
+    delta: stockDelta,
+    refId: ref._id,
+  })
+    .then(() => {
+      setShowModal(false);
+      return axios.get(`/stock/getRefCurrentStock/${ref._id}`);
     })
-      .then(() => {
-        setShowModal(false);
-        return axios.get(`/stock/getRefCurrentStock/${ref._id}`);
-      })
-      .then((res) => {
-        if (res.data?.data) {
-          setRefStockData(res.data.data);
-        }
-      })
-      .catch((err) => {
-        console.error('Error updating stock:', err.message);
-      })
-      .finally(() => {
-        setUpdating(false);
-      });
-  };
+    .then((res) => {
+      if (res.data?.data) {
+        setRefStockData(res.data.data);
+        toast.success('Stock updated successfully!');
+      }
+    })
+    .catch((err) => {
+      toast.error('Error updating stock:', err.message);
+    })
+    .finally(() => {
+      setUpdating(false);
+    });
+};
+
 
 
 
@@ -59,7 +65,7 @@ const StockShowRefCurrentStock = () => {
         }
       })
       .catch((err) => {
-        console.error('Error fetching ref stock data:', err.message);
+        toast.error('Error fetching ref stock data:', err.message);
       })
       .finally(() => setLoading(false));
   }, [ref]);
@@ -113,15 +119,16 @@ const StockShowRefCurrentStock = () => {
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-gray-800 p-6 rounded-lg w-80 space-y-4 transform transition-all scale-100 duration-200">
             <h3 className="text-xl font-bold text-gray-100">
-              Update Stock for
+              Adjust Stock
             </h3>
-            <h2 className='text-white font-bold'>{selectedProduct?.category} - {selectedProduct?.weight}g</h2>
+            <p className="text-sm text-gray-400">Current: {selectedProduct?.repStock}</p>
             <input
               type="number"
-              value={newStock}
               onChange={(e) => setNewStock(e.target.value)}
+              placeholder="e.g. 5 to add, -2 to remove"
               className="w-full p-2 border rounded bg-gray-400 text-black border-gray-400"
             />
+
             <div className="flex justify-end gap-2">
               <button
                 className="px-4 py-2 bg-gray-300 rounded"
