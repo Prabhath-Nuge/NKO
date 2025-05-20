@@ -46,7 +46,6 @@ export const getRefCurrentStock = async (req, res) => {
 
 
     } catch (err) {
-        console.error(err);
         res.status(500).json({ error: 'Server Error' });
     }
 };
@@ -54,7 +53,6 @@ export const getRefCurrentStock = async (req, res) => {
 export const updateStock = async (req, res) => {
     const { id } = req.params;
     const { refId, delta } = req.body;
-    console.log(id, refId, delta);
 
 
     try {
@@ -79,7 +77,6 @@ export const updateStock = async (req, res) => {
         const user = await User.findById(req.session.user._id);
 
         const user2 = await User.findById(refId);
-        console.log(user2);
 
 
         await Stock.create({
@@ -214,7 +211,6 @@ export const getRefPastStocks = async (req, res) => {
 export const getRefPastStockBatchs = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(id);
         
 
         if (!id) {

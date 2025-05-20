@@ -87,7 +87,6 @@ export const getShop = async (req, res) => {
 
 export const updateShop = async (req, res) => {
   try {
-    console.log("hi");
     
     const { id } = req.params;
     const { name, owner ,contact , address } = req.body;
