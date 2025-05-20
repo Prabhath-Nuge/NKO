@@ -64,6 +64,7 @@ export const userLogin = async (req, res) => {
         }
 
         req.session.user = user;
+        console.log("hi");
         
 
         return res.status(200).json({

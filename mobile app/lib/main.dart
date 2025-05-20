@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:nko/pages/my_login_page.dart';
 import 'package:nko/services/api_client.dart';
+import 'package:nko/services/session_wrapper.dart';
 
-void main() {
-  ApiClient.init();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await ApiClient.init();
   runApp(const MyApp());
 }
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const MyLoginPage(),
+      home: const SessionWrapper(),
     );
   }
 }

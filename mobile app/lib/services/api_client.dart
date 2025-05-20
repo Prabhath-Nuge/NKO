@@ -1,22 +1,33 @@
 import 'package:dio/dio.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 class ApiClient {
-  static final Dio dio = Dio(
-    BaseOptions(
-      baseUrl: 'http://192.168.1.43:5000',
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
-      headers: {'Content-Type': 'application/json'},
-      followRedirects: true,
-      validateStatus: (status) => status != null && status < 500,
-    ),
-  );
+  static late Dio dio;
 
-  static final CookieJar cookieJar = CookieJar();
+  static Future<void> init() async {
+    // Get path for storing cookies
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
 
-  static void init() {
+    // Use PersistCookieJar with storage directory
+    PersistCookieJar cookieJar = PersistCookieJar(
+      storage: FileStorage('$appDocPath/.cookies/'),
+    );
+
+    dio = Dio(
+      BaseOptions(
+        baseUrl: 'http://10.0.2.2:5000',
+        connectTimeout: const Duration(seconds: 20),
+        receiveTimeout: const Duration(seconds: 20),
+        headers: {'Content-Type': 'application/json'},
+        followRedirects: true,
+        validateStatus: (status) => status != null && status < 500,
+      ),
+    );
+
     dio.interceptors.add(CookieManager(cookieJar));
   }
 }

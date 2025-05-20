@@ -43,6 +43,11 @@ class _MyLoginPageState extends State<MyLoginPage> {
       );
 
       final data = response.data;
+      print(data);
+      if (data['error']) {
+        _showSnackbar(data['message'], isError: true);
+        return;
+      }
       final userType = data['data']['type'];
 
       if (userType == 'ref') {

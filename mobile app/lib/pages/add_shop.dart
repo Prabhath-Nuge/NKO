@@ -72,64 +72,66 @@ class AddShopPage extends StatelessWidget {
         backgroundColor: Colors.blue,
         elevation: 0,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child: Text(
-                'Add a New Shop',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Text(
+                  'Add a New Shop',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
               ),
-            ),
-            SizedBox(height: 30),
-            TextField(
-              controller: nameController,
-              decoration: InputDecoration(
-                labelText: 'Shop Name',
-                border: OutlineInputBorder(),
+              SizedBox(height: 30),
+              TextField(
+                controller: nameController,
+                decoration: InputDecoration(
+                  labelText: 'Shop Name',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 16),
-            TextField(
-              controller: ownerController,
-              decoration: InputDecoration(
-                labelText: 'Owner Name',
-                border: OutlineInputBorder(),
+              SizedBox(height: 16),
+              TextField(
+                controller: ownerController,
+                decoration: InputDecoration(
+                  labelText: 'Owner Name',
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            SizedBox(height: 16),
-            TextField(
-              controller: contactController,
-              decoration: InputDecoration(
-                labelText: 'Contact',
-                border: OutlineInputBorder(),
+              SizedBox(height: 16),
+              TextField(
+                controller: contactController,
+                decoration: InputDecoration(
+                  labelText: 'Contact',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.phone,
               ),
-              keyboardType: TextInputType.phone,
-            ),
-            SizedBox(height: 16),
-            TextField(
-              controller: addressController,
-              decoration: InputDecoration(
-                labelText: 'Address',
-                border: OutlineInputBorder(),
+              SizedBox(height: 16),
+              TextField(
+                controller: addressController,
+                decoration: InputDecoration(
+                  labelText: 'Address',
+                  border: OutlineInputBorder(),
+                ),
+                maxLines: 3,
               ),
-              maxLines: 3,
-            ),
-            SizedBox(height: 24),
-            Center(
-              child: ElevatedButton(
-                onPressed: () async {
-                  final success = await submit(context);
-                  if (success) {
-                    Navigator.pop(context);
-                  }
-                },
-                child: Text('Submit'),
+              SizedBox(height: 24),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final success = await submit(context);
+                    if (success) {
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: Text('Submit'),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
