@@ -11,9 +11,13 @@ class OrderAddPage extends StatefulWidget {
 
 class _OrderAddPageState extends State<OrderAddPage> {
   List<Map<String, dynamic>> stocks = [];
-  Map<String, Map<String, String>> updates = {}; // key = product id
+  Map<String, Map<String, String>> updates = {};
   Map<String, double> totals = {};
   Map<String, double> discounts = {};
+
+  // Controllers
+  Map<String, TextEditingController> quantityControllers = {};
+  Map<String, TextEditingController> discountControllers = {};
 
   @override
   void initState() {
@@ -49,8 +53,21 @@ class _OrderAddPageState extends State<OrderAddPage> {
     try {
       final response = await ApiClient.dio.get('/stock/getRefCurrentStock/$id');
       if (response.statusCode == 200) {
+        final fetchedStocks = List<Map<String, dynamic>>.from(
+          response.data["data"],
+        );
+
+        // Initialize controllers
+        for (var category in fetchedStocks) {
+          for (var product in category['products']) {
+            final id = product['productId'].toString();
+            quantityControllers[id] = TextEditingController();
+            discountControllers[id] = TextEditingController();
+          }
+        }
+
         setState(() {
-          stocks = List<Map<String, dynamic>>.from(response.data["data"]);
+          stocks = fetchedStocks;
         });
       } else {
         print('Error fetching stocks: ${response.statusCode}');
@@ -61,16 +78,18 @@ class _OrderAddPageState extends State<OrderAddPage> {
   }
 
   Future<void> submitStockUpdate(String productId) async {
-    final data = updates[productId];
-    if (data == null || data['quantity']!.isEmpty) {
+    final quantityText = quantityControllers[productId]?.text ?? '';
+    final discountText = discountControllers[productId]?.text ?? '';
+
+    if (quantityText.isEmpty) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text("Please fill both fields.")));
       return;
     }
 
-    final quantity = int.tryParse(data['quantity'] ?? '0') ?? 0;
-    final discount = double.tryParse(data['discount'] ?? '0') ?? 0;
+    final quantity = int.tryParse(quantityText) ?? 0;
+    final discount = double.tryParse(discountText) ?? 0;
 
     final product = stocks
         .expand((category) => category['products'] as List<dynamic>)
@@ -103,6 +122,12 @@ class _OrderAddPageState extends State<OrderAddPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Stock updated successfully.")),
         );
+        setState(() {
+          totals.remove(productId);
+          updates.remove(productId);
+          quantityControllers[productId]?.clear();
+          discountControllers[productId]?.clear();
+        });
       } else {
         print('Update failed: ${response.statusCode}');
       }
@@ -114,12 +139,6 @@ class _OrderAddPageState extends State<OrderAddPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Image.asset('images/2.png', height: 50),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-        elevation: 0,
-      ),
       body: ListView.builder(
         itemCount: stocks.length,
         itemBuilder: (context, index) {
@@ -131,7 +150,7 @@ class _OrderAddPageState extends State<OrderAddPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
                   categoryName,
                   style: const TextStyle(
@@ -142,7 +161,9 @@ class _OrderAddPageState extends State<OrderAddPage> {
               ),
               ...products.map((product) {
                 final productId = product['productId'].toString();
+
                 return Card(
+                  elevation: 2,
                   margin: const EdgeInsets.symmetric(
                     horizontal: 12,
                     vertical: 4,
@@ -178,10 +199,8 @@ class _OrderAddPageState extends State<OrderAddPage> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 6),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,11 +230,11 @@ class _OrderAddPageState extends State<OrderAddPage> {
                               ],
                             ),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 SizedBox(
                                   width: 90,
                                   child: TextFormField(
+                                    controller: discountControllers[productId],
                                     keyboardType: TextInputType.number,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.digitsOnly,
@@ -234,7 +253,8 @@ class _OrderAddPageState extends State<OrderAddPage> {
                                           double.tryParse(value) ?? 0;
                                       final qty =
                                           int.tryParse(
-                                            updates[productId]?['quantity'] ??
+                                            quantityControllers[productId]
+                                                    ?.text ??
                                                 '0',
                                           ) ??
                                           0;
@@ -244,16 +264,7 @@ class _OrderAddPageState extends State<OrderAddPage> {
                                           ) ??
                                           0;
 
-                                      updates[productId] = {
-                                        ...?updates[productId],
-                                        'discount': value,
-                                        'quantity':
-                                            updates[productId]?['quantity'] ??
-                                            '',
-                                      };
-
                                       setState(() {
-                                        // Make sure discount never exceeds shopPrice
                                         final effectivePrice = (shopPrice -
                                                 discount)
                                             .clamp(0, shopPrice);
@@ -267,6 +278,7 @@ class _OrderAddPageState extends State<OrderAddPage> {
                                 SizedBox(
                                   width: 90,
                                   child: TextFormField(
+                                    controller: quantityControllers[productId],
                                     keyboardType: TextInputType.number,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.digitsOnly,
@@ -284,7 +296,8 @@ class _OrderAddPageState extends State<OrderAddPage> {
                                       final qty = int.tryParse(value) ?? 0;
                                       final discount =
                                           double.tryParse(
-                                            updates[productId]?['discount'] ??
+                                            discountControllers[productId]
+                                                    ?.text ??
                                                 '0',
                                           ) ??
                                           0;
@@ -293,14 +306,6 @@ class _OrderAddPageState extends State<OrderAddPage> {
                                             product['shopPrice'].toString(),
                                           ) ??
                                           0;
-
-                                      updates[productId] = {
-                                        ...?updates[productId],
-                                        'quantity': value,
-                                        'discount':
-                                            updates[productId]?['discount'] ??
-                                            '',
-                                      };
 
                                       setState(() {
                                         final effectivePrice = (shopPrice -
@@ -316,7 +321,6 @@ class _OrderAddPageState extends State<OrderAddPage> {
                             ),
                           ],
                         ),
-
                         const SizedBox(height: 6),
                         Align(
                           alignment: Alignment.centerRight,
@@ -328,7 +332,10 @@ class _OrderAddPageState extends State<OrderAddPage> {
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 16,
                                 ),
-                                textStyle: const TextStyle(fontSize: 13),
+                                textStyle: const TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               child: const Text("Submit"),
                             ),

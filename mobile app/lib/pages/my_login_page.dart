@@ -65,6 +65,7 @@ class _MyLoginPageState extends State<MyLoginPage> {
       } else if (code == 500) {
         _showSnackbar('Server error', isError: true);
       } else {
+        print(e);
         _showSnackbar('Login failed: ${e.message}', isError: true);
       }
     } catch (e) {

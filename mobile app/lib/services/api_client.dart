@@ -16,10 +16,10 @@ class ApiClient {
     PersistCookieJar cookieJar = PersistCookieJar(
       storage: FileStorage('$appDocPath/.cookies/'),
     );
-
+    // http://10.0.2.2:5000'
     dio = Dio(
       BaseOptions(
-        baseUrl: 'http://10.0.2.2:5000',
+        baseUrl: 'http://192.168.1.67:5000',
         connectTimeout: const Duration(seconds: 20),
         receiveTimeout: const Duration(seconds: 20),
         headers: {'Content-Type': 'application/json'},

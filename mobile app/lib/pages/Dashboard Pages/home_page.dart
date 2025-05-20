@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nko/pages/Dashboard%20Pages/Home%20Components/home_tiles.dart';
 import 'package:nko/pages/add_shop.dart';
 import 'package:nko/pages/MyStock/my_stock_page.dart';
-import 'package:nko/pages/order_selecting_page.dart';
+import 'package:nko/pages/Order%20Pages/order_page.dart';
 import 'package:nko/pages/viewshop%20components/view_shops.dart';
 
 class Home extends StatelessWidget {
@@ -40,7 +40,7 @@ class Home extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => OrderAddPage()),
+                MaterialPageRoute(builder: (_) => OrderDashboard()),
               );
             },
           ),
