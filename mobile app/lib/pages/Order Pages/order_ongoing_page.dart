@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nko/services/api_client.dart';
+import 'package:blue_thermal_printer/blue_thermal_printer.dart';
 
 class OngoingOrdersPage extends StatefulWidget {
   const OngoingOrdersPage({super.key});
@@ -17,6 +18,9 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
   List<dynamic> shopList = [];
   String? selectedShopId;
   final TextEditingController paymentController = TextEditingController();
+  final BlueThermalPrinter printer = BlueThermalPrinter.instance;
+  List<BluetoothDevice> devices = [];
+  BluetoothDevice? selectedPrinter;
 
   @override
   void initState() {
@@ -56,6 +60,7 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
         double total = orderItems.fold(0.0, (sum, item) {
           return sum + (item['total']?.toDouble() ?? 0.0);
         });
+        if (!mounted) return;
         setState(() {
           order = fetchedOrder;
           todayTotal = total;
@@ -63,6 +68,7 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
 
         final shop = fetchedOrder['shopId'];
         if (shop != null && shop is Map && shop['_id'] != null) {
+          if (!mounted) return;
           setState(() {
             shopDue = (shop['totalDebt'] ?? 0).toDouble();
             shopName = shop['name'];
@@ -70,8 +76,19 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
         }
 
         isLoading = false;
+      } else {
+        if (!mounted) return;
+        setState(() {
+          isLoading = false;
+          order = null;
+        });
       }
     } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        isLoading = false;
+        order = null;
+      });
       print('Error fetching order: $e');
     }
   }
@@ -81,6 +98,7 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
     try {
       final response = await ApiClient.dio.get('/shop/viewrefsshops/$id');
       if (response.statusCode == 200) {
+        if (!mounted) return;
         setState(() {
           shopList = response.data['data'];
         });
@@ -92,8 +110,10 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
 
   Future<void> deleteOrder(String orderId) async {
     try {
-      final response = await ApiClient.dio.delete('/order/$orderId');
+      final response = await ApiClient.dio.delete('/order/delete/$orderId');
+      print(response.data);
       if (response.statusCode == 200) {
+        if (!mounted) return;
         setState(() {
           order = null;
         });
@@ -119,6 +139,116 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
     }
   }
 
+  Future<void> scanPrinters() async {
+    bool? isConnected = await printer.isConnected;
+
+    if (selectedPrinter != null && isConnected != true) {
+      try {
+        await printer.connect(selectedPrinter!);
+      } catch (e) {
+        print("Printer connection error: $e");
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Failed to connect to printer.")),
+          );
+        }
+        return;
+      }
+    }
+
+    try {
+      final paired = await printer.getBondedDevices();
+      if (mounted) {
+        setState(() => devices = paired);
+      }
+    } catch (e) {
+      print("Error getting bonded devices: $e");
+    }
+  }
+
+  Future<void> printOrder() async {
+    if (selectedPrinter == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Select a printer first")));
+      return;
+    }
+
+    try {
+      bool? isConnected = await printer.isConnected;
+      if (isConnected != true) {
+        await printer.connect(selectedPrinter!);
+      }
+    } catch (e) {
+      print("Printer connection error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Failed to connect to printer.")),
+      );
+      return;
+    }
+
+    final items = order!['orderItem'] as List<dynamic>? ?? [];
+
+    printer.printCustom("NKO PRODUCTS", 2, 1);
+    printer.printNewLine();
+    printer.printCustom("Order ID: ${order!['_id']}", 1, 0);
+    printer.printCustom("Shop: ${shopName ?? 'N/A'}", 1, 0);
+    printer.printCustom("Date: ${DateTime.now()}", 1, 0);
+    printer.printCustom("----------------------------", 1, 1);
+    printer.printNewLine();
+
+    for (var item in items) {
+      final product = item['variantId'] ?? {};
+      final name = (product['category']?['name']) ?? 'Product';
+      final weight = product['weight'] ?? '';
+      final qty = item['quantity'] ?? 0;
+      final discount = item['discount'] ?? 0;
+      final total = item['total'] ?? 0;
+
+      printer.printCustom("$name ($weight g)", 1, 0);
+      final discountStr = (discount > 0) ? "Disc: Rs.$discount   " : "";
+      printer.printCustom("${discountStr} Qty: $qty", 0, 0);
+      printer.printCustom("Rs.$total", 1, 2);
+      printer.printNewLine();
+    }
+
+    final due = (order!['due'] ?? 0).toDouble();
+    final payed = (order!['payed'] ?? 0).toDouble();
+    final remaining = (order!['remaining'] ?? 0).toDouble();
+    final grandTotal = todayTotal + due;
+
+    printer.printCustom("----------------------------", 1, 1);
+    printer.printCustom(
+      "Today's Total: Rs.${todayTotal.toStringAsFixed(2)}",
+      1,
+      0,
+    );
+
+    if (shopName != null) {
+      printer.printCustom("Due:           Rs. ${due.toStringAsFixed(2)}", 1, 0);
+      printer.printCustom(
+        "Total+Due:     Rs. ${grandTotal.toStringAsFixed(2)}",
+        1,
+        0,
+      );
+      printer.printCustom(
+        "Payed:         Rs. ${payed.toStringAsFixed(2)}",
+        1,
+        0,
+      );
+      printer.printCustom(
+        "Remaining:     Rs. ${remaining.toStringAsFixed(2)}",
+        1,
+        0,
+      );
+    }
+    printer.printCustom("----------------------------", 1, 1);
+    printer.printNewLine();
+    printer.printNewLine();
+    printer.paperCut();
+    await printer.disconnect();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -140,7 +270,7 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
                           children: [
                             Expanded(
                               child: Text(
-                                "Order ID: ${order!['_id']}",
+                                "Order ID: ${order!['_id']} }",
                                 style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -182,6 +312,7 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
                                         "orderId": order!['_id'],
                                       },
                                     );
+                                    if (!mounted) return;
                                     setState(
                                       () => selectedShopId = null,
                                     ); // reset after assign
@@ -211,6 +342,7 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
                                     '/order/removeshop',
                                     data: {"orderId": order!['_id']},
                                   );
+                                  if (!mounted) return;
                                   setState(() {
                                     shopName = null;
                                     shopDue = 0;
@@ -261,7 +393,7 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
                               const SizedBox(width: 10),
                               ElevatedButton(
                                 onPressed: () async {
-                                  final amount = double.tryParse(
+                                  final amount = int.tryParse(
                                     paymentController.text,
                                   );
                                   if (amount == null || amount <= 0) {
@@ -279,6 +411,7 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
                                       data: {
                                         "orderId": order!['_id'],
                                         "amount": amount,
+                                        "grandTotal": todayTotal + shopDue,
                                       },
                                     );
 
@@ -341,15 +474,12 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        "Product ID: ${product['_id']}",
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
                                       if (category != null)
                                         Text(
                                           "Category: ${category['name'] ?? 'Unknown'}",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
                                       Text(
                                         "Weight: ${product['weight'] ?? 'N/A'}g",
@@ -375,6 +505,105 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
                             ),
                           );
                         }).toList(),
+                        const SizedBox(height: 12),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ElevatedButton.icon(
+                                  onPressed: scanPrinters,
+                                  icon: const Icon(Icons.bluetooth_searching),
+                                  label: const Text("Find Bluetooth Printers"),
+                                ),
+
+                                if (devices.isNotEmpty)
+                                  DropdownButton<BluetoothDevice>(
+                                    value: selectedPrinter,
+                                    hint: const Text("Select Printer"),
+                                    items:
+                                        devices.map((d) {
+                                          return DropdownMenuItem(
+                                            value: d,
+                                            child: Text(d.name ?? "Unknown"),
+                                          );
+                                        }).toList(),
+                                    onChanged: (d) {
+                                      if (!mounted) return;
+                                      setState(() => selectedPrinter = d);
+                                    },
+                                  ),
+
+                                const SizedBox(height: 10),
+                                ElevatedButton.icon(
+                                  onPressed: printOrder,
+                                  icon: const Icon(Icons.print),
+                                  label: const Text("Print Order"),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            ElevatedButton.icon(
+                              onPressed: () async {
+                                final orderId = order!['_id'];
+                                final data = {
+                                  "orderId": orderId,
+                                  "todayTotal": todayTotal,
+                                };
+
+                                if (order!['shopId'] != null) {
+                                  data.addAll({
+                                    "shopId": order!['shopId']['_id'],
+                                    "remaining": order!['remaining'] ?? 0,
+                                  });
+                                }
+
+                                try {
+                                  final response = await ApiClient.dio.post(
+                                    '/order/finish',
+                                    data: data,
+                                  );
+                                  if (response.statusCode == 200) {
+                                    if (!mounted) return;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "Order marked as finished.",
+                                        ),
+                                      ),
+                                    );
+                                    fetchOngoingOrder(); // Optionally refresh the state
+                                  } else {
+                                    if (!mounted) return;
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "Failed to finish order.",
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                } catch (e) {
+                                  print("Finish order error: $e");
+                                  if (!mounted) return;
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Something went wrong."),
+                                    ),
+                                  );
+                                }
+                              },
+                              icon: const Icon(Icons.check_circle),
+                              label: const Text("Finish Order"),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                              ),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
