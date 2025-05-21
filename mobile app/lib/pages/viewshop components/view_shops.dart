@@ -48,7 +48,7 @@ class _ViewShopsState extends State<ViewShops> {
           return ShopTile(
             shopName: shop['name'],
             address: shop['address'],
-            totalDebt: shop['total_debt']?.toDouble() ?? 0.00,
+            totalDebt: shop['totalDebt']?.toDouble() ?? 0.00,
             onTap: () async {
               final result = await Navigator.push(
                 context,

@@ -129,10 +129,11 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
   Future<void> deleteProduct(String orderId, String variantId) async {
     try {
       final response = await ApiClient.dio.delete(
-        '/order/$orderId/item/$variantId',
+        '/order/deleteorderproduct',
+        data: {"orderId": orderId, "variantId": variantId},
       );
       if (response.statusCode == 200) {
-        fetchOngoingOrder(); // refresh order
+        fetchOngoingOrder();
       }
     } catch (e) {
       print('Error deleting product: $e');
@@ -360,12 +361,12 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
                           "Today's Order Total: Rs.${todayTotal.toStringAsFixed(2)}",
                         ),
                         if (shopName != null) ...[
-                          Text("Due: ₹${order!['due'] ?? 0}"),
+                          Text("Due: Rs. ${order!['due'] ?? 0}"),
                           Text(
                             "Grand Total (with shop dues): Rs. ${(todayTotal + shopDue).toStringAsFixed(2)}",
                           ),
-                          Text("Payed: ₹${order!['payed'] ?? 0}"),
-                          Text("Remaining: ₹${order!['remaining'] ?? 0}"),
+                          Text("Payed: Rs. ${order!['payed'] ?? 0}"),
+                          Text("Remaining: Rs. ${order!['remaining'] ?? 0}"),
                         ],
 
                         if (shopName != null) ...[
@@ -543,64 +544,76 @@ class _OngoingOrdersPageState extends State<OngoingOrdersPage> {
                                   icon: const Icon(Icons.print),
                                   label: const Text("Print Order"),
                                 ),
+                                const SizedBox(height: 10),
+                                ElevatedButton.icon(
+                                  onPressed: () async {
+                                    final orderId = order!['_id'];
+                                    final data = {
+                                      "orderId": orderId,
+                                      "todayTotal": todayTotal,
+                                    };
+
+                                    if (order!['shopId'] != null) {
+                                      data.addAll({
+                                        "shopId": order!['shopId']['_id'],
+                                        "remaining": order!['remaining'] ?? 0,
+                                      });
+                                    }
+
+                                    try {
+                                      final response = await ApiClient.dio.post(
+                                        '/order/finish',
+                                        data: data,
+                                      );
+                                      if (response.statusCode == 200) {
+                                        if (!mounted) return;
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              "Order marked as finished.",
+                                            ),
+                                          ),
+                                        );
+                                        fetchOngoingOrder(); // Optionally refresh the state
+                                      } else {
+                                        print(
+                                          response.data['message'].toString(),
+                                        );
+                                        if (!mounted) return;
+                                        ScaffoldMessenger.of(
+                                          context,
+                                        ).showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              response.data['message']
+                                                  .toString(),
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    } catch (e) {
+                                      print("Finish order error: $e");
+                                      if (!mounted) return;
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            "Something went wrong.",
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  icon: const Icon(Icons.check_circle),
+                                  label: const Text("Finish Order"),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                  ),
+                                ),
                               ],
-                            ),
-                            const SizedBox(height: 10),
-                            ElevatedButton.icon(
-                              onPressed: () async {
-                                final orderId = order!['_id'];
-                                final data = {
-                                  "orderId": orderId,
-                                  "todayTotal": todayTotal,
-                                };
-
-                                if (order!['shopId'] != null) {
-                                  data.addAll({
-                                    "shopId": order!['shopId']['_id'],
-                                    "remaining": order!['remaining'] ?? 0,
-                                  });
-                                }
-
-                                try {
-                                  final response = await ApiClient.dio.post(
-                                    '/order/finish',
-                                    data: data,
-                                  );
-                                  if (response.statusCode == 200) {
-                                    if (!mounted) return;
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          "Order marked as finished.",
-                                        ),
-                                      ),
-                                    );
-                                    fetchOngoingOrder(); // Optionally refresh the state
-                                  } else {
-                                    if (!mounted) return;
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          "Failed to finish order.",
-                                        ),
-                                      ),
-                                    );
-                                  }
-                                } catch (e) {
-                                  print("Finish order error: $e");
-                                  if (!mounted) return;
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text("Something went wrong."),
-                                    ),
-                                  );
-                                }
-                              },
-                              icon: const Icon(Icons.check_circle),
-                              label: const Text("Finish Order"),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green,
-                              ),
                             ),
                           ],
                         ),

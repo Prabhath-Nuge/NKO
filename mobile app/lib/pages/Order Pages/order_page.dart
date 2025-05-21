@@ -34,10 +34,13 @@ class _OrderDashboardState extends State<OrderDashboard> {
       backgroundColor: const Color.fromARGB(255, 233, 232, 232),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
+            icon: Icon(Icons.shopping_cart),
+            label: 'Select',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.assignment),
+            label: 'Ongoing',
           ),
         ],
         currentIndex: _selectedIndex,

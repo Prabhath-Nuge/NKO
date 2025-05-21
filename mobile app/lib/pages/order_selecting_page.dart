@@ -129,10 +129,14 @@ class _OrderAddPageState extends State<OrderAddPage> {
           discountControllers[productId]?.clear();
         });
       } else {
-        print('Update failed: ${response.statusCode}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(response.data['message'].toString())),
+        );
       }
     } catch (e) {
-      print('Error sending update: $e');
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
     }
   }
 

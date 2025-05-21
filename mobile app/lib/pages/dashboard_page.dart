@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nko/pages/Dashboard%20Pages/home_page.dart';
+import 'package:nko/pages/settings_page.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -12,10 +13,7 @@ class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
 
   // List of widgets to display for each tab
-  final List<Widget> _pages = [
-    Home(),
-    Center(child: Text('Settings Page', style: TextStyle(fontSize: 24))),
-  ];
+  final List<Widget> _pages = [Home(), LogoutPage()];
 
   void _onItemTapped(int index) {
     setState(() {

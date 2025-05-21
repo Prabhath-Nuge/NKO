@@ -17,6 +17,7 @@ class ApiClient {
       storage: FileStorage('$appDocPath/.cookies/'),
     );
     // http://10.0.2.2:5000'
+    // 'http://192.168.1.67:5000'
     dio = Dio(
       BaseOptions(
         baseUrl: 'http://192.168.1.67:5000',

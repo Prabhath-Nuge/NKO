@@ -33,10 +33,7 @@ export const userRegister = async (req, res) => {
 };
 
 export const userLogin = async (req, res) => {
-    const { email, password } = req.body;
-    console.log("hi");
-    
-    
+    const { email, password } = req.body;   
 
     if (!email || !password) {
         return res.status(400).json({
@@ -280,8 +277,10 @@ export const logout = async (req, res) => {
                 message: 'An error occurred. Please try again'
             });
         }
+        console.log("hi");
+        
         res.clearCookie('connect.sid');
-        res.status(200).json({
+        return res.status(200).json({
             error: false,
             message: 'User logged out successfully'
         });

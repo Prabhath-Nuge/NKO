@@ -45,7 +45,7 @@ class ShopTile extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'Total Debt: \$${totalDebt.toStringAsFixed(2)}',
+                'Total Debt: Rs. ${totalDebt.toStringAsFixed(2)}',
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.red,
