@@ -19,8 +19,8 @@ function Dashboard() {
                     <DashboardBoxComponent title="Users" icon="fa-solid fa-users" description={"Details of representatives and managers"} link="/users/newusers" />
                     <DashboardBoxComponent title="Products" icon="fa-solid fa-box-open" description={"Detailed information about available products."} link="/products/category" />
                     <DashboardBoxComponent title="Stocks" icon="fa-solid fa-scroll" description={"Monitor stock availability"} link='/stocks/allstocks'/>
-                    <DashboardBoxComponent title="Salary" icon="fa-solid fa-money-bill-1-wave" description={"Manage employee salaries"} />
-                    <DashboardBoxComponent title="Orders" icon="fa-solid fa-clipboard-list" description={"Track all order details"} />
+                    <DashboardBoxComponent title="Salary" icon="fa-solid fa-money-bill-1-wave" description={"Manage employee salaries"} link='/salary'/>
+                    <DashboardBoxComponent title="Orders" icon="fa-solid fa-clipboard-list" description={"Track all order details"} link='/orders/viewrefs'/>
                     <DashboardBoxComponent title="Shops" icon="fa-solid fa-store" description={"Shop Details and Due amounts"} link='/shops/viewrefs'/>
                     <DashboardBoxComponent title="Analysis" icon="fa-solid fa-chart-line" description={"Analyze company revenue, expenses, and overall financial health."} />
                 </div>

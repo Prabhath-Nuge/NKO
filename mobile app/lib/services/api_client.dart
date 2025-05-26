@@ -18,9 +18,10 @@ class ApiClient {
     );
     // http://10.0.2.2:5000'
     // 'http://192.168.1.67:5000'
+    // taskkill /F /IM java.exe
     dio = Dio(
       BaseOptions(
-        baseUrl: 'http://192.168.1.67:5000',
+        baseUrl: 'http://172.20.10.3:5000',
         connectTimeout: const Duration(seconds: 20),
         receiveTimeout: const Duration(seconds: 20),
         headers: {'Content-Type': 'application/json'},

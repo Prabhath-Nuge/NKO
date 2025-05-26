@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+// import cron from 'node-cron';
 
 import userRouter from './routers/user.router.js';
 import productCatRouter from './routers/product.router.js';
@@ -12,6 +13,8 @@ import stockRouter from './routers/stock.router.js'
 import shopRouter from './routers/shop.router.js';
 import refstockRouter from './routers/refstock.router.js'
 import orderRouter from './routers/order.router.js';
+import salaryRouter from './routers/salary.router.js';
+import { startMonthlySalaryAddition } from './functions/cron-scheule.js';
 
 dotenv.config();
 
@@ -43,6 +46,10 @@ app.use(
     })
 );
 
+startMonthlySalaryAddition();
+// cron.schedule('*/5 * * * * *', () => {
+//     console.log('hi');
+// });
 app.use('/',userRouter);
 app.use('/product', productCatRouter);
 app.use('/api', apiRouter);
@@ -50,6 +57,7 @@ app.use('/stock', stockRouter);
 app.use('/shop', shopRouter);
 app.use('/stock', refstockRouter);
 app.use('/order', orderRouter);
+app.use('/salary', salaryRouter);
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
     app.listen(port, () => {

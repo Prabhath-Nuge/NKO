@@ -5,6 +5,7 @@ import ceo from '../assets/images/ceo.jpg'
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import logo from '../assets/images/1.png';
 
 function Home() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -35,7 +36,8 @@ function Home() {
         <div>
             <header className="w-full bg-primary shadow-sm sticky top-0 z-50">
                 <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-                    <a href="#" className="text-3xl font-['Pacifico'] text-white">NKO</a>
+                    {/* <a href="#" className="text-3xl font-['Pacifico'] text-white">NKO</a> */}
+                    <img src={logo} alt="Logo" className="ml-20 h-15" />
 
                     {/* Desktop Nav */}
                     <nav className="hidden md:flex items-center space-x-8">
@@ -46,14 +48,14 @@ function Home() {
                     </nav>
 
                     <div className="flex items-center space-x-4">
-                        <div className="w-10 h-10 flex items-center justify-center text-gray-100 hover:text-blue-500 hover:scale-110 ease-in cursor-pointer transition-colors">
+                        {/* <div className="w-10 h-10 flex items-center justify-center text-gray-100 hover:text-blue-500 hover:scale-110 ease-in cursor-pointer transition-colors">
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </div>
 
                         <div className="w-10 h-10 flex items-center justify-center text-gray-100 hover:text-blue-500 hover:scale-110 ease-in cursor-pointer relative transition-colors">
                             <i className="fa-solid fa-cart-shopping"></i>
                             <span className="absolute -top-1 -right-1 bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">3</span>
-                        </div>
+                        </div> */}
 
                         <Link to="/login">
                             <button className="hidden md:block bg-secondary text-white px-6 py-2 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
@@ -104,12 +106,17 @@ function Home() {
                         <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">Discover the Finest Spices from Around the World</h1>
                         <p className="text-lg md:text-xl text-white mb-8">Elevate your culinary creations with our premium, ethically sourced spices that bring authentic flavors to your kitchen.</p>
                         <div className="flex flex-wrap gap-4">
-                            <button className="hidden md:block bg-secondary text-white px-8 py-6 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
-                                Shop Now
-                            </button>
-                            <button className="hidden md:block bg-gray-700 text-white px-8 py-6 font-medium rounded-md whitespace-nowrap hover:!bg-gray-800 transition-colors">
-                                Learn More
-                            </button>
+                            <a href="#contact">
+                                <button className="hidden md:block bg-secondary text-white px-8 py-6 font-medium rounded-md whitespace-nowrap hover:!bg-blue-800 transition-colors">
+                                    Get In Touch
+                                </button>
+                            </a>
+                            <a href="#joinus">
+                                <button className="hidden md:block bg-gray-700 text-white px-8 py-6 font-medium rounded-md whitespace-nowrap hover:!bg-gray-800 transition-colors">
+                                    Join Us
+                                </button>
+                            </a>
+
                         </div>
                     </div>
                 </div>
@@ -123,34 +130,34 @@ function Home() {
                     </div>
 
                     <div data-aos="fade-up" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    {categories.map((category, index) => (
-        <div
-            key={index}
-            className="bg-gray-800 rounded-xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-2 hover:drop-shadow-[0_10px_20px_rgba(26,60,150,0.2)]"
-        >
-            <div className="p-2  h-64 overflow-hidden">
-                <img
-                    src={category.image}
-                    alt={category.name}
-                    className="w-full h-full rounded-lg object-cover object-center rounded-t-xl"
-                />
-            </div>
+                        {categories.map((category, index) => (
+                            <div
+                                key={index}
+                                className="bg-gray-800 rounded-xl shadow-md overflow-hidden transition-transform transform hover:-translate-y-2 hover:drop-shadow-[0_10px_20px_rgba(26,60,150,0.2)]"
+                            >
+                                <div className="p-2  h-64 overflow-hidden">
+                                    <img
+                                        src={category.image}
+                                        alt={category.name}
+                                        className="w-full h-full rounded-lg object-cover object-center rounded-t-xl"
+                                    />
+                                </div>
 
-            <div className="p-6">
-                <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-xl font-semibold text-white">{category.name}</h3>
-                </div>
-                <p className="text-gray-400 mb-4 text-sm">{category.description}</p>
+                                <div className="p-6">
+                                    <div className="flex justify-between items-start mb-2">
+                                        <h3 className="text-xl font-semibold text-white">{category.name}</h3>
+                                    </div>
+                                    <p className="text-gray-400 mb-4 text-sm">{category.description}</p>
 
-                <div className="flex justify-end">
-                    <button className="hidden md:inline-block bg-secondary hover:!bg-blue-800 text-white px-5 py-2 text-sm font-medium rounded-md transition-colors">
-                        Product Details
-                    </button>
-                </div>
-            </div>
-        </div>
-    ))}
-</div>
+                                    <div className="flex justify-end">
+                                        <button className="hidden md:inline-block bg-secondary hover:!bg-blue-800 text-white px-5 py-2 text-sm font-medium rounded-md transition-colors">
+                                            Product Details
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
 
 
                     <div className="text-center mt-12">
@@ -227,24 +234,25 @@ function Home() {
 
                         <div data-aos="fade-right" className="w-full md:w-3/5">
                             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Meet Our Founder</h2>
-                            <h3 className="text-xl text-white font-medium mb-6">Dr. Gemba Richardson, Founder & CEO</h3>
+                            <h3 className="text-xl text-white font-medium mb-6"><span className='text-3xl '>Susantha Nugekotuwa</span>, Founder & Visionary Leader</h3>
 
-                            <p className="text-white mb-4">With over 20 years of experience in culinary arts and a Ph.D. in Food Science, Dr. Richardson has dedicated his career to sourcing the world's finest spices while ensuring sustainable and ethical practices.</p>
+                            <p className="text-white mb-4">Founded in 1989 with just Rs. 2000 and a bold vision, Susantha Nugekotuwa has built a legacy of resilience, community, and entrepreneurship that now spans the entire Sabaragamuwa Province.</p>
 
-                            <p className="text-white mb-4">His journey began in 2005 after traveling through the spice markets of India, Morocco, and Indonesia, where she discovered the vast difference between freshly harvested, properly handled spices and the mass-produced varieties commonly found in supermarkets.</p>
+                            <p className="text-white mb-4">What began as a humble initiative has grown into a thriving organization with over 50 dedicated employees, driven by Susantha’s unwavering commitment to empowering local communities and nurturing sustainable growth.</p>
 
-                            <p className="text-white mb-6">Today, He leads our company with a commitment to quality, sustainability, and culinary education, personally overseeing our relationships with small-scale farmers across 14 countries.</p>
+                            <p className="text-white mb-6">Beyond business, Susantha is a passionate advocate for social impact. He currently serves as the President of the Lions Club of Ratnapura-Pelmadulla, having previously contributed as Treasurer. He is also an active member of *Samagi Sansadaya*, consistently working toward uplifting society. His contributions have been recognized with prestigious honorary awards for outstanding service.</p>
 
-                            <div className="p-6 bg-gray-500 rounded-lg border border-secondary shadow-sm mb-6">
-                                <p className="text-gray-100 italic">"Our mission is simple: to connect discerning home cooks and professional chefs with the world's most extraordinary spices, while supporting the communities that grow them. Every jar we sell represents our commitment to flavor, quality, and sustainability."</p>
+                            <div className="p-6 bg-gray-800 rounded-lg border border-secondary shadow-sm mb-6">
+                                <p className="text-gray-100 italic">"From humble beginnings to regional impact, our mission remains rooted in integrity, perseverance, and community. Every step forward is a promise to those we serve and the values we stand for."</p>
                             </div>
 
                             <div className="flex items-center">
                                 <div>
-                                    <p className="font-medium text-white">Dr. Gemba Richardson</p>
-                                    <p className="text-sm text-white">Founder & CEO</p>
+                                    <p className="font-medium text-white">Susantha Nugekotuwa</p>
+                                    <p className="text-sm text-white">Founder & Visionary Leader</p>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -269,7 +277,7 @@ function Home() {
                                     </div>
                                     <div>
                                         <h4 className="font-medium text-white mb-1">Address</h4>
-                                        <p className="text-gray-300">Spice Avenue<br />Rathnapura, OR 97205<br />Sri Lanka</p>
+                                        <p className="text-gray-300">NKO products<br />Pelmadulla, Ratnapura<br />Sri Lanka</p>
                                     </div>
                                 </div>
 
@@ -279,7 +287,7 @@ function Home() {
                                     </div>
                                     <div>
                                         <h4 className="font-medium text-white mb-1">Email</h4>
-                                        <p className="text-gray-300">Gemba@spicehaven.com<br />support@spicehaven.com</p>
+                                        <p className="text-gray-300">nkoproducts@gmail.com<br />nkosupport@gmail.com</p>
                                     </div>
                                 </div>
 
@@ -289,7 +297,7 @@ function Home() {
                                     </div>
                                     <div>
                                         <h4 className="font-medium text-white mb-1">Phone</h4>
-                                        <p className="text-gray-300">+1 (800) 555-SPICE<br />+1 (503) 555-1234</p>
+                                        <p className="text-gray-300">045-2275483<br />077-3042474</p>
                                     </div>
                                 </div>
 
@@ -397,7 +405,7 @@ function Home() {
             </section>
 
 
-            <section className="py-16 bg-primary/5">
+            <section id='joinus' className="py-16 bg-primary/5">
                 <div data-aos="fade-down" data-aos-duration='3000' className="container mx-auto px-4">
                     <div className="max-w-3xl mx-auto text-center">
                         <h2 className="text-3xl font-bold text-gray-100 mb-4">Join Our Spice Community</h2>

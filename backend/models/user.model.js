@@ -8,7 +8,8 @@ const UserSchema = mongoose.Schema({
     dob: { type: Date},
     password:{type: String,required: true},
     status:{type: Boolean,required: true, default:true},
-    type:{type: String,required: true, default: 'user'}
+    type:{type: String,required: true, default: 'user'},
+    basicSalary:{type: Number},
 },{
     timestamps:true
 });

@@ -33,7 +33,7 @@ export const userRegister = async (req, res) => {
 };
 
 export const userLogin = async (req, res) => {
-    const { email, password } = req.body;   
+    const { email, password } = req.body;
 
     if (!email || !password) {
         return res.status(400).json({
@@ -51,7 +51,7 @@ export const userLogin = async (req, res) => {
                 message: 'User not found'
             });
         }
-        
+
 
         const isMatch = await bcrypt.compare(password, user.password);
 
@@ -63,7 +63,7 @@ export const userLogin = async (req, res) => {
         }
 
         req.session.user = user;
-        
+
 
         return res.status(200).json({
             error: false,
@@ -178,6 +178,33 @@ export const getRefs = async (req, res) => {
     });
 };
 
+export const getEmps = async (req, res) => {
+    const user = req.session.user;
+
+
+    if (!user) {
+        return res.status(401).json({
+            error: true,
+            message: 'Unauthorized'
+        });
+    };
+
+    if (user.type == 'admin' || user.type == 'manager') {
+        const users = await User.find({ type: "emp" }).sort({ createdAt: -1 });
+        return res.status(200).json({
+            error: false,
+            data: users
+        });
+    };
+
+    res.status(401).json({
+        error: true,
+        message: 'Unauthorized'
+    });
+};
+
+
+
 export const updateUser = async (req, res) => {
     try {
         const { id, name, email, phone, address, dob, type } = req.body;
@@ -205,6 +232,16 @@ export const updateUser = async (req, res) => {
             newuser.address = address;
             newuser.dob = dob;
             newuser.type = type;
+
+            if (type == 'admin') {
+                newuser.basicSalary = 0;
+            } else if (type == 'ref') {
+                newuser.basicSalary = 0;
+            } else if (type == 'manager') {
+                newuser.basicSalary = 60000;
+            }else if (type == 'emp') {
+                newuser.basicSalary = 35000;
+            }
 
             await newuser.save();
 
@@ -261,7 +298,7 @@ export const deleteUser = async (req, res) => {
 }
 
 export const logout = async (req, res) => {
-    const user = req.session.user;    
+    const user = req.session.user;
 
     if (!user) {
         return res.status(401).json({
@@ -277,8 +314,7 @@ export const logout = async (req, res) => {
                 message: 'An error occurred. Please try again'
             });
         }
-        console.log("hi");
-        
+
         res.clearCookie('connect.sid');
         return res.status(200).json({
             error: false,

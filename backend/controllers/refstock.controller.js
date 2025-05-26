@@ -223,7 +223,7 @@ export const getRefPastStockBatchs = async (req, res) => {
         if (req.session.user.type !== 'admin' && req.session.user.type !== 'manager') {
             return res.status(403).json({ message: 'Forbidden' });
         }
-        const refStockHistory = await refStcokHistory.find({ repId: id, type: 'done' });
+        const refStockHistory = await refStcokHistory.find({ repId: id, type: { $in: ['ongoing','saved'] } });
 
         res.status(200).json({
             error: false,
@@ -237,3 +237,96 @@ export const getRefPastStockBatchs = async (req, res) => {
         });
     }
 }
+
+export const getRefStockHistoryByBatch = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(req.params);
+    
+
+    const refStock = await refStcokHistory.findOne({batchId: id})
+      .populate('repId', 'name email') // optional if you want rep info
+      .populate({
+        path: 'variant.variantId',
+        populate: {
+          path: 'category',
+          model: 'ProductCategory', // or your actual model name
+          select: 'name',
+        },
+      });
+
+    if (!refStock) return res.status(404).json({ error: 'No data found' });
+
+    res.json({ data: refStock });
+  } catch (error) {
+    console.error('Error fetching ref stock:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+export const reStock = async (req, res) => {
+  const { id } = req.params;
+  console.log(req.params);
+  
+
+  try {
+    const user = req.session.user;
+
+    if (!user || (user.type !== 'admin' && user.type !== 'manager')) {
+      return res.status(403).json({ message: 'Forbidden' });
+    }
+
+    if (!id) {
+      return res.status(400).json({
+        error: true,
+        message: 'Batch ID is required',
+      });
+    }
+
+    const refStockChange = await refStcokHistory.findOne({ batchId: id, type: 'ongoing' });
+
+    if (!refStockChange) {
+      return res.status(404).json({ error: true, message: 'RefStockHistory not found or already saved' });
+    }
+
+    refStockChange.type = 'saved';
+    await refStockChange.save();
+
+    for (const item of refStockChange.variant) {
+      const { variantId, quantity } = item;
+
+      // 1. Subtract from RefStock (per rep + variant)
+      const refStock = await RefStock.findOne({
+        repId: refStockChange.repId,
+        variantId,
+      });
+
+      if (refStock) {
+        refStock.quantity = Math.max(0, refStock.quantity - quantity); // prevent negative
+        await refStock.save();
+      }
+
+      // 2. Add to Product's current stock
+      const product = await Product.findById(variantId);
+
+      if (product) {
+        product.currentStock = (product.currentStock || 0) + quantity;
+        await product.save();
+      }
+    }
+
+    const result = await RefStock.updateMany({}, { $set: { quantity: 0 } });
+
+    return res.json({
+      success: true,
+      message: 'Stock successfully updated and batch marked as saved',
+    });
+
+  } catch (error) {
+    console.error('Error during reStock:', error);
+    return res.status(500).json({
+      error: true,
+      message: 'Server error',
+    });
+  }
+};

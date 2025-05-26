@@ -8,7 +8,7 @@ const refStcokHistoryVariantSchema = new mongoose.Schema({
 
 const refStcokHistorySchema = new mongoose.Schema({
   repId: {type: mongoose.Schema.Types.ObjectId, ref: 'User',required: true},
-  type: {type: String, enum: ['ongoing', 'done'], default: 'ongoing', required: true},
+  type: {type: String, enum: ['ongoing', 'done', 'saved'], default: 'ongoing', required: true},
   date: {type: Date, default: Date.now()},
   batchId: String,
   variant: [refStcokHistoryVariantSchema]

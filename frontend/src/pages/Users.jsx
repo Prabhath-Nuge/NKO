@@ -65,6 +65,19 @@ function Users() {
                             Representatives
                         </button>
                     </NavLink>
+
+                    <NavLink
+                        to="emps"
+                        className={({ isActive }) =>
+                            isActive
+                                ? "bg-blue-500 text-white px-6 py-3 rounded whitespace-nowrap hover:bg-blue-500 transition-all font-medium cursor-pointer"
+                                : "bg-blue-800 text-white px-6 py-3 rounded whitespace-nowrap hover:bg-blue-500 transition-all font-medium cursor-pointer"
+                        }
+                    >
+                        <button id="newUsersFilter">
+                            Employees
+                        </button>
+                    </NavLink>
                 </div>
                 </div>
 

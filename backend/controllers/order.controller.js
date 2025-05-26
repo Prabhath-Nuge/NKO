@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Order from "../models/order.model.js";
 import RefStock from "../models/refstock.model.js";
 import Shop from "../models/shop.model.js";
@@ -80,151 +81,150 @@ export const addToOrder = async (req, res) => {
 };
 
 export const getOngoindOrder = async (req, res) => {
-    try {
-        const { id } = req.params;
-        if (!id) {
-            return res.status(400).json({ error: true, message: "ID required" });
-        }
-
-        const user = req.session.user;
-
-        if (user.type !== "ref") {
-            return res.status(401).json({ error: true, message: "Unauthorized" });
-        }
-        const order = await Order.findOne({ repId: id, type: "ongoing" }).populate({
-            path: "orderItem.variantId",
-            populate: {
-                path: "category",
-                model: "ProductCategory" // change if your model is named differently
-            }
-        }).populate({
-            path: "shopId",
-            options: { strictPopulate: false } // avoids some crashes on missing ref
-        });
-
-        if (!order) {
-            return res.status(404).json({ error: true, message: "Order not found" });
-        }
-        return res.status(200).json({ error: false, data: order });
-    } catch (error) {
-        res.status(500).json({ error: true, message: error.message });
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ error: true, message: "ID required" });
     }
+
+    const user = req.session.user;
+
+    if (user.type !== "ref") {
+      return res.status(401).json({ error: true, message: "Unauthorized" });
+    }
+    const order = await Order.findOne({ repId: id, type: "ongoing" }).populate({
+      path: "orderItem.variantId",
+      populate: {
+        path: "category",
+        model: "ProductCategory" // change if your model is named differently
+      }
+    }).populate({
+      path: "shopId",
+      options: { strictPopulate: false } // avoids some crashes on missing ref
+    });
+
+    if (!order) {
+      return res.status(404).json({ error: true, message: "Order not found" });
+    }
+    return res.status(200).json({ error: false, data: order });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
 };
 
 export const addShopToOrder = async (req, res) => {
-    const { shopId, orderId } = req.body;
-    try {
-        if (!shopId || !orderId) {
-            return res.status(400).json({ error: true, message: "All fields are required" });
-        }
-
-        const user = req.session.user;
-
-        if (user.type !== "ref") {
-            return res.status(401).json({ error: true, message: "Unauthorized" });
-        }
-
-        const order = await Order.findById(orderId);
-        if (!order) {
-            return res.status(404).json({ error: true, message: "Order not found" });
-        }
-
-        const shop = await Shop.findById(shopId);
-
-        order.shopId = shopId;
-        order.due = shop.totalDebt;
-        await order.save();
-
-        return res.status(200).json({ error: false, message: "Shop added to order successfully" });
-    } catch (error) {
-        res.status(500).json({ error: true, message: error.message });
+  const { shopId, orderId } = req.body;
+  try {
+    if (!shopId || !orderId) {
+      return res.status(400).json({ error: true, message: "All fields are required" });
     }
+
+    const user = req.session.user;
+
+    if (user.type !== "ref") {
+      return res.status(401).json({ error: true, message: "Unauthorized" });
+    }
+
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ error: true, message: "Order not found" });
+    }
+
+    const shop = await Shop.findById(shopId);
+
+    order.shopId = shopId;
+    order.due = shop.totalDebt;
+    await order.save();
+
+    return res.status(200).json({ error: false, message: "Shop added to order successfully" });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
 }
 
 export const removeShopFromOrder = async (req, res) => {
-    const { orderId } = req.body;
-    try {
-        if (!orderId) {
-            return res.status(400).json({ error: true, message: "All fields are required" });
-        }
-
-        const user = req.session.user;
-
-        if (user.type !== "ref") {
-            return res.status(401).json({ error: true, message: "Unauthorized" });
-        }
-
-        const order = await Order.findById(orderId);
-        if (!order) {
-            return res.status(404).json({ error: true, message: "Order not found" });
-        }
-
-        order.shopId = null;
-        order.total = 0;
-        order.due = 0;
-        order.payed = 0;
-        order.remaining = 0;
-        await order.save();
-
-        return res.status(200).json({ error: false, message: "Shop removed from order successfully" });
-    } catch (error) {
-        res.status(500).json({ error: true, message: error.message });
+  const { orderId } = req.body;
+  try {
+    if (!orderId) {
+      return res.status(400).json({ error: true, message: "All fields are required" });
     }
+
+    const user = req.session.user;
+
+    if (user.type !== "ref") {
+      return res.status(401).json({ error: true, message: "Unauthorized" });
+    }
+
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ error: true, message: "Order not found" });
+    }
+
+    order.shopId = null;
+    order.total = 0;
+    order.due = 0;
+    order.payed = 0;
+    order.remaining = 0;
+    await order.save();
+
+    return res.status(200).json({ error: false, message: "Shop removed from order successfully" });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
 }
 
 export const deleteOrder = async (req, res) => {
-    console.log(req.params);
 
-    const { id } = req.params;
-    try {
-        if (!id) {
-            return res.status(400).json({ error: true, message: "All fields are required" });
-        }
-
-        const user = req.session.user;
-
-        if (user.type !== "ref") {
-            return res.status(401).json({ error: true, message: "Unauthorized" });
-        }
-
-        const order = await Order.findById(id);
-        if (!order) {
-            return res.status(404).json({ error: true, message: "Order not found" });
-        }
-        await Order.findByIdAndDelete(id);
-
-        return res.status(200).json({ error: false, message: "Order deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ error: true, message: error.message });
+  const { id } = req.params;
+  try {
+    if (!id) {
+      return res.status(400).json({ error: true, message: "All fields are required" });
     }
+
+    const user = req.session.user;
+
+    if (user.type !== "ref") {
+      return res.status(401).json({ error: true, message: "Unauthorized" });
+    }
+
+    const order = await Order.findById(id);
+    if (!order) {
+      return res.status(404).json({ error: true, message: "Order not found" });
+    }
+    await Order.findByIdAndDelete(id);
+
+    return res.status(200).json({ error: false, message: "Order deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
 }
 
 export const enterPayment = async (req, res) => {
-    const { orderId, amount, grandTotal } = req.body;
-    try {
-        if (!orderId || !amount || !grandTotal) {
-            return res.status(400).json({ error: true, message: "All fields are required" });
-        }
-
-        const user = req.session.user;
-
-        if (user.type !== "ref") {
-            return res.status(401).json({ error: true, message: "Unauthorized" });
-        }
-
-        const order = await Order.findById(orderId);
-        if (!order) {
-            return res.status(404).json({ error: true, message: "Order not found" });
-        }
-
-        order.payed = amount;
-        order.remaining = grandTotal - order.payed;
-        await order.save();
-
-        return res.status(200).json({ error: false, message: "Payment added successfully" });
-    } catch (error) {
-        res.status(500).json({ error: true, message: error.message });
+  const { orderId, amount, grandTotal } = req.body;
+  try {
+    if (!orderId || !amount || !grandTotal) {
+      return res.status(400).json({ error: true, message: "All fields are required" });
     }
+
+    const user = req.session.user;
+
+    if (user.type !== "ref") {
+      return res.status(401).json({ error: true, message: "Unauthorized" });
+    }
+
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ error: true, message: "Order not found" });
+    }
+
+    order.payed = amount;
+    order.remaining = grandTotal - order.payed;
+    await order.save();
+
+    return res.status(200).json({ error: false, message: "Payment added successfully" });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
 }
 
 export const orderFinish = async (req, res) => {
@@ -296,95 +296,159 @@ export const orderFinish = async (req, res) => {
 
 
 export const refGetDoneOrders = async (req, res) => {
-    const { id } = req.params;
-    console.log(id);
+  const { id } = req.params;
 
-    try {
-        if (!id) {
-            return res.status(400).json({ error: true, message: "ID required" });
-        }
-
-        const user = req.session.user;
-
-        if (user.type !== "ref") {
-            return res.status(401).json({ error: true, message: "Unauthorized" });
-        }
-        const order = await Order.find({ repId: id, type: "done" }).populate('shopId');
-
-        console.log(order);
-
-        if (!order) {
-            return res.status(404).json({ error: true, message: "Order not found" });
-        }
-
-        return res.status(200).json({ error: false, data: order });
-    } catch (error) {
-        res.status(500).json({ error: true, message: error.message });
+  try {
+    if (!id) {
+      return res.status(400).json({ error: true, message: "ID required" });
     }
+
+    const user = req.session.user;
+
+    if (user.type !== "ref") {
+      return res.status(401).json({ error: true, message: "Unauthorized" });
+    }
+    const order = await Order.find({ repId: id, type: "done" }).populate('shopId');
+
+    if (!order) {
+      return res.status(404).json({ error: true, message: "Order not found" });
+    }
+
+    return res.status(200).json({ error: false, data: order });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
 }
 
 export const deleteProductFromOrder = async (req, res) => {
-    const { orderId, variantId } = req.body;
+  const { orderId, variantId } = req.body;
 
-    try {
-        if (!orderId || !variantId) {
-            return res.status(400).json({ error: true, message: "All fields are required" });
-        }
-
-        const user = req.session.user;
-        if (user?.type !== "ref") {
-            return res.status(401).json({ error: true, message: "Unauthorized" });
-        }
-
-        const order = await Order.findById(orderId);
-
-        if (!order) {
-            return res.status(404).json({ error: true, message: "Order not found" });
-        }
-
-        const initialLength = order.orderItem.length;
-
-        order.orderItem = order.orderItem.filter(
-            item => item.variantId.toString() !== variantId.toString()
-        );
-
-        if (order.orderItem.length === initialLength) {
-            return res.status(404).json({ error: true, message: "Product not found in order" });
-        }
-
-        await order.save();
-        return res.status(200).json({ error: false, message: "Product removed from order successfully" });
-    } catch (error) {
-        console.error('Delete error:', error);
-        return res.status(500).json({ error: true, message: error.message });
+  try {
+    if (!orderId || !variantId) {
+      return res.status(400).json({ error: true, message: "All fields are required" });
     }
+
+    const user = req.session.user;
+    if (user?.type !== "ref") {
+      return res.status(401).json({ error: true, message: "Unauthorized" });
+    }
+
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ error: true, message: "Order not found" });
+    }
+
+    const initialLength = order.orderItem.length;
+
+    order.orderItem = order.orderItem.filter(
+      item => item.variantId.toString() !== variantId.toString()
+    );
+
+    if (order.orderItem.length === initialLength) {
+      return res.status(404).json({ error: true, message: "Product not found in order" });
+    }
+
+    await order.save();
+    return res.status(200).json({ error: false, message: "Product removed from order successfully" });
+  } catch (error) {
+    console.error('Delete error:', error);
+    return res.status(500).json({ error: true, message: error.message });
+  }
 };
 
 export const saveBatch = async (req, res) => {
-    const { repId } = req.body;
-    try {
-        if (!repId) {
-            return res.status(400).json({ error: true, message: "All fields are required" });
-        }
-
-        const user = req.session.user;
-
-        if (user.type !== "ref") {
-            return res.status(401).json({ error: true, message: "Unauthorized" });
-        }
-
-        const result = await Order.updateMany(
-            { type: 'done', repId: repId },
-            { $set: { type: 'saved' } }
-        );
-        if (result.modifiedCount === 0) {
-            return res.status(404).json({ error: true, message: "No orders found to update" });
-        }
-
-
-
-        return res.status(200).json({ error: false, message: `Modified and saved ${result.modifiedCount} Orders` });
-    } catch (error) {
-        res.status(500).json({ error: true, message: error.message });
+  const { repId } = req.body;
+  try {
+    if (!repId) {
+      return res.status(400).json({ error: true, message: "All fields are required" });
     }
+
+    const user = req.session.user;
+
+    if (user.type !== "ref") {
+      return res.status(401).json({ error: true, message: "Unauthorized" });
+    }
+
+    const result = await Order.updateMany(
+      { type: 'done', repId: repId },
+      { $set: { type: 'saved' } }
+    );
+    if (result.modifiedCount === 0) {
+      return res.status(404).json({ error: true, message: "No orders found to update" });
+    }
+
+
+
+    return res.status(200).json({ error: false, message: `Modified and saved ${result.modifiedCount} Orders` });
+  } catch (error) {
+    res.status(500).json({ error: true, message: error.message });
+  }
+}
+
+export const getSavedOrderBatches = async (req, res) => {
+  try {
+    const user = req.session.user;
+    if (user.type !== "admin" && user.type !== "manager") {
+      return res.status(401).json({ error: true, message: "Unauthorized" });
+    }
+    const { id } = req.params;
+    const repObjectId = mongoose.Types.ObjectId.createFromHexString(id);
+
+    const batches = await Order.aggregate([
+      {
+        $match: {
+          repId: repObjectId,
+          type: 'saved'
+        }
+      },
+      {
+        $group: {
+          _id: "$batch",
+          date: { $first: "$date" }
+        }
+      },
+      {
+        $project: {
+          _id: 0,
+          batchNumber: "$_id",
+          date: 1
+        }
+      },
+      { $sort: { date: -1 } }
+    ]);
+
+    res.status(200).json({ data: batches });
+  } catch (error) {
+    console.error('Error fetching saved order batches:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+export const getBatchOrderList = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = req.session.user;
+    if (user.type !== "admin" && user.type !== "manager") {
+      return res.status(401).json({ error: true, message: "Unauthorized" });
+    }
+    const orders = await Order.find({ batch: id, type: 'saved' })
+      .populate('shopId', 'name')
+      .populate({
+        path: 'orderItem.variantId',
+        populate: {
+          path: 'category',
+          model: 'ProductCategory',
+          select: 'name',    // limit to name field if needed
+        },
+      });
+    if (!orders) {
+      return res.status(404).json({ error: true, message: "Orders not found" });
+    }
+    return res.status(200).json({ error: false, data: orders });
+  }
+  catch (error) {
+    console.error('Error fetching batch order list:', error);
+    res.status(500).json({ error: true, message: error.message });
+  }
 }

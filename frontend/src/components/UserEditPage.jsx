@@ -127,6 +127,7 @@ const UserEditPage = () => {
                             <option value="admin">Admin</option>
                             <option value="manager">Manager</option>
                             <option value="ref">Representative</option>
+                            <option value="emp">Employee</option>
                         </select>
                     </div>
 

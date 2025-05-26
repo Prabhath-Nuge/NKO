@@ -31,6 +31,18 @@ import StocksViewRefs from './components/StocksViewRefs';
 import StocksViewRefsStocks from './components/StocksViewRefsStocks';
 import StockShowRefCurrentStock from './components/StockShowRefCurrentStock';
 import StockPastStockBatch from './components/StockPastStockBatch';
+import Orders from './pages/Order';
+import OrdersShowRefs from './components/OrdersShowRefs';
+import OrderShowRefBathces from './components/OrderShowRefBathces';
+import OrderBatchOrderList from './components/OrderBatchOrderList';
+import OrderBatchOrderListView from './components/OrderBatchOrderListView';
+import StockRefStockDetail from './components/StockRefStockDetail';
+import Salary from './pages/Salary';
+import UsersEmployeeComponent from './components/UserEmployeeComponent';
+import ViewCurrentSalary from './components/ViewCurrentSalary';
+import SalaryEditSalary from './components/SalaryEditSalary';
+import SalaryHistoryViewEmps from './components/SalaryHistoryViewEmps';
+import EmployeeSalaryHistory from './components/SalaryHistoryviewEmpDets';
 
 const Router = createBrowserRouter([
   { path: '/unauthorized', element: <Unauthorized /> },
@@ -64,6 +76,7 @@ const Router = createBrowserRouter([
       { path: 'managers', element: <UsersManagerComponent /> },
       { path: 'refs', element: <UsersRepresentativesComponent /> },
       { path: 'newusers', element: <UsersNewUsersComponent /> },
+      { path: 'emps', element: <UsersEmployeeComponent /> },
       { path: 'user/:id', element: <UserEditPage /> }
     ]
   },
@@ -97,7 +110,23 @@ const Router = createBrowserRouter([
       { path: 'viewrefs', element:<StocksViewRefs /> },
       { path: 'viewrefs/viewstocks', element:<StocksViewRefsStocks /> },
       { path: 'viewrefs/viewstocks/viewpastbatchs', element:<StockPastStockBatch /> },
+      { path: 'viewrefs/viewstocks/viewpastbatchs/batch', element:<StockRefStockDetail /> },
       { path: 'viewrefs/viewstocks/current/:id', element:<StockShowRefCurrentStock /> },
+    ]
+  },
+  {
+    path: '/orders',
+    element: (
+      <ProtectedRoute allowedRoles={['admin', 'manager']}>
+        <Orders />
+      </ProtectedRoute>
+    ),
+    children: [
+      { path: 'viewrefs', element:<OrdersShowRefs/> },
+      { path: 'viewrefs/viewbatches', element:<OrderShowRefBathces/> },
+      { path: 'viewrefs/viewbatches', element:<OrderShowRefBathces/> },
+      { path: 'viewrefs/viewbatches/orderlist', element:<OrderBatchOrderList/> },
+      { path: 'viewrefs/viewbatches/orderlist/order', element:<OrderBatchOrderListView/> },
     ]
   },
   {
@@ -111,6 +140,19 @@ const Router = createBrowserRouter([
       { path: 'viewrefs', element:<ShopViewRefs/> },
       { path: 'viewrefs/viewrefsshops', element:<ShopViewRefsShops/> },
       { path: 'allshops', element:<ShopViewAllShops/> },
+    ]
+  },{
+    path: '/salary',
+    element: (
+      <ProtectedRoute allowedRoles={['admin']}>
+        <Salary />
+      </ProtectedRoute>
+    ),
+    children: [
+      { path: 'viewcurrentsalary', element: <ViewCurrentSalary/> },
+      { path: 'viewcurrentsalary/edit', element: <SalaryEditSalary/> },
+      { path: 'salaryhistoryviewrefs', element: <SalaryHistoryViewEmps/> },
+      { path: 'salaryhistoryviewrefs/history', element: <EmployeeSalaryHistory/> },
     ]
   }
 ]);
