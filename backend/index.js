@@ -38,9 +38,9 @@ app.use(
             autoRemove: 'native', 
         }),
         cookie: {
-            secure: false,  // Must be `false` for local testing (HTTPS required for `true`)
+            secure: true,  // Must be `false` for local testing (HTTPS required for `true`)
             httpOnly: false, // Allow frontend JS to access cookies (optional)
-            sameSite: "lax", // Ensures cookies work across different origins
+            sameSite: "none", // Ensures cookies work across different origins
             maxAge: 1000 * 60 * 60 * 24, // 1 day
         },
     })
