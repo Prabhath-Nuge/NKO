@@ -9,7 +9,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { AuthProvider } from './hooks/AuthContext.jsx'
 
-axios.defaults.baseURL = "http://localhost:5000";
+axios.defaults.baseURL = "https://nko-seven.vercel.app";
 axios.defaults.withCredentials = true;
 
 AOS.init({ duration: 1000 });
