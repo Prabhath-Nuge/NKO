@@ -39,8 +39,8 @@ app.use(
         }),
         cookie: {
             secure: true,  // Must be `false` for local testing (HTTPS required for `true`)
-            httpOnly: false, // Allow frontend JS to access cookies (optional)
-            sameSite: "none", // Ensures cookies work across different origins
+            httpOnly: true, // Allow frontend JS to access cookies (optional)
+            sameSite: 'none', // Ensures cookies work across different origins
             maxAge: 1000 * 60 * 60 * 24, // 1 day
         },
     })
