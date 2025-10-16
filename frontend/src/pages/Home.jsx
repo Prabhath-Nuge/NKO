@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import FooterComponent from '../components/FooterComponent'
 import { Link } from 'react-router-dom';
-import ceo from '../assets/images/ceo.jpg'
+import ceo from '../assets/images/CEO.jpg'
 import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
