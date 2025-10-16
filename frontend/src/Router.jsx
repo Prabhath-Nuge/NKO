@@ -21,7 +21,7 @@ import Layout from './layouts/Layout';
 import ProductVariantEdit from './components/ProductVariantEdit';
 import Stocks from './pages/Stocks';
 import StockAllStockComponent from './components/StockAllStockComponent';
-import StockEdit from './components/stockedit';
+import StockEdit from './components/StockEdit';
 import StockHistory from './components/StockHistory';
 import Shop from './pages/Shop';
 import ShopViewRefs from './components/ShopViewRefs';
